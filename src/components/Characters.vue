@@ -15,18 +15,30 @@
           <v-select
             placeholder="Species"
             label="Species"
-            :items="['human','humanoid','alien','robot','beast']"
+            :items="['human','humanoid','alien','robot','beast','unknown']"
             variant="outlined"
+            clearable="true"
+            v-model="species"
             ></v-select>
           </v-col>
           <v-col cols="3">
             <v-select
-            label="Compact"
+            label="Gender"
+            placeholder="Gender"
+            :items="['Male','Female','Genderless','unknown']"
+            variant="outlined"
+            clearable="true"
+            v-model="gender"
             ></v-select>
           </v-col>
           <v-col cols="3">
             <v-select
-            label="Compact"
+            label="Status"
+            placeholder="Status"
+            :items="['alive', 'dead','unknown']"
+            variant="outlined"
+            clearable="true"
+            v-model="status"
             ></v-select>
           </v-col>
       </v-row>
@@ -63,6 +75,8 @@ const nameInput:string = ref('');
 const characters:array = ref([]);
 const URL:string = ref('https://rickandmortyapi.com/api/character')
 const species:string = ref('');
+const gender:string = ref('');
+const status:string = ref('')
 
 const fetchCharacters = async () => {
   try {
@@ -80,15 +94,36 @@ onMounted(() => {
 });
 
 watch(nameInput,()=>{
-  URL.value = 'https://rickandmortyapi.com/api/character'+'?name='+nameInput.value
+  URL.value = 'https://rickandmortyapi.com/api/character'+'?name='+nameInput.value;
   fetchCharacters();
 })
 watch(species,()=> {
-  if (species == 'clear'){URL.value = 'https://rickandmortyapi.com/api/character'}
-  else{URL.value = 'https://rickandmortyapi.com/api/character'+'?species='+species.value
-  }
+  if(species.value == ''||species.value == null){
+    URL.value = 'https://rickandmortyapi.com/api/character';
+    fetchCharacters();
+  }else{
+    URL.value = 'https://rickandmortyapi.com/api/character'+'?species='+species.value
   fetchCharacters();
-  })
+  }
+})
+watch(gender,()=> {
+  if(gender.value == ''||gender.value == null){
+    URL.value = 'https://rickandmortyapi.com/api/character';
+    fetchCharacters();
+  }else{
+     URL.value = 'https://rickandmortyapi.com/api/character'+'?gender='+gender.value
+  fetchCharacters();
+  }
+})
+watch(status,()=> {
+  if(status.value == ''||species.value == null){
+    URL.value = 'https://rickandmortyapi.com/api/character';
+    fetchCharacters();
+  }else{
+    URL.value = 'https://rickandmortyapi.com/api/character'+'?status='+status.value
+  fetchCharacters();
+  }
+})
 </script>
 
 
