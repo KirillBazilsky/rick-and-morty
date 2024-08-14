@@ -24,7 +24,7 @@
     transform: rotate(360deg);
   }
 }
-.img-container{
-    height:70vh
+.img-container {
+  height: 70vh;
 }
 </style>

@@ -1,19 +1,15 @@
+import { defineStore } from "pinia";
 
-import { defineStore } from 'pinia'
-
-export const useAppStore = defineStore('app', {
+export const useAppStore = defineStore("app", {
   state: () => ({
-    characterInfo:{} 
+    characterInfo: {},
   }),
-  getters:{
-    getCaracterInfo:(state) => state.characterInfo
+  getters: {
+    getCaracterInfo: (state) => state.characterInfo,
   },
   actions: {
     setCharacterInfo(character: Record<string, any> | null) {
-      this.characterInfo = character || {}; 
-    }
-  }
-  
-})
-
-
+      this.characterInfo = character || {};
+    },
+  },
+});

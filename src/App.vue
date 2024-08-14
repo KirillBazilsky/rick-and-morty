@@ -5,15 +5,15 @@
         <v-row class="d-flex justify-center align-center">
           <v-col>
             <img
-          src="../src/assets/logo-black 1.png"
-          alt="rick and morty black logo"/>
+              src="../src/assets/logo-black 1.png"
+              alt="rick and morty black logo"
+            />
           </v-col>
           <v-spacer></v-spacer>
           <v-col>
             <NavbarDesktop />
           </v-col>
         </v-row>
-
       </v-container>
     </v-app-bar>
     <router-view />
@@ -32,7 +32,6 @@ import NavbarDesktop from "./components/NavbarDesktop.vue";
 </script>
 
 <style>
-
 .link {
   margin-right: 18px;
   font-weight: 700;
