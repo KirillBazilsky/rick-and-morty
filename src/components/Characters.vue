@@ -51,7 +51,6 @@
       <v-row v-if="!errorMessage">
         <v-col v-for="character in characters" :key="character.id"  cols="12" md="3">
             <v-card :key="character.name"  elevation="5">
-              
               <v-img :src="character.image" height="167px" cover>
               </v-img>
               <v-card-title>
@@ -67,20 +66,21 @@
       <div v-else class="container">
         <p>{{ errorMessage }}</p>
       </div>
-          
-        
     </v-container>
-    
+    <v-btn
+    variant="text"
+    elevation="16"
+    class="text-h6"
+    @click="loadMoreItems">
+    Load More</v-btn>
   </main>
-  
-  
 </template>
 
 <script setup lang="ts">
   import {ref, onMounted, watch} from 'vue'
   
-  import GetData from '../api/getDataApi'
-import LoadingImgage from './LoadingImgage.vue';
+  import CharactersApi from '../api/charactersApi'
+  import LoadingImgage from './LoadingImgage.vue';
 type Character = {
   id:number
   name:string
@@ -105,12 +105,14 @@ const isLoading = ref<boolean>(true);
 const speciesArr = <string[]>['human','humanoid','alien','robot','beast','unknown']
 const genderArr = <string[]>['Male','Female','Genderless','unknown']
 const statusArr = <string[]>['alive', 'dead','unknown']
+const pageSize = ref<number>(8)
+const page = ref<number>(1)
 
 
 const fetchCharacters = async () => {
   try {
-    const getDataInstance = new GetData(); 
-    characters.value = await getDataInstance.getCharacters(name.value, species.value, gender.value, status.value); 
+    const getDataInstance = new CharactersApi(); 
+    characters.value = await getDataInstance.getItems(name.value, species.value, gender.value, status.value); 
     errorMessage.value = ''; 
   } catch (error:any) {
     if (error.response && error.response.status === 404) {
@@ -123,9 +125,22 @@ const fetchCharacters = async () => {
   }
 };
 
-
-
-
+const updatePage = async () => {
+      try{
+      const getDataInstance = new CharactersApi(); 
+    characters.value = await getDataInstance.updateItems(name.value, species.value, gender.value, status.value,page.value)
+    errorMessage.value = ''; 
+    }
+    catch (error:any) {
+    if (error.response && error.response.status === 404) {
+      errorMessage.value = 'No characters to load';
+    } else {
+      errorMessage.value = 'An error occurred. Please try again later.';
+    }
+  } finally {
+   setTimeout(() => isLoading.value = false, 300);
+  }
+}
 onMounted(() => {
   fetchCharacters();
 });
@@ -134,6 +149,15 @@ watch([species, gender, status], ()=>{
   isLoading.value=true;
   fetchCharacters();
 });
+watch(pageSize,()=>console.log(pageSize))
+
+const loadMoreItems = () => {
+ 
+    page.value += 1
+    updatePage()
+    
+}
+
 </script>
 
 
