@@ -17,7 +17,7 @@
             label="Species"
             :items="['human','humanoid','alien','robot','beast','unknown']"
             variant="outlined"
-            clearable="true"
+            :clearable=true
             v-model="species"
             ></v-select>
           </v-col>
@@ -27,7 +27,7 @@
             placeholder="Gender"
             :items="['Male','Female','Genderless','unknown']"
             variant="outlined"
-            clearable="true"
+            :clearable=true
             v-model="gender"
             ></v-select>
           </v-col>
@@ -37,7 +37,7 @@
             placeholder="Status"
             :items="['alive', 'dead','unknown']"
             variant="outlined"
-            clearable="true"
+            :clearable=true
             v-model="status"
             ></v-select>
           </v-col>
@@ -71,18 +71,17 @@
   import {ref, onMounted} from 'vue'
   import axios from 'axios';
 
-const nameInput:string = ref('');
-const characters:array = ref([]);
-const URL:string = ref('https://rickandmortyapi.com/api/character')
-const species:string = ref('');
-const gender:string = ref('');
-const status:string = ref('')
+const nameInput = ref('');
+const characters = ref([]);
+const URL = ref('https://rickandmortyapi.com/api/character')
+const species = ref('');
+const gender = ref('');
+const status = ref('')
 
 const fetchCharacters = async () => {
   try {
     const response = await axios.get(URL.value); 
     characters.value = response.data.results; 
-    console.log(characters.value)
   } catch (error) {
     console.error('Error fetching characters:', error); 
   }
@@ -116,7 +115,7 @@ watch(gender,()=> {
   }
 })
 watch(status,()=> {
-  if(status.value == ''||species.value == null){
+  if(status.value == ''||status.value == null){
     URL.value = 'https://rickandmortyapi.com/api/character';
     fetchCharacters();
   }else{

@@ -16,7 +16,7 @@ const router = createRouter({
 
 routes.push(
   {path:'/',
-   redirect: '/caracters'
+   redirect: '/characters'
   }
 )
 
