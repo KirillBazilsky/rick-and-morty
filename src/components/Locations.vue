@@ -1,7 +1,5 @@
-<template>
-  Locations
-</template>
+<template>Locations</template>
 
 <script setup lang="ts">
-  //
+//
 </script>
