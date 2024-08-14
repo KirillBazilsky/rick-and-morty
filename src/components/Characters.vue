@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <img src="../assets/PngItem_438051 1.svg" alt = "Rick and Morty logo"></img>
+    <img src="../assets/PngItem_438051 1.svg" alt = "Rick and Morty logo" class="d-flex justify-center align-center"></img>
   </div>
   <main v-if="loading">
       <LoadingImgage />
@@ -8,7 +8,7 @@
   <main v-else>
     <v-container>
       <v-row >
-         <v-col cols="3">
+         <v-col cols="12" md="3">
           <v-text-field placeholder="Filtered by name"
           prepend-inner-icon="mdi-magnify"
           v-model="name"
@@ -17,31 +17,31 @@
           ></v-text-field>
         
          </v-col >
-         <v-col cols="3">
+         <v-col cols="12" md="3">
           <v-select
             placeholder="Species"
             label="Species"
-            :items="['human','humanoid','alien','robot','beast','unknown']"
+            :items="speciesArr"
             variant="outlined"
             :clearable=true
             v-model="species"
             ></v-select>
           </v-col>
-          <v-col cols="3">
+          <v-col cols="12" md="3">
             <v-select
             label="Gender"
             placeholder="Gender"
-            :items="['Male','Female','Genderless','unknown']"
+            :items="genderArr"
             variant="outlined"
             :clearable=true
             v-model="gender"
             ></v-select>
           </v-col>
-          <v-col cols="3">
+          <v-col cols="12" md="3">
             <v-select
             label="Status"
             placeholder="Status"
-            :items="['alive', 'dead','unknown']"
+            :items="statusArr"
             variant="outlined"
             :clearable=true
             v-model="status"
@@ -49,8 +49,8 @@
           </v-col>
       </v-row>
       <v-row v-if="!errorMessage">
-        <v-col v-for="character in characters" :key="character.id"  cols="3">
-            <v-card :key="character.name" width="240px" height="244px" elevation="5">
+        <v-col v-for="character in characters" :key="character.id"  cols="12" md="3">
+            <v-card :key="character.name"  elevation="5">
               
               <v-img :src="character.image" height="167px" cover>
               </v-img>
@@ -102,6 +102,9 @@ const status = ref<string | null>(null);
 const URL = "https://rickandmortyapi.com/api/character";
 const errorMessage = ref<string | null>(null);;
 const loading = ref<boolean>(true);
+const speciesArr = <string[]>['human','humanoid','alien','robot','beast','unknown']
+const genderArr = <string[]>['Male','Female','Genderless','unknown']
+const statusArr = <string[]>['alive', 'dead','unknown']
 
 
 const fetchCharacters = async () => {
@@ -120,7 +123,6 @@ const fetchCharacters = async () => {
         loading.value = false
       }
     } else {
-      // Обработка других типов ошибок
       errorMessage.value = 'An unexpected error occurred.';
       loading.value = false
     }

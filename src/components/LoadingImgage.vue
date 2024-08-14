@@ -1,6 +1,6 @@
 <template>
     <div id="loading-wrapper" class="container">
-        <v-img class="rotate"
+        <v-img class="rotate d-flex justify-center align-center"
         src='../assets/Loading component.svg' alt="loading">
 
         </v-img>
