@@ -1,14 +1,20 @@
 <template>
-  <div class="img-wrapper">
+  <div class="wrapper">
     <img src="../assets/PngItem_438051 1.svg" alt = "Rick and Morty logo"></img>
   </div>
-
-  <main>
+  <main v-if="loading">
+      <LoadingImgage />
+  </main>
+  <main v-else>
     <v-container>
       <v-row >
          <v-col cols="3">
-          <v-text-field placeholder="Filtered by name" prepend-inner-icon="mdi-magnify" v-model="nameInput" 
-          rounded="lg" variant="outlined"></v-text-field>
+          <v-text-field placeholder="Filtered by name"
+          prepend-inner-icon="mdi-magnify"
+          v-model="name"
+          rounded="lg" 
+          variant="outlined"
+          ></v-text-field>
         
          </v-col >
          <v-col cols="3">
@@ -42,7 +48,7 @@
             ></v-select>
           </v-col>
       </v-row>
-      <v-row>
+      <v-row v-if="!errorMessage">
         <v-col v-for="character in characters" :key="character.id"  cols="3">
             <v-card :key="character.name" width="240px" height="244px" elevation="5">
               
@@ -58,6 +64,9 @@
         </v-col>
 
       </v-row>
+      <div v-else class="container">
+        <p>{{ errorMessage }}</p>
+      </div>
           
         
     </v-container>
@@ -68,61 +77,65 @@
 </template>
 
 <script setup lang="ts">
-  import {ref, onMounted} from 'vue'
-  import axios from 'axios';
+  import {ref, onMounted, watch} from 'vue'
+  import axios, { AxiosError } from 'axios';
+import LoadingImgage from './LoadingImgage.vue';
+type Character = {
+  id:number
+  name:string
+  status:string
+  species:string
+  type:string	
+  gender:string
+  location:	object
+  image: string 
+  episode: []
+  url:string
+  created:	string
+}
 
-const nameInput = ref('');
-const characters = ref([]);
-const URL = ref('https://rickandmortyapi.com/api/character')
-const species = ref('');
-const gender = ref('');
-const status = ref('')
+const name = ref<string | null>('');
+const characters = ref<Character[]>([]);
+const species = ref<string | null>(null);
+const gender = ref<string | null>(null);
+const status = ref<string | null>(null);
+const URL = "https://rickandmortyapi.com/api/character";
+const errorMessage = ref<string | null>(null);;
+const loading = ref<boolean>(true);
+
 
 const fetchCharacters = async () => {
   try {
-    const response = await axios.get(URL.value); 
-    characters.value = response.data.results; 
+    const response = await axios.get(`${URL}?name=${name.value}&species=${species.value || ''}&gender=${gender.value || ''}&status=${status.value || ''}`);
+    characters.value = response.data.results || [];
+    setTimeout(()=>loading.value = false,300)
+    errorMessage.value = ''; 
   } catch (error) {
-    console.error('Error fetching characters:', error); 
+    if (error instanceof AxiosError) {
+      if (error.response && error.response.status === 404) {
+        errorMessage.value = 'No characters found for the selected filters.';
+      } else {
+        errorMessage.value = 'An error occurred. Please try again later.';
+      }
+    } else {
+      // Обработка других типов ошибок
+      errorMessage.value = 'An unexpected error occurred.';
+    }
   }
 };
+
+
+
 
 onMounted(() => {
   fetchCharacters();
   
 });
-
-watch(nameInput,()=>{
-  URL.value = 'https://rickandmortyapi.com/api/character'+'?name='+nameInput.value;
+watch(name,fetchCharacters)
+watch([species, gender, status], ()=>{
+  loading.value=true;
   fetchCharacters();
-})
-watch(species,()=> {
-  if(species.value == ''||species.value == null){
-    URL.value = 'https://rickandmortyapi.com/api/character';
-    fetchCharacters();
-  }else{
-    URL.value = 'https://rickandmortyapi.com/api/character'+'?species='+species.value
-  fetchCharacters();
-  }
-})
-watch(gender,()=> {
-  if(gender.value == ''||gender.value == null){
-    URL.value = 'https://rickandmortyapi.com/api/character';
-    fetchCharacters();
-  }else{
-     URL.value = 'https://rickandmortyapi.com/api/character'+'?gender='+gender.value
-  fetchCharacters();
-  }
-})
-watch(status,()=> {
-  if(status.value == ''||status.value == null){
-    URL.value = 'https://rickandmortyapi.com/api/character';
-    fetchCharacters();
-  }else{
-    URL.value = 'https://rickandmortyapi.com/api/character'+'?status='+status.value
-  fetchCharacters();
-  }
-})
+});
 </script>
 
 
@@ -137,4 +150,6 @@ watch(status,()=> {
   height: 200px;
   margin-top:26px;
   }
+  
+  
 </style>
