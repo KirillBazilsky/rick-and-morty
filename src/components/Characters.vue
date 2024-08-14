@@ -78,7 +78,8 @@
 
 <script setup lang="ts">
   import {ref, onMounted, watch} from 'vue'
-  import axios, { AxiosError } from 'axios';
+  
+  import GetData from '../api/getDataApi'
 import LoadingImgage from './LoadingImgage.vue';
 type Character = {
   id:number
@@ -99,7 +100,6 @@ const characters = ref<Character[]>([]);
 const species = ref<string | null>(null);
 const gender = ref<string | null>(null);
 const status = ref<string | null>(null);
-const URL = process.env.VUE_APP_RICK_AND_MORTY_API_URL;
 const errorMessage = ref<string | null>(null);;
 const isLoading = ref<boolean>(true);
 const speciesArr = <string[]>['human','humanoid','alien','robot','beast','unknown']
@@ -109,23 +109,17 @@ const statusArr = <string[]>['alive', 'dead','unknown']
 
 const fetchCharacters = async () => {
   try {
-    const response = await axios.get(`${URL}?name=${name.value}&species=${species.value || ''}&gender=${gender.value || ''}&status=${status.value || ''}`);
-    characters.value = response.data.results || [];
-    setTimeout(()=>isLoading.value = false,300)
+    const getDataInstance = new GetData(); 
+    characters.value = await getDataInstance.getCharacters(name.value, species.value, gender.value, status.value); 
     errorMessage.value = ''; 
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      if (error.response && error.response.status === 404) {
-        errorMessage.value = 'No characters found for the selected filters.';
-        isLoading.value = false
-      } else {
-        errorMessage.value = 'An error occurred. Please try again later.';
-        isLoading.value = false
-      }
+  } catch (error:any) {
+    if (error.response && error.response.status === 404) {
+      errorMessage.value = 'No characters found for the selected filters.';
     } else {
-      errorMessage.value = 'An unexpected error occurred.';
-      isLoading.value = false
+      errorMessage.value = 'An error occurred. Please try again later.';
     }
+  } finally {
+   setTimeout(() => isLoading.value = false, 300);
   }
 };
 
@@ -134,7 +128,6 @@ const fetchCharacters = async () => {
 
 onMounted(() => {
   fetchCharacters();
-  
 });
 watch(name,fetchCharacters)
 watch([species, gender, status], ()=>{
