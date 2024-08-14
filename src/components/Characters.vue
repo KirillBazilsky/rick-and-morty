@@ -55,7 +55,7 @@
       </v-row>
       <v-row v-if="!errorMessage">
         <v-col v-for="character in characters" :key="character.id"  cols="12" md="3">
-            <v-card :key="character.name"  elevation="5">
+            <v-card :key="character.name"  elevation="5" to="characterPage">
               <v-img :src="character.image" height="167px" cover>
               </v-img>
               <v-card-title>
