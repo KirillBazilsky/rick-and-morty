@@ -114,12 +114,15 @@ const fetchCharacters = async () => {
     if (error instanceof AxiosError) {
       if (error.response && error.response.status === 404) {
         errorMessage.value = 'No characters found for the selected filters.';
+        loading.value = false
       } else {
         errorMessage.value = 'An error occurred. Please try again later.';
+        loading.value = false
       }
     } else {
       // Обработка других типов ошибок
       errorMessage.value = 'An unexpected error occurred.';
+      loading.value = false
     }
   }
 };
