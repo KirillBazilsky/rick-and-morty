@@ -2,7 +2,7 @@
   <div class="wrapper">
     <img src="../assets/PngItem_438051 1.svg" alt = "Rick and Morty logo" class="d-flex justify-center align-center"></img>
   </div>
-  <main v-if="loading">
+  <main v-if="isLoading">
       <LoadingImgage />
   </main>
   <main v-else>
@@ -101,7 +101,7 @@ const gender = ref<string | null>(null);
 const status = ref<string | null>(null);
 const URL = process.env.VUE_APP_RICK_AND_MORTY_API_URL;
 const errorMessage = ref<string | null>(null);;
-const loading = ref<boolean>(true);
+const isLoading = ref<boolean>(true);
 const speciesArr = <string[]>['human','humanoid','alien','robot','beast','unknown']
 const genderArr = <string[]>['Male','Female','Genderless','unknown']
 const statusArr = <string[]>['alive', 'dead','unknown']
@@ -111,20 +111,20 @@ const fetchCharacters = async () => {
   try {
     const response = await axios.get(`${URL}?name=${name.value}&species=${species.value || ''}&gender=${gender.value || ''}&status=${status.value || ''}`);
     characters.value = response.data.results || [];
-    setTimeout(()=>loading.value = false,300)
+    setTimeout(()=>isLoading.value = false,300)
     errorMessage.value = ''; 
   } catch (error) {
     if (error instanceof AxiosError) {
       if (error.response && error.response.status === 404) {
         errorMessage.value = 'No characters found for the selected filters.';
-        loading.value = false
+        isLoading.value = false
       } else {
         errorMessage.value = 'An error occurred. Please try again later.';
-        loading.value = false
+        isLoading.value = false
       }
     } else {
       errorMessage.value = 'An unexpected error occurred.';
-      loading.value = false
+      isLoading.value = false
     }
   }
 };
@@ -138,7 +138,7 @@ onMounted(() => {
 });
 watch(name,fetchCharacters)
 watch([species, gender, status], ()=>{
-  loading.value=true;
+  isLoading.value=true;
   fetchCharacters();
 });
 </script>
