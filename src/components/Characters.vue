@@ -1,7 +1,12 @@
 <template>
-  <div class="wrapper">
-    <img src="../assets/PngItem_438051 1.svg" alt = "Rick and Morty logo" class="d-flex justify-center align-center"></img>
-  </div>
+  <v-container class="d-flex justify-center align-center">
+    <v-row>
+      <v-col class="d-flex justify-center align-center" cols="12">
+        <v-img src="../assets/PngItem_438051 1.svg" alt = "Rick and Morty logo" class="d-flex justify-center align-center mt-14" max-width="500px"></v-img>
+      </v-col>
+    </v-row>
+  </v-container>
+  
   <main v-if="isLoading">
       <LoadingImgage />
   </main>
@@ -67,12 +72,24 @@
         <p>{{ errorMessage }}</p>
       </div>
     </v-container>
-    <v-btn
-    variant="text"
-    elevation="16"
-    class="text-h6"
-    @click="loadMoreItems">
-    Load More</v-btn>
+    <v-container>
+      <v-row align="center" justify="center">
+      <v-col class="text-center" cols="12">
+        <v-btn
+          variant="text"
+          elevation="16"
+          class="text-h6"
+          @click="loadMoreItems"
+          color="blue"
+          >LOAD MORE
+        </v-btn>
+      </v-col>
+    </v-row>
+    </v-container>
+
+    
+    
+    
   </main>
 </template>
 
@@ -128,7 +145,8 @@ const fetchCharacters = async () => {
 const updatePage = async () => {
       try{
       const getDataInstance = new CharactersApi(); 
-    characters.value = await getDataInstance.updateItems(name.value, species.value, gender.value, status.value,page.value)
+    const newCharacters = await getDataInstance.updateItems(name.value, species.value, gender.value, status.value,page.value)
+    characters.value.push(...newCharacters)
     errorMessage.value = ''; 
     }
     catch (error:any) {
@@ -152,10 +170,9 @@ watch([species, gender, status], ()=>{
 watch(pageSize,()=>console.log(pageSize))
 
 const loadMoreItems = () => {
- 
     page.value += 1
     updatePage()
-    
+
 }
 
 </script>
@@ -170,7 +187,7 @@ const loadMoreItems = () => {
  img{
   width: 600px;
   height: 200px;
-  margin-top:26px;
+  margin-top:1000px;
   }
   
   

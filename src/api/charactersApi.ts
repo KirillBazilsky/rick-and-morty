@@ -1,6 +1,6 @@
 import axios from "axios";
 
-class CharactersApi{
+class CharactersApi {
   private URL: string;
 
   constructor() {
@@ -23,15 +23,13 @@ class CharactersApi{
     species: string | null,
     gender: string | null,
     status: string | null,
-    page:number | null
-  ){
+    page: number | null,
+  ) {
     const response = await axios.get(
-      `${this.URL}character?name=${name}&species=${species || ""}&gender=${gender || ""}&status=${status || ""}&page=${page || null}`
+      `${this.URL}character?name=${name}&species=${species || ""}&gender=${gender || ""}&status=${status || ""}&page=${page || null}`,
     );
     return response.data.results;
   }
-
-
 }
 
 export default CharactersApi;

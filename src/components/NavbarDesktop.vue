@@ -3,7 +3,7 @@
     v-for="link in linkArr"
     :key="link.title"
     :to="link.to"
-    class="link"
+    class="link text-h6"
     >{{ link.title }}</router-link
   >
 </template>
