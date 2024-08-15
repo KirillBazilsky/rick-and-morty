@@ -5,7 +5,7 @@
         <v-row class="d-flex justify-center align-center">
           <v-col>
             <img
-              src="../src/assets/logo-black 1.png"
+              :src="logoBlack"
               alt="rick and morty black logo"
             />
           </v-col>
@@ -29,6 +29,7 @@
 
 <script lang="ts" setup>
 import NavbarDesktop from "./components/NavbarDesktop.vue";
+import logoBlack from "../src/assets/logo-black.png"
 </script>
 
 <style>

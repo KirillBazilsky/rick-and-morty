@@ -3,7 +3,7 @@
     <v-row>
       <v-col class="d-flex justify-center align-center" cols="12">
         <v-img
-          src="../assets/PngItem_438051 1.svg"
+          :src="pngLogoBig"
           alt="Rick and Morty logo"
           class="d-flex justify-center align-center mt-14"
           max-width="500px"
@@ -99,7 +99,8 @@
 
 <script setup lang="ts">
 import { ref, onMounted, watch } from "vue";
-
+import pngLogoBig from '../assets/PngItem_438051 1.svg'
+import { speciesArr,genderArr,statusArr } from "@/constatnts/constants";
 import CharactersApi from "../api/charactersApi";
 import LoadingImgage from "./LoadingImgage.vue";
 type Character = {
@@ -116,35 +117,26 @@ type Character = {
   created: string;
 };
 
-const name = ref<string | null>("");
+const name = ref<string | undefined>("");
 const characters = ref<Character[]>([]);
-const species = ref<string | null>(null);
-const gender = ref<string | null>(null);
-const status = ref<string | null>(null);
+const species = ref<string | undefined>("");
+const gender = ref<string | undefined>("");
+const status = ref<string | undefined>("");
 const errorMessage = ref<string | null>(null);
 const isLoading = ref<boolean>(true);
-const speciesArr = <string[]>[
-  "human",
-  "humanoid",
-  "alien",
-  "robot",
-  "beast",
-  "unknown",
-];
-const genderArr = <string[]>["Male", "Female", "Genderless", "unknown"];
-const statusArr = <string[]>["alive", "dead", "unknown"];
 const pageSize = ref<number>(8);
 const page = ref<number>(1);
 
 const fetchCharacters = async () => {
   try {
-    const getDataInstance = new CharactersApi();
-    characters.value = await getDataInstance.getItems(
+    
+    characters.value = await CharactersApi.getItems(
       name.value,
       species.value,
       gender.value,
       status.value,
     );
+    isLoading.value = true;
     errorMessage.value = "";
   } catch (error: any) {
     if (error.response && error.response.status === 404) {
@@ -159,8 +151,7 @@ const fetchCharacters = async () => {
 
 const updatePage = async () => {
   try {
-    const getDataInstance = new CharactersApi();
-    const newCharacters = await getDataInstance.updateItems(
+    const newCharacters = await CharactersApi.getItems(
       name.value,
       species.value,
       gender.value,
@@ -182,9 +173,9 @@ const updatePage = async () => {
 onMounted(() => {
   fetchCharacters();
 });
-watch(name, fetchCharacters);
-watch([species, gender, status], () => {
-  isLoading.value = true;
+
+watch([name,species, gender, status], () => {
+ 
   fetchCharacters();
 });
 watch(pageSize, () => console.log(pageSize));

@@ -2,7 +2,7 @@
   <div id="loading-wrapper" class="container img-container">
     <v-img
       class="rotate d-flex justify-center align-center"
-      src="../assets/Loading component.svg"
+      :src="loadingImg"
       alt="loading"
       max-width="250px"
     >
@@ -10,7 +10,9 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import loadingImg from "../assets/Loading component.svg"
+</script>
 
 <style>
 .rotate {

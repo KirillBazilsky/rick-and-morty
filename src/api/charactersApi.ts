@@ -1,35 +1,24 @@
 import axios from "axios";
+import { UrlConstant } from "@/constatnts/constants"; 
 
 class CharactersApi {
-  private URL: string;
+  static URL: string = UrlConstant;
 
-  constructor() {
-    this.URL = import.meta.env.VITE_RICK_AND_MORTY_API_URL;
-  }
-  public async getItems(
-    name: string | null,
-    species: string | null,
-    gender: string | null,
-    status: string | null,
+  
+  public static async getItems(
+    name?: string,
+    species?: string,
+    gender?: string,
+    status?: string,
+    page?: number
   ) {
     const response = await axios.get(
-      `${this.URL}character?name=${name}&species=${species || ""}&gender=${gender || ""}&status=${status || ""}`,
+      `${this.URL}character?name=${name}&species=${species || ""}&gender=${gender || ""}&status=${status || ""}&page=${page}`,
     );
     return response.data.results;
   }
 
-  public async updateItems(
-    name: string | null,
-    species: string | null,
-    gender: string | null,
-    status: string | null,
-    page: number | null,
-  ) {
-    const response = await axios.get(
-      `${this.URL}character?name=${name}&species=${species || ""}&gender=${gender || ""}&status=${status || ""}&page=${page || null}`,
-    );
-    return response.data.results;
-  }
+  
 }
 
 export default CharactersApi;
