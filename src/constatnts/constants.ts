@@ -1,5 +1,5 @@
-export const UrlConstant = import.meta.env.VITE_RICK_AND_MORTY_API_URL;
-export const speciesArr:string[] = [
+export const API_URL = import.meta.env.VITE_RICK_AND_MORTY_API_URL;
+export const speciesList:string[] = [
     "human",
     "humanoid",
     "alien",
@@ -7,5 +7,5 @@ export const speciesArr:string[] = [
     "beast",
     "unknown",
   ];
-export  const genderArr :string[] = ["Male", "Female", "Genderless", "unknown"];
-export const statusArr:string[] = ["alive", "dead", "unknown"];
+export  const genderList :string[] = ["Male", "Female", "Genderless", "unknown"];
+export const statusList:string[] = ["alive", "dead", "unknown"];

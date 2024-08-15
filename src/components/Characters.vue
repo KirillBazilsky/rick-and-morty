@@ -31,7 +31,7 @@
           <v-select
             placeholder="Species"
             label="Species"
-            :items="speciesArr"
+            :items="speciesList"
             variant="outlined"
             :clearable="true"
             v-model="species"
@@ -41,7 +41,7 @@
           <v-select
             label="Gender"
             placeholder="Gender"
-            :items="genderArr"
+            :items="genderList"
             variant="outlined"
             :clearable="true"
             v-model="gender"
@@ -51,7 +51,7 @@
           <v-select
             label="Status"
             placeholder="Status"
-            :items="statusArr"
+            :items="statusList"
             variant="outlined"
             :clearable="true"
             v-model="status"
@@ -100,7 +100,7 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from "vue";
 import pngLogoBig from '../assets/PngItem_438051 1.svg'
-import { speciesArr,genderArr,statusArr } from "@/constatnts/constants";
+import { speciesList,genderList,statusList } from "@/constatnts/constants";
 import CharactersApi from "../api/charactersApi";
 import LoadingImgage from "./LoadingImgage.vue";
 type Character = {
@@ -128,15 +128,16 @@ const pageSize = ref<number>(8);
 const page = ref<number>(1);
 
 const fetchCharacters = async () => {
+  
   try {
-    
+    isLoading.value = true;
     characters.value = await CharactersApi.getItems(
       name.value,
       species.value,
       gender.value,
       status.value,
     );
-    isLoading.value = true;
+    
     errorMessage.value = "";
   } catch (error: any) {
     if (error.response && error.response.status === 404) {

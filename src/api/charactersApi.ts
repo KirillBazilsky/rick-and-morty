@@ -12,12 +12,18 @@ class CharactersApi {
     status?: string,
     page?: number
   ) {
+
     const response = await axios.get(
-      `${this.URL}character?name=${name}&species=${species || ""}&gender=${gender || ""}&status=${status || ""}&page=${page}`,
-    );
+      `${this.URL}character`,{params:{
+        name:name,
+        species:species,
+        gender:gender,
+        status:status,
+        page:page
+    }})
+      
     return response.data.results;
   }
-
   
 }
 
