@@ -9,13 +9,13 @@
                     </router-link>
                 </v-col>
                 <v-col class="d-flex justify-center align-center" cols="12">
-                    <v-img  :src="characterInfo?.image" max-width="300px" class="border-lg border-primary rounded-circle" alt="avatar of character">
+                    <v-img  :src="charactersStore.characterInfo?.image" max-width="300px" class="border-lg border-primary rounded-circle" alt="avatar of character">
                     </v-img>
                 </v-col>
             </v-row>
             <v-row>
                 <v-col cols="12" class= "text-center">
-                    <h1>{{characterInfo?.name}}</h1>
+                    <h1>{{charactersStore.characterInfo?.name}}</h1>
                 </v-col>
             </v-row>
 
@@ -34,29 +34,29 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <div class="text-subtitle-2 font-black">Gender</div>{{characterInfo?.gender}}
+                                    <div class="text-subtitle-2 font-black">Gender</div>{{charactersStore.characterInfo?.gender}}
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <div class="text-subtitle-2 font-black">Status</div>{{characterInfo?.status}}
+                                    <div class="text-subtitle-2 font-black">Status</div>{{charactersStore.characterInfo?.status}}
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <div class="text-subtitle-2 font-black">Specie</div>{{characterInfo?.species}}
+                                    <div class="text-subtitle-2 font-black">Specie</div>{{charactersStore.characterInfo?.species}}
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <div class="text-subtitle-2 font-black">Origin</div>{{characterInfo?.origin.name}}
+                                    <div class="text-subtitle-2 font-black">Origin</div>{{charactersStore.characterInfo?.origin.name}}
                                 </td>
                             </tr>
                             <tr>
                                 <td>
                                     <div class="text-subtitle-2 font-black">Type</div>
-                                    <div v-if="characterInfo?.type">
-                                        {{ characterInfo?.type}}
+                                    <div v-if="charactersStore.characterInfo?.type">
+                                        {{ charactersStore.characterInfo?.type}}
                                     </div>
                                     <p v-else>
                                         Unknown
@@ -65,7 +65,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <div class="text-subtitle-2 font-black">Location</div>{{characterInfo?.location.name}}
+                                    <div class="text-subtitle-2 font-black">Location</div>{{charactersStore.characterInfo?.location.name}}
                                 </td>
                             </tr>
                         </tbody>
@@ -81,7 +81,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="episode in episodesList" :key="episode.id">
+                            <tr v-for="episode in charactersStore.episodesList" :key="episode.id">
                                 <td >
                                     <v-row>
                                         <v-col cols="10">
@@ -111,43 +111,16 @@
 
 
 <script setup lang="ts">
-import { ref } from 'vue'; 
-import { useRoute, useRouter } from 'vue-router';
-import  { Character }  from '@/pages/Characters.vue';
-import CharacterApi from '@/api/characters/charactersApi';
+import { useRoute, useRouter} from 'vue-router';
+import { useCharactersStore } from "@/stores/app";
 
-type Episode ={
-    id:string;
-    name: string;
-    air_date:string;
-    episode: string;
-    characters: string[];
-    url: string[];
-    created: string;
-}
+const charactersStore = useCharactersStore();
+
 const route :any = useRoute();
 const router = useRouter();
 
-const characterInfo = ref<Character | undefined>(undefined);
-const episodesList = ref<Episode[] | undefined>([]);
-
-
-const fetchCharacterInfo = async (id: string) =>{
-    try {
-        characterInfo.value = await CharacterApi.getCharacterInfo(id);
-        characterInfo.value?.episode.forEach(async episode => {
-            const episodeInfo = await CharacterApi.getEpisodeInfo(episode)
-            episodesList.value?.push(episodeInfo)
-        })
-        console.log("episodeInfo.value", episodesList.value)
-        console.log("characterInfo.value", characterInfo.value)
-    } catch (error) {
-        console.error('Failed to fetch character info:', error);
-        
-    }
-} 
 onMounted(() => {
-    fetchCharacterInfo(route.params.id)
+    charactersStore.fetchCharacterInfo(route.params.id)
 
 })  
 

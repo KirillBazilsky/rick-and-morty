@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import CharactersApi from "@/api/characters/charactersApi"
-import { Character } from "@/pages/Characters.vue";
+import { Character } from "@/api/characters/ICharactersApi";
+import {Episode} from "@/api/episodes/IEpisodesApi"
 
 
 export const useAppStore = defineStore("app", {
@@ -24,8 +25,14 @@ export const useCharactersStore = defineStore("characters", {
     gender:<string | undefined>"",
     errorMessage: <string | null>null,
     isLoading: <boolean>true,
+    canLoadMore: <boolean>true,
+    page:<number>(1),
+    characterInfo:<Character | undefined>(undefined),
+    episodesList: <Episode[] | undefined>([]),
   }),
-  
+  getters:{
+    watch: (state) => state.name
+  },
   actions: {
     async fetchCharacters() {
       try {
@@ -47,6 +54,44 @@ export const useCharactersStore = defineStore("characters", {
       } finally {
         setTimeout(() => (this.isLoading = false), 300);
       }
-    }
+    },
+    async updatePage () {
+      try {
+        const newCharacters = await CharactersApi.getItems(
+          this.name,
+          this.species,
+          this.gender,
+          this.status,
+          this.page,
+        );
+        
+        this.characters.push(...newCharacters);
+    
+        if(newCharacters.length < 10){
+          this.canLoadMore= false
+        }
+        
+      } catch (error: any) {
+        if (error.response && error.response.status === 404) {
+          this.canLoadMore = false;
+        } else {
+          this.errorMessage = "An error occurred. Please try again later.";
+        }
+      } finally {
+        setTimeout(() => ( this.isLoading = false), 300);
+      }
+    },
+    async fetchCharacterInfo(id: string){
+      try {
+          this.characterInfo = await CharactersApi.getCharacterInfo(id);
+          this.characterInfo?.episode.forEach(async episode => {
+              const episodeInfo = await CharactersApi.getEpisodeInfo(episode)
+              this.episodesList?.push(episodeInfo)
+          })
+      } catch (error) {
+          console.error('Failed to fetch character info:', error);
+          
+      }
+  } 
   },
 });
