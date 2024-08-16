@@ -5,16 +5,20 @@ class CharacterDetailApi {
     
 
 static async getCharacterInfo(
-    id?: number,
+    id?: string,
     
   ) {
     const response = await axios.get(
-      `${API_URL}character`,{params:{
-        id
-        }
-    },
+      `${API_URL }character/${id}`
     );
-    return response.data.results;
+    return response.data;
+  }
+
+  static async getEpisodeInfo(
+    url: string,
+  ) {
+    const response = await axios.get(url);
+    return response.data;
   }
 
 }
