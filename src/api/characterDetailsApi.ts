@@ -10,7 +10,7 @@ static async getCharacterInfo(
   ) {
     const response = await axios.get(
       `${this.URL}character`,{params:{
-        id:id
+        id
         }
     },
     );

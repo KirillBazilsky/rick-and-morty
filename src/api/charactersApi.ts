@@ -15,11 +15,11 @@ class CharactersApi {
 
     const response = await axios.get(
       `${this.URL}character`,{params:{
-        name:name,
-        species:species,
-        gender:gender,
-        status:status,
-        page:page
+        name,
+        species,
+        gender,
+        status,
+        page
     }})
       
     return response.data.results;
