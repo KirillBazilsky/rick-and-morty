@@ -1,38 +1,42 @@
 <template>
   <v-app>
-      <v-app-bar >
-        <div class="wrapper">
-          <img src="../src/assets/logo-black 1.png" alt="rick and morty black logo"/>
+    <v-app-bar>
+      <v-container>
+        <v-row class="d-flex justify-center align-center">
+          <v-col>
+            <img
+              :src="logoBlack"
+              alt="rick and morty black logo"
+            />
+          </v-col>
           <v-spacer></v-spacer>
-          <NavbarDesktop />
-        </div>
-      </v-app-bar>
-      <router-view />
-      <v-footer border elevation="10" height="60px" class="d-flex flex-column">
-        <div  class="text-center text-h6">
-          Make with ❤️ for the MobProgramming team
-        </div></v-footer>
+          <v-col>
+            <NavbarDesktop />
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-app-bar>
+    <router-view />
+    <v-footer fixed border elevation="16" height="60px">
+      <v-row>
+        <v-col class="text-center text-h6" cols="12"
+          >Make with ❤️ for the MobProgramming team</v-col
+        >
+      </v-row>
+    </v-footer>
   </v-app>
 </template>
 
 <script lang="ts" setup>
-  import NavbarDesktop from './components/NavbarDesktop.vue'
+import NavbarDesktop from "./components/NavbarDesktop.vue";
+import logoBlack from "../src/assets/logo-black.png"
 </script>
 
 <style>
-
-.wrapper{
-  margin:0 auto;
-  display:flex;
-  justify-content: center;
-  align-items: center;
-  width:1024px;
+.link {
+  margin-right: 18px;
+  font-weight: 700;
+  text-decoration: none;
+  color: black;
 }
-.link{
-  margin-left: 18px;
-font-weight:700;
-text-decoration:none;
-color:black;
-}
-
 </style>
