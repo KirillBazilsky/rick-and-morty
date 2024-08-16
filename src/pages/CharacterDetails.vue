@@ -9,20 +9,20 @@
                     </router-link>
                 </v-col>
                 <v-col class="d-flex justify-center align-center" cols="12">
-                    <v-img   max-width="300px" class="border-lg border-primary rounded-circle" alt="avatar of character">
+                    <v-img  :src="characterInfo?.image" max-width="300px" class="border-lg border-primary rounded-circle" alt="avatar of character">
                     </v-img>
                 </v-col>
             </v-row>
             <v-row>
                 <v-col cols="12" class= "text-center">
-                    <h1>{{}}</h1>
+                    <h1>{{characterInfo?.name}}</h1>
                 </v-col>
             </v-row>
 
         </v-container>
         <v-container>
             <v-row>
-                <v-col cols="6" class="d-flex justify-center align-center">
+                <v-col cols="6" class="d-flex justify-center align-top">
                     <v-table style="width: 100%;">
                         <thead class="text-left">
                             <tr>
@@ -34,56 +34,69 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <div class="text-subtitle-2 font-black">Gender</div>{{}}
+                                    <div class="text-subtitle-2 font-black">Gender</div>{{characterInfo?.gender}}
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <div class="text-subtitle-2 font-black">Status</div>{{}}
+                                    <div class="text-subtitle-2 font-black">Status</div>{{characterInfo?.status}}
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <div class="text-subtitle-2 font-black">Specie</div>{{}}
+                                    <div class="text-subtitle-2 font-black">Specie</div>{{characterInfo?.species}}
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <div class="text-subtitle-2 font-black">Origin</div>{{}}
+                                    <div class="text-subtitle-2 font-black">Origin</div>{{characterInfo?.origin.name}}
                                 </td>
                             </tr>
                             <tr>
                                 <td>
                                     <div class="text-subtitle-2 font-black">Type</div>
-                                    <div>
-                                        {{ }}
+                                    <div v-if="characterInfo?.type">
+                                        {{ characterInfo?.type}}
                                     </div>
-                                    <p>
+                                    <p v-else>
                                         Unknown
                                     </p>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <div class="text-subtitle-2 font-black">Location</div>{{}}
+                                    <div class="text-subtitle-2 font-black">Location</div>{{characterInfo?.location.name}}
                                 </td>
                             </tr>
                         </tbody>
                     </v-table>
                 </v-col>
-                <v-col cols="6" class="d-flex justify-right align-center">
+                <v-col cols="6" class="d-flex justify-center align-top">
                     <v-table style="width: 100%;">
-                        <t-head>
+                        <thead class="text-left">
                             <tr>
                                 <th>
                                     Episodes
                                 </th>
                             </tr>
-                        </t-head>
-                        <t-body>
-                            <tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="episode in episodesList" :key="episode.id">
+                                <td >
+                                    <v-row>
+                                        <v-col cols="10">
+                                            <div>{{ episode.episode }}</div>
+                                            <p class="name">{{ episode.name }}</p>
+                                            <p>{{ episode.air_date }}</p>
+                                        </v-col>
+                                        <v-spacer></v-spacer>
+                                        <v-col class="d-flex align-center">
+                                            <v-icon icon="mdi-chevron-right" class="inline" color="#8E8E93"></v-icon>
+                                        </v-col>
+                                    </v-row>
+                                </td>
                             </tr>
-                        </t-body>
+                        </tbody>
                     </v-table>
                 </v-col>
             </v-row>
@@ -100,19 +113,33 @@
 <script setup lang="ts">
 import { ref } from 'vue'; 
 import { useRoute, useRouter } from 'vue-router';
-import { Character } from './Characters.vue'; 
+import  Character  from './Characters.vue';
 import CharacterDetailsApi from '../api/characterDetailsApi';
 
-
+type Episode ={
+    id:string;
+    name: string;
+    air_date:string;
+    episode: string;
+    characters: string[];
+    url: string[];
+    created: string;
+}
 const route :any = useRoute();
 const router = useRouter();
 
-const characterInfo = ref<Character | null>(null);
+const characterInfo = ref<Character | undefined>(undefined);
+const episodesList = ref<Episode[] | undefined>([]);
+
 
 const fetchCharacterInfo = async (id: string) =>{
     try {
         characterInfo.value = await CharacterDetailsApi.getCharacterInfo(id);
-        
+        characterInfo.value?.episode.forEach(async episode => {
+            const episodeInfo = await CharacterDetailsApi.getEpisodeInfo(episode)
+            episodesList.value?.push(episodeInfo)
+        })
+        console.log("episodeInfo.value", episodesList.value)
         console.log("characterInfo.value", characterInfo.value)
     } catch (error) {
         console.error('Failed to fetch character info:', error);
@@ -121,6 +148,7 @@ const fetchCharacterInfo = async (id: string) =>{
 } 
 onMounted(() => {
     fetchCharacterInfo(route.params.id)
+
 })  
 
 const goBack = () => {
@@ -143,7 +171,7 @@ line-height: 24px;
 text-align: left;
 color: #8E8E93;
 }
-td div{
+td  div{
 font-family: Roboto;
 font-size: 16px;
 font-weight: 700;
@@ -161,6 +189,25 @@ letter-spacing: 0.25px;
 text-align: left;
 color: #6E798C;
 }
+td p{
+font-size: 10px;
+font-weight: 500;
+line-height: 16px;
+letter-spacing: 1.5px;
+text-align: left;
+color: #8E8E93;
+}
+
+.name{
+font-family: Roboto;
+font-size: 14px;
+font-weight: 400;
+line-height: 20px;
+letter-spacing: 0.25px;
+text-align: left;
+color: #6E798C;
+}
+
 </style>
 
 
