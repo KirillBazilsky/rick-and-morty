@@ -101,9 +101,9 @@
 
 <script setup lang="ts">
 import { ref, onMounted, watch } from "vue";
-import pngLogoBig from '../src/assets/PngItem_438051 1.svg'
+import pngLogoBig from '@/assets/PngItem_438051 1.svg'
 import { speciesList,genderList,statusList } from "@/constatnts/constants";
-import CharactersApi from "../api/charactersApi";
+import CharactersApi from '@/api/characters/charactersApi';
 import LoadingImgage from "../components/LoadingImgage.vue";
 
 export type Character = {

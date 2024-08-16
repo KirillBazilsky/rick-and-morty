@@ -113,7 +113,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'; 
 import { useRoute, useRouter } from 'vue-router';
-import  Character  from './Characters.vue';
+import  { Character }  from '@/pages/Characters.vue';
 import CharacterDetailsApi from '../api/characterDetailsApi';
 
 type Episode ={

@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
-import CharactersApi from "@/api/charactersApi";
+import CharactersApi from "@/api/characters/charactersApi"
+import { Character } from "@/pages/Characters.vue";
 
 
 export const useAppStore = defineStore("app", {
