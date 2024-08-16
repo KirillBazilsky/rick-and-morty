@@ -114,7 +114,7 @@
 import { ref } from 'vue'; 
 import { useRoute, useRouter } from 'vue-router';
 import  { Character }  from '@/pages/Characters.vue';
-import CharacterDetailsApi from '../api/characterDetailsApi';
+import CharacterApi from '@/api/characters/charactersApi';
 
 type Episode ={
     id:string;
@@ -134,9 +134,9 @@ const episodesList = ref<Episode[] | undefined>([]);
 
 const fetchCharacterInfo = async (id: string) =>{
     try {
-        characterInfo.value = await CharacterDetailsApi.getCharacterInfo(id);
+        characterInfo.value = await CharacterApi.getCharacterInfo(id);
         characterInfo.value?.episode.forEach(async episode => {
-            const episodeInfo = await CharacterDetailsApi.getEpisodeInfo(episode)
+            const episodeInfo = await CharacterApi.getEpisodeInfo(episode)
             episodesList.value?.push(episodeInfo)
         })
         console.log("episodeInfo.value", episodesList.value)
