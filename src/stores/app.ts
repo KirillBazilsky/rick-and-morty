@@ -2,14 +2,14 @@ import { defineStore } from "pinia";
 
 export const useAppStore = defineStore("app", {
   state: () => ({
-    characterInfo: {},
+    isToggleMenu:false
   }),
   getters: {
-    getCaracterInfo: (state) => state.characterInfo,
+    getIsToggleMenu: (state) => state.isToggleMenu
   },
   actions: {
-    setCharacterInfo(character: Record<string, any> | null) {
-      this.characterInfo = character || {};
+    toggleMenu() {
+      this.isToggleMenu = !this.isToggleMenu; 
     },
   },
 });

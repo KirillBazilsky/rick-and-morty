@@ -10,13 +10,16 @@
             />
           </v-col>
           <v-spacer></v-spacer>
-          <v-col>
+          <v-col class="d-flex justify-end align-center">
             <NavbarDesktop />
           </v-col>
         </v-row>
       </v-container>
     </v-app-bar>
-    <router-view />
+    <router-view v-if="!isToggleMenu"/>
+    <v-container v-else fluid>
+      test
+    </v-container>
     <v-footer fixed border elevation="16" height="60px">
       <v-row>
         <v-col class="text-center text-h6" cols="12"
@@ -33,10 +36,5 @@ import logoBlack from "../src/assets/logo-black.png"
 </script>
 
 <style>
-.link {
-  margin-right: 18px;
-  font-weight: 700;
-  text-decoration: none;
-  color: black;
-}
+
 </style>
