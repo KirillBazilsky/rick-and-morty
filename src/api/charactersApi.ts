@@ -2,8 +2,6 @@ import axios from "axios";
 import { API_URL} from "@/constatnts/constants"; 
 
 class CharactersApi {
-  static URL: string = API_URL;
-
   
   public static async getItems(
     name?: string,
@@ -14,7 +12,7 @@ class CharactersApi {
   ) {
 
     const response = await axios.get(
-      `${this.URL}character`,{params:{
+      `${API_URL}character`,{params:{
         name,
         species,
         gender,

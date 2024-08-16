@@ -8,6 +8,7 @@ const router = createRouter({
 });
 
 routes.push({ path: "/", redirect: "/characters" });
+console.log(router.getRoutes())
 
 router.onError((err, to) => {
   if (err?.message?.includes?.("Failed to fetch dynamically imported module")) {
