@@ -2,13 +2,13 @@ import { createRouter, createWebHistory } from "vue-router/auto";
 import { RouteRecordRaw } from 'vue-router';
 import { setupLayouts } from "virtual:generated-layouts";
 import { routes } from "vue-router/auto-routes";
-import CharacterPage
- from "@/components/CharacterPage.vue";
+import CharacterDetails from "@/pages/CharacterDetails.vue";
+
  const newRoutes: Array<RouteRecordRaw> = [
   { path: "/", redirect: "/characters" },
   { path: '/character-detail/:id', 
     name: 'CharacterDetail',
-    component: CharacterPage,
+    component: CharacterDetails,
     props: true 
   }
 ];
