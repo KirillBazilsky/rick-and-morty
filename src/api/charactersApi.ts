@@ -1,8 +1,8 @@
 import axios from "axios";
-import { UrlConstant } from "@/constatnts/constants"; 
+import { API_URL} from "@/constatnts/constants"; 
 
 class CharactersApi {
-  static URL: string = UrlConstant;
+  static URL: string = API_URL;
 
   
   public static async getItems(
