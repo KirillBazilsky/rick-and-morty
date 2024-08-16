@@ -2,14 +2,14 @@ import axios from "axios";
 import { API_URL } from "@/constatnts/constants"; 
 
 class CharacterDetailApi {
-    static URL: string = API_URL;
+    
 
 static async getCharacterInfo(
     id?: number,
     
   ) {
     const response = await axios.get(
-      `${this.URL}character`,{params:{
+      `${API_URL}character`,{params:{
         id
         }
     },
