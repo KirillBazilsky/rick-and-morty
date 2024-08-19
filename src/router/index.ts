@@ -4,15 +4,8 @@ import { setupLayouts } from "virtual:generated-layouts";
 import { routes } from "vue-router/auto-routes";
 import CharacterDetails from "@/pages/CharacterDetails.vue";
 
-interface Route {
-  path: string;
-  name?: string;
-  component?: any; 
-  props?: boolean;
-  redirect?: string;
-}
-
- const newRoutes: Array<Route> = [
+ const newRoutes: Array<RouteRecordRaw>
+= [
   { path: "/", redirect: "/characters" },
   { path: '/character-detail/:id', 
     name: 'CharacterDetails',
@@ -29,9 +22,6 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: setupLayouts(allRoutes),
 });
-
-
- console.log(router.getRoutes())
 
 
 router.onError((err, to) => {

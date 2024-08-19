@@ -18,7 +18,7 @@
     </v-app-bar>
     <router-view v-if="!appStore.isToggleMenu"/>
     <v-container v-else fluid>
-      test
+      <div>test</div>
     </v-container>
     <v-footer fixed bordered elevation="16" height="60px">
       <v-row>
@@ -32,7 +32,7 @@
 
 <script lang="ts" setup>
 import NavbarDesktop from "./components/NavbarDesktop.vue";
-import logoBlack from "../src/assets/logo-black.png";
+import logoBlack from "@/assets/logo-black.png";
 import { useAppStore } from "./stores/app";
 
 const appStore = useAppStore();
