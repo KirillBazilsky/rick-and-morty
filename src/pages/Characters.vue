@@ -65,7 +65,7 @@
           cols="12"
           md="3"
         >
-          <v-card :key="character.name" elevation="5" to="characterPage">
+          <v-card :key="character.name" elevation="5" :to="{ name: 'CharacterDetail', params: { id: character.id } } as {}">
             <v-img :src="character.image" height="167px" cover> </v-img>
             <v-card-title>
               {{ character.name }}
@@ -81,9 +81,10 @@
       </div>
     </v-container>
     <v-container>
-      <v-row align="center" justify="center">
+      <v-row class="d-flex align-center justify-center">
         <v-col class="text-center" cols="12">
           <v-btn
+            v-if="canLoadMore"
             variant="text"
             elevation="16"
             class="text-h6"
@@ -91,6 +92,7 @@
             color="blue"
             >LOAD MORE
           </v-btn>
+          <p v-else> Nobody to load</p>
         </v-col>
       </v-row>
     </v-container>
@@ -102,8 +104,9 @@ import { ref, onMounted, watch } from "vue";
 import pngLogoBig from '../assets/PngItem_438051 1.svg'
 import { speciesList,genderList,statusList } from "@/constatnts/constants";
 import CharactersApi from "../api/charactersApi";
-import LoadingImgage from "./LoadingImgage.vue";
-type Character = {
+import LoadingImgage from "../components/LoadingImgage.vue";
+
+export type Character = {
   id: number;
   name: string;
   status: string;
@@ -123,8 +126,8 @@ const species = ref<string | undefined>("");
 const gender = ref<string | undefined>("");
 const status = ref<string | undefined>("");
 const errorMessage = ref<string | null>(null);
+const canLoadMore = ref<boolean>(true)
 const isLoading = ref<boolean>(true);
-const pageSize = ref<number>(8);
 const page = ref<number>(1);
 
 const fetchCharacters = async () => {
@@ -137,7 +140,11 @@ const fetchCharacters = async () => {
       gender.value,
       status.value,
     );
-    
+    if (characters.value.length < 20){
+      canLoadMore.value = false
+    }else{
+      canLoadMore.value = true
+    }
     errorMessage.value = "";
   } catch (error: any) {
     if (error.response && error.response.status === 404) {
@@ -159,11 +166,16 @@ const updatePage = async () => {
       status.value,
       page.value,
     );
+    
     characters.value.push(...newCharacters);
-    errorMessage.value = "";
+
+    if(newCharacters.length < 20){
+      canLoadMore.value = false
+    }
+    
   } catch (error: any) {
     if (error.response && error.response.status === 404) {
-      errorMessage.value = "No characters to load";
+      canLoadMore.value = false;
     } else {
       errorMessage.value = "An error occurred. Please try again later.";
     }
@@ -179,7 +191,7 @@ watch([name,species, gender, status], () => {
  
   fetchCharacters();
 });
-watch(pageSize, () => console.log(pageSize));
+
 
 const loadMoreItems = () => {
   page.value += 1;
