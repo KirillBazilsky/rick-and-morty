@@ -36,14 +36,15 @@ export const useCharactersStore = defineStore("characters", {
   },
   actions: {
     async fetchCharacters() {
-      const data =  await CharactersApi.getItems(
-        this.name,
-        this.species,
-        this.gender,
-        this.status,
-      );
+      
       try {
           this.isLoading = true;
+          const data =  await CharactersApi.getItems(
+          this.name,
+          this.species,
+          this.gender,
+          this.status,
+      );
           this.characters = data.results
           this.errorMessage = "";
           this.page = 1;
@@ -53,10 +54,8 @@ export const useCharactersStore = defineStore("characters", {
             this.canLoadMore = true
           }
       } catch (error:unknown) {
-        
         if (error instanceof AxiosError) { 
             if (error.response && error.response.status === 404) {
-                this.canLoadMore = false; 
                 this.errorMessage = "No characters found for the selected filters.";
               } else {
                 this.errorMessage = "An error occurred. Please try again later.";
@@ -67,14 +66,15 @@ export const useCharactersStore = defineStore("characters", {
       }
     },
     async updatePage () {
-      const data =  await CharactersApi.getItems(
+      
+      try {
+        const data =  await CharactersApi.getItems(
         this.name,
         this.species,
         this.gender,
         this.status,
         this.page,
       );
-      try {
         const newCharacters = data.results
         
         this.characters.push(...newCharacters);
