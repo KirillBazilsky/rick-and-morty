@@ -51,7 +51,7 @@ export const useCharactersStore = defineStore("characters", {
           }else{
             this.canLoadMore = true
           }
-      } catch (error: any) {
+      } catch (error: unknown) {
         if (error.response && error.response.status === 404) {
           this.errorMessage = "No characters found for the selected filters.";
         } else {
