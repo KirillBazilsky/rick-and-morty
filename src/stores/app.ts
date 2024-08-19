@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import CharactersApi from "@/api/characters/charactersApi"
 import { Character } from "@/api/characters/ICharactersApi";
 import {Episode} from "@/api/episodes/IEpisodesApi"
+import { AxiosError } from "axios";
 
 
 export const useAppStore = defineStore("app", {
@@ -51,12 +52,16 @@ export const useCharactersStore = defineStore("characters", {
           }else{
             this.canLoadMore = true
           }
-      } catch (error: unknown) {
-        if (error.response && error.response.status === 404) {
-          this.errorMessage = "No characters found for the selected filters.";
-        } else {
-          this.errorMessage = "An error occurred. Please try again later.";
-        }
+      } catch (error:unknown) {
+        
+        if (error instanceof AxiosError) { 
+            if (error.response && error.response.status === 404) {
+                this.canLoadMore = false; 
+                this.errorMessage = "No characters found for the selected filters.";
+              } else {
+                this.errorMessage = "An error occurred. Please try again later.";
+              }
+      } 
       } finally {
        this.isLoading = false
       }
@@ -79,14 +84,17 @@ export const useCharactersStore = defineStore("characters", {
         }
         
       } catch (error: unknown) {
-        if (error.response && error.response.status === 404) {
+        if(error instanceof AxiosError){
+          if (error.response && error.response.status === 404) {
           this.canLoadMore = false;
         } else {
           this.errorMessage = "An error occurred. Please try again later.";
         }
-      } finally {
+         } 
+        }finally {
          this.isLoading = false
-      }
+         }
+        
     },
     async fetchCharacterInfo(id: string){
       try {
