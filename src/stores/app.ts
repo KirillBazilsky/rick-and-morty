@@ -58,7 +58,7 @@ export const useCharactersStore = defineStore("characters", {
           this.errorMessage = "An error occurred. Please try again later.";
         }
       } finally {
-        setTimeout(() => (this.isLoading = false), 300);
+       this.isLoading = false
       }
     },
     async updatePage () {
@@ -85,7 +85,7 @@ export const useCharactersStore = defineStore("characters", {
           this.errorMessage = "An error occurred. Please try again later.";
         }
       } finally {
-        setTimeout(() => ( this.isLoading = false), 300);
+         this.isLoading = false
       }
     },
     async fetchCharacterInfo(id: string){
