@@ -101,7 +101,7 @@
 
 <script setup lang="ts">
 import { onMounted, watch } from "vue";
-import pngLogoBig from '@/assets/PngItem_438051 1.svg'
+import pngLogoBig from '@/assets/PngLogoBig.svg'
 import { speciesList,genderList,statusList } from "@/constatnts/constants";
 import LoadingImgage from "../components/LoadingImgage.vue";
 import { useCharactersStore } from "@/stores/app";

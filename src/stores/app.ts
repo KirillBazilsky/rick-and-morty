@@ -18,35 +18,39 @@ export const useAppStore = defineStore("app", {
 
 export const useCharactersStore = defineStore("characters", {
   state: () => ({
-    name:"",
-    characters: <Character[]>[],
-    species:<string | undefined>"",
-    status: <string | undefined>"",
-    gender:<string | undefined>"",
-    errorMessage: <string | null>null,
-    isLoading: <boolean>true,
-    canLoadMore: <boolean>true,
-    page:<number>(1),
-    characterInfo:<Character | undefined>(undefined),
-    episodesList: <Episode[] | undefined>([]),
-    origin:<{}>{},
-    
-  }),
+    name: "" as string,
+    characters: [] as Character[],
+    species: undefined as string | undefined,
+    status: undefined as string | undefined,
+    gender: undefined as string | undefined,
+    errorMessage: "" as string | null,
+    isLoading: false as boolean,
+    canLoadMore: true as boolean,
+    page: 1 as number,
+    characterInfo: undefined as Character | undefined,
+    episodesList: [] as Episode[] | undefined,
+}),
   getters:{
     watch: (state) => state.name
   },
   actions: {
     async fetchCharacters() {
+      const data =  await CharactersApi.getItems(
+        this.name,
+        this.species,
+        this.gender,
+        this.status,
+      );
       try {
           this.isLoading = true;
-          this.characters = await CharactersApi.getItems(
-          this.name,
-          this.species,
-          this.gender,
-          this.status,
-        );
-        
-        this.errorMessage = "";
+          this.characters = data.results
+          this.errorMessage = "";
+          this.page = 1;
+          if(data.info.pages == this.page){
+            this.canLoadMore = false
+          }else{
+            this.canLoadMore = true
+          }
       } catch (error: any) {
         if (error.response && error.response.status === 404) {
           this.errorMessage = "No characters found for the selected filters.";
@@ -58,22 +62,23 @@ export const useCharactersStore = defineStore("characters", {
       }
     },
     async updatePage () {
+      const data =  await CharactersApi.getItems(
+        this.name,
+        this.species,
+        this.gender,
+        this.status,
+        this.page,
+      );
       try {
-        const newCharacters = await CharactersApi.getItems(
-          this.name,
-          this.species,
-          this.gender,
-          this.status,
-          this.page,
-        );
+        const newCharacters = data.results
         
         this.characters.push(...newCharacters);
     
-        if(newCharacters.length < 10){
-          this.canLoadMore= false
+        if(data.info.pages == this.page){
+          this.canLoadMore = false
         }
         
-      } catch (error: any) {
+      } catch (error: unknown) {
         if (error.response && error.response.status === 404) {
           this.canLoadMore = false;
         } else {
