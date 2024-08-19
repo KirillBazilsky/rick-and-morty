@@ -58,14 +58,14 @@
           ></v-select>
         </v-col>
       </v-row>
-      <v-row v-if="!errorMessage">
+      <v-row v-if="!charactersStore.errorMessage">
         <v-col
           v-for="character in charactersStore.characters"
           :key="character.id"
           cols="12"
           md="3"
         >
-          <v-card :key="character.name" elevation="5" :to="{ name: 'CharacterDetail', params: { id: character.id } } as {}">
+          <v-card :key="character.name" elevation="5" :to="{ path:`/character-detail/${character.id}` }">
             <v-img :src="character.image" height="167px" cover> </v-img>
             <v-card-title>
               {{ character.name }}
@@ -77,7 +77,7 @@
         </v-col>
       </v-row>
       <div v-else class="container">
-        <p>{{ haractersStore.errorMessage }}</p>
+        <p>{{ charactersStore.errorMessage }}</p>
       </div>
     </v-container>
     <v-container>

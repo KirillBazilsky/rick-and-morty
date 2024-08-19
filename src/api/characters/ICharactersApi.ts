@@ -10,5 +10,6 @@ export interface Character{
     episode: [];
     url: string;
     created: string;
+    origin:{};
   };
 

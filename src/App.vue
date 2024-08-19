@@ -16,11 +16,11 @@
         </v-row>
       </v-container>
     </v-app-bar>
-    <router-view v-if="!isToggleMenu"/>
+    <router-view v-if="!appStore.isToggleMenu"/>
     <v-container v-else fluid>
       test
     </v-container>
-    <v-footer fixed border elevation="16" height="60px">
+    <v-footer fixed bordered elevation="16" height="60px">
       <v-row>
         <v-col class="text-center text-h6" cols="12"
           >Make with ❤️ for the MobProgramming team</v-col
@@ -32,7 +32,11 @@
 
 <script lang="ts" setup>
 import NavbarDesktop from "./components/NavbarDesktop.vue";
-import logoBlack from "../src/assets/logo-black.png"
+import logoBlack from "../src/assets/logo-black.png";
+import { useAppStore } from "./stores/app";
+
+const appStore = useAppStore();
+
 </script>
 
 <style>

@@ -29,6 +29,8 @@ export const useCharactersStore = defineStore("characters", {
     page:<number>(1),
     characterInfo:<Character | undefined>(undefined),
     episodesList: <Episode[] | undefined>([]),
+    origin:<{}>{},
+    
   }),
   getters:{
     watch: (state) => state.name

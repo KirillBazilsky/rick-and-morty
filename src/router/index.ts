@@ -4,10 +4,18 @@ import { setupLayouts } from "virtual:generated-layouts";
 import { routes } from "vue-router/auto-routes";
 import CharacterDetails from "@/pages/CharacterDetails.vue";
 
- const newRoutes: Array<RouteRecordRaw> = [
+interface Route {
+  path: string;
+  name?: string;
+  component?: any; 
+  props?: boolean;
+  redirect?: string;
+}
+
+ const newRoutes: Array<Route> = [
   { path: "/", redirect: "/characters" },
   { path: '/character-detail/:id', 
-    name: 'CharacterDetail',
+    name: 'CharacterDetails',
     component: CharacterDetails,
     props: true 
   }
