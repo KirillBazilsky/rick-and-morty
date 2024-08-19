@@ -19,6 +19,7 @@ class CharactersApi {
         status,
         page
     }})
+    
     const results = response.data.results; 
     const info = response.data.info; 
     
