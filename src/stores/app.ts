@@ -38,9 +38,9 @@ export const useCharactersStore = defineStore("characters", {
   },
   actions: {
     async fetchCharacters() {
-      
-      try {
           this.isLoading = true;
+      try {
+          // this.isLoading = true;
           const data =  await CharactersApi.getItems(
           this.name,
           this.species,
@@ -58,6 +58,7 @@ export const useCharactersStore = defineStore("characters", {
       } catch (error:unknown) {
         if (error instanceof AxiosError) { 
             if (error.response && error.response.status === 404) {
+                this.canLoadMore = false
                 this.errorMessage = "No characters found for the selected filters.";
               } else {
                 this.errorMessage = "An error occurred. Please try again later.";

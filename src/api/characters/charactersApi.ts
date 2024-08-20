@@ -38,14 +38,7 @@ class CharactersApi {
     return response.data;
   }
 
-  public static async getEpisodeInfo(
-    url: string,
-  ) {
-    
-    const response = await axios.get(url);
-
-    return response.data;
-  }
+  
 }
 
 export default CharactersApi;

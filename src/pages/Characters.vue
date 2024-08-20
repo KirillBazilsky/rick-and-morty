@@ -11,11 +11,7 @@
       </v-col>
     </v-row>
   </v-container>
-
-  <main v-if="charactersStore.isLoading">
-    <LoadingImage />
-  </main>
-  <main v-else>
+  <main>
     <v-container>
       <v-row>
         <v-col cols="12" md="3">
@@ -46,8 +42,8 @@
             :clearable="true"
             v-model="charactersStore.gender"
           ></v-select>
-        </v-col>
-        <v-col cols="12" md="3">
+          </v-col>
+          <v-col cols="12" md="3">
           <v-select
             label="Status"
             placeholder="Status"
@@ -56,30 +52,35 @@
             :clearable="true"
             v-model="charactersStore.status"
           ></v-select>
-        </v-col>
-      </v-row>
-      <v-row v-if="!charactersStore.errorMessage">
-        <v-col
-          v-for="character in charactersStore.characters"
-          :key="character.id"
-          cols="12"
-          md="3"
-        >
-          <v-card :key="character.name" elevation="5" :to="{ path:`/character-detail/${character.id}` }" class="p-6">
-            <v-img :src="character.image" height="167px" cover> </v-img>
-            <v-card-title class="pb-0">
-              {{ character.name }}
-            </v-card-title>
-            <v-card-subtitle class="pt-0 pb-4">
-              {{ character.species }}
-            </v-card-subtitle>
-          </v-card>
-        </v-col>
-      </v-row>
-      <div v-else class="container">
-        <p>{{ charactersStore.errorMessage }}</p>
-      </div>
-    </v-container>
+          </v-col>
+        </v-row>
+      </v-container>
+      <v-container v-if="charactersStore.isLoading">
+        <LoadingImage />
+      </v-container>
+      <v-container v-else-if="!charactersStore.errorMessage">
+        <v-row >
+                <v-col
+                  v-for="character in charactersStore.characters"
+                  :key="character.id"
+                  cols="12"
+                  md="3"
+                >
+                  <v-card :key="character.name" elevation="5" :to="{ path:`/character-detail/${character.id}` }" class="p-6">
+                    <v-img :src="character.image" height="167px" cover> </v-img>
+                    <v-card-title class="pb-0">
+                      {{ character.name }}
+                    </v-card-title>
+                    <v-card-subtitle class="pt-0 pb-4">
+                      {{ character.species }}
+                    </v-card-subtitle>
+                  </v-card>
+                </v-col>
+        </v-row>
+      </v-container>
+      <v-container v-else class="d-flex justify-center align-center" style="height:45vh">
+          <p>{{ charactersStore.errorMessage }}</p>
+      </v-container>
     <v-container>
       <v-row class="d-flex align-center justify-center">
         <v-col class="text-center" cols="12">
@@ -131,15 +132,3 @@ const loadMoreItems = () => {
 };
 </script>
 
-<style scoped>
-.img-wrapper {
-  width: 100vw;
-  display: flex;
-  justify-content: center;
-}
-img {
-  width: 600px;
-  height: 200px;
-  margin-top: 1000px;
-}
-</style>

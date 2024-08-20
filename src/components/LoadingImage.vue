@@ -1,5 +1,5 @@
 <template>
-  <v-container class="d-flex justify-center align-center">
+  <v-container class="d-flex justify-center align-center" style="height:45vh">
     <v-img
       class="rotate"
       :src="loadingImg"
