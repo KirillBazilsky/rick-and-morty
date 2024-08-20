@@ -13,7 +13,7 @@
   </v-container>
 
   <main v-if="charactersStore.isLoading">
-    <LoadingImgage />
+    <LoadingImage />
   </main>
   <main v-else>
     <v-container>
