@@ -1,5 +1,5 @@
 <template>
-    <v-main>
+    <v-main v-if="!charactersStore.loading">
         <v-container>
             <v-row>
                 <v-col class="d-flex justify-right align-center">
@@ -109,7 +109,9 @@
             
    
     </v-main>   
-
+    <v-main v-else>
+        <LoadingImage />
+    </v-main>
     
 </template>
  
@@ -118,6 +120,7 @@
 <script setup lang="ts">
 import { useRoute, useRouter} from 'vue-router';
 import { useCharactersStore } from "@/stores/app";
+import LoadingImage from "../components/LoadingImage.vue";
 
 const charactersStore = useCharactersStore();
 

@@ -104,7 +104,7 @@
 import { onMounted, watch } from "vue";
 import pngLogoBig from '@/assets/PngLogoBig.svg'
 import { speciesList,genderList,statusList } from "@/constatnts/constants";
-import LoadingImgage from "../components/LoadingImgage.vue";
+import LoadingImage from "../components/LoadingImage.vue";
 import { useCharactersStore } from "@/stores/app";
 
 const charactersStore = useCharactersStore();

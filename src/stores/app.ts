@@ -40,7 +40,6 @@ export const useCharactersStore = defineStore("characters", {
     async fetchCharacters() {
           this.isLoading = true;
       try {
-          // this.isLoading = true;
           const data =  await CharactersApi.getItems(
           this.name,
           this.species,
@@ -69,7 +68,7 @@ export const useCharactersStore = defineStore("characters", {
       }
     },
     async updatePage () {
-      
+      this.isLoading = true;
       try {
         const data =  await CharactersApi.getItems(
         this.name,
@@ -100,9 +99,11 @@ export const useCharactersStore = defineStore("characters", {
         
     },
     async fetchCharacterInfo(id: string){
+          this.isLoading = true
       try {
           this.episodesUrl = [];
           this.episodesList = [];
+          this.characterInfo = undefined;
           this.characterInfo = await CharactersApi.getCharacterInfo(id);
           this.characterInfo?.episode.forEach(async episode => {
             this.episodesUrl.push(episode.split('/')[episode.split('/').length-1])
@@ -120,6 +121,9 @@ export const useCharactersStore = defineStore("characters", {
         if(error instanceof AxiosError){
           console.error('Failed to fetch episodes info:', error);
       }
+  }finally{
+    this.isLoading = false
+    
   }
  
   },
