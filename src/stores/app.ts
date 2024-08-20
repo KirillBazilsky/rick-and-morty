@@ -3,6 +3,7 @@ import CharactersApi from "@/api/characters/charactersApi"
 import { Character } from "@/api/characters/ICharactersApi";
 import {Episode} from "@/api/episodes/IEpisodesApi"
 import { AxiosError } from "axios";
+import EpisodesApi from "@/api/episodes/episodes";
 
 
 export const useAppStore = defineStore("app", {
@@ -29,6 +30,7 @@ export const useCharactersStore = defineStore("characters", {
     canLoadMore: true as boolean,
     page: 1 as number,
     characterInfo: undefined as Character | undefined,
+    episodesUrl:[] as string[],
     episodesList: [] as Episode[] | undefined,
 }),
   getters:{
@@ -98,15 +100,27 @@ export const useCharactersStore = defineStore("characters", {
     },
     async fetchCharacterInfo(id: string){
       try {
+          this.episodesUrl = [];
+          this.episodesList = [];
           this.characterInfo = await CharactersApi.getCharacterInfo(id);
           this.characterInfo?.episode.forEach(async episode => {
-              const episodeInfo = await CharactersApi.getEpisodeInfo(episode)
-              this.episodesList?.push(episodeInfo)
+            this.episodesUrl.push(episode.split('/')[episode.split('/').length-1])
           })
-      } catch (error) {
-          console.error('Failed to fetch character info:', error);
+          const episodes = await EpisodesApi.getEpisodes(this.episodesUrl)
+          if(episodes[0]==undefined){
+            
+            this.episodesList?.push(episodes)
+          } else{
+           
+            this.episodesList = episodes
+          }
           
+      } catch (error: unknown) {
+        if(error instanceof AxiosError){
+          console.error('Failed to fetch episodes info:', error);
       }
-  } 
+  }
+ 
   },
+}
 });
