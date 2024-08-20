@@ -1,14 +1,28 @@
 import { createRouter, createWebHistory } from "vue-router/auto";
+import { RouteRecordRaw } from 'vue-router';
 import { setupLayouts } from "virtual:generated-layouts";
 import { routes } from "vue-router/auto-routes";
+import CharacterDetails from "@/pages/CharacterDetails.vue";
+
+ const newRoutes: Array<RouteRecordRaw>
+= [
+  { path: "/", redirect: "/characters" },
+  { path: '/character-detail/:id', 
+    name: 'CharacterDetails',
+    component: CharacterDetails,
+    props: true 
+  }
+];
+
+
+const allRoutes = [...routes, ...newRoutes];
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: setupLayouts(routes),
+  routes: setupLayouts(allRoutes),
 });
 
-routes.push({ path: "/", redirect: "/characters" });
-console.log(router.getRoutes())
 
 router.onError((err, to) => {
   if (err?.message?.includes?.("Failed to fetch dynamically imported module")) {

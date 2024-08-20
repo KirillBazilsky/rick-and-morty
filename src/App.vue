@@ -10,14 +10,17 @@
             />
           </v-col>
           <v-spacer></v-spacer>
-          <v-col>
+          <v-col class="d-flex justify-end align-center">
             <NavbarDesktop />
           </v-col>
         </v-row>
       </v-container>
     </v-app-bar>
-    <router-view />
-    <v-footer fixed border elevation="16" height="60px">
+    <router-view v-if="!appStore.isToggleMenu"/>
+    <v-container v-else fluid>
+      <div>test</div>
+    </v-container>
+    <v-footer fixed bordered elevation="16" height="60px">
       <v-row>
         <v-col class="text-center text-h6" cols="12"
           >Make with ❤️ for the MobProgramming team</v-col
@@ -29,14 +32,13 @@
 
 <script lang="ts" setup>
 import NavbarDesktop from "./components/NavbarDesktop.vue";
-import logoBlack from "../src/assets/logo-black.png"
+import logoBlack from "@/assets/logo-black.png";
+import { useAppStore } from "./stores/app";
+
+const appStore = useAppStore();
+
 </script>
 
 <style>
-.link {
-  margin-right: 18px;
-  font-weight: 700;
-  text-decoration: none;
-  color: black;
-}
+
 </style>

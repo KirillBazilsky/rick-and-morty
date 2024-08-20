@@ -4,7 +4,8 @@ export const speciesList:string[] = [
     "humanoid",
     "alien",
     "robot",
-    "beast",
+    "animal",
+    "disease",
     "unknown",
   ];
 export  const genderList :string[] = ["Male", "Female", "Genderless", "unknown"];
