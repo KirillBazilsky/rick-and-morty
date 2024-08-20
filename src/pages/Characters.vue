@@ -65,12 +65,12 @@
           cols="12"
           md="3"
         >
-          <v-card :key="character.name" elevation="5" :to="{ path:`/character-detail/${character.id}` }">
+          <v-card :key="character.name" elevation="5" :to="{ path:`/character-detail/${character.id}` }" class="p-6">
             <v-img :src="character.image" height="167px" cover> </v-img>
-            <v-card-title>
+            <v-card-title class="pb-0">
               {{ character.name }}
             </v-card-title>
-            <v-card-subtitle>
+            <v-card-subtitle class="pt-0 pb-4">
               {{ character.species }}
             </v-card-subtitle>
           </v-card>
