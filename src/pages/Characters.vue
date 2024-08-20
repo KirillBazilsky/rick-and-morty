@@ -12,7 +12,7 @@
     </v-row>
   </v-container>
 
-  <main v-if="isLoading">
+  <main v-if="charactersStore.isLoading">
     <LoadingImgage />
   </main>
   <main v-else>
@@ -22,7 +22,7 @@
           <v-text-field
             placeholder="Filtered by name"
             prepend-inner-icon="mdi-magnify"
-            v-model="name"
+            v-model="charactersStore.name"
             rounded="lg"
             variant="outlined"
           ></v-text-field>
@@ -34,7 +34,7 @@
             :items="speciesList"
             variant="outlined"
             :clearable="true"
-            v-model="species"
+            v-model="charactersStore.species"
           ></v-select>
         </v-col>
         <v-col cols="12" md="3">
@@ -44,7 +44,7 @@
             :items="genderList"
             variant="outlined"
             :clearable="true"
-            v-model="gender"
+            v-model="charactersStore.gender"
           ></v-select>
         </v-col>
         <v-col cols="12" md="3">
@@ -54,18 +54,18 @@
             :items="statusList"
             variant="outlined"
             :clearable="true"
-            v-model="status"
+            v-model="charactersStore.status"
           ></v-select>
         </v-col>
       </v-row>
-      <v-row v-if="!errorMessage">
+      <v-row v-if="!charactersStore.errorMessage">
         <v-col
-          v-for="character in characters"
+          v-for="character in charactersStore.characters"
           :key="character.id"
           cols="12"
           md="3"
         >
-          <v-card :key="character.name" elevation="5" to="characterPage">
+          <v-card :key="character.name" elevation="5" :to="{ path:`/character-detail/${character.id}` }">
             <v-img :src="character.image" height="167px" cover> </v-img>
             <v-card-title>
               {{ character.name }}
@@ -77,13 +77,14 @@
         </v-col>
       </v-row>
       <div v-else class="container">
-        <p>{{ errorMessage }}</p>
+        <p>{{ charactersStore.errorMessage }}</p>
       </div>
     </v-container>
     <v-container>
-      <v-row align="center" justify="center">
+      <v-row class="d-flex align-center justify-center">
         <v-col class="text-center" cols="12">
           <v-btn
+            v-if="charactersStore.canLoadMore"
             variant="text"
             elevation="16"
             class="text-h6"
@@ -91,6 +92,7 @@
             color="blue"
             >LOAD MORE
           </v-btn>
+          <p v-else> Nobody to load</p>
         </v-col>
       </v-row>
     </v-container>
@@ -98,92 +100,34 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from "vue";
-import pngLogoBig from '../assets/PngItem_438051 1.svg'
+import { onMounted, watch } from "vue";
+import pngLogoBig from '@/assets/PngLogoBig.svg'
 import { speciesList,genderList,statusList } from "@/constatnts/constants";
-import CharactersApi from "../api/charactersApi";
-import LoadingImgage from "./LoadingImgage.vue";
-type Character = {
-  id: number;
-  name: string;
-  status: string;
-  species: string;
-  type: string;
-  gender: string;
-  location: object;
-  image: string;
-  episode: [];
-  url: string;
-  created: string;
-};
+import LoadingImgage from "../components/LoadingImgage.vue";
+import { useCharactersStore } from "@/stores/app";
 
-const name = ref<string | undefined>("");
-const characters = ref<Character[]>([]);
-const species = ref<string | undefined>("");
-const gender = ref<string | undefined>("");
-const status = ref<string | undefined>("");
-const errorMessage = ref<string | null>(null);
-const isLoading = ref<boolean>(true);
-const pageSize = ref<number>(8);
-const page = ref<number>(1);
+const charactersStore = useCharactersStore();
 
-const fetchCharacters = async () => {
-  
-  try {
-    isLoading.value = true;
-    characters.value = await CharactersApi.getItems(
-      name.value,
-      species.value,
-      gender.value,
-      status.value,
-    );
-    
-    errorMessage.value = "";
-  } catch (error: any) {
-    if (error.response && error.response.status === 404) {
-      errorMessage.value = "No characters found for the selected filters.";
-    } else {
-      errorMessage.value = "An error occurred. Please try again later.";
-    }
-  } finally {
-    setTimeout(() => (isLoading.value = false), 300);
-  }
-};
 
-const updatePage = async () => {
-  try {
-    const newCharacters = await CharactersApi.getItems(
-      name.value,
-      species.value,
-      gender.value,
-      status.value,
-      page.value,
-    );
-    characters.value.push(...newCharacters);
-    errorMessage.value = "";
-  } catch (error: any) {
-    if (error.response && error.response.status === 404) {
-      errorMessage.value = "No characters to load";
-    } else {
-      errorMessage.value = "An error occurred. Please try again later.";
-    }
-  } finally {
-    setTimeout(() => (isLoading.value = false), 300);
-  }
-};
 onMounted(() => {
-  fetchCharacters();
+  charactersStore.fetchCharacters();
 });
 
-watch([name,species, gender, status], () => {
- 
-  fetchCharacters();
-});
-watch(pageSize, () => console.log(pageSize));
+watch(() => charactersStore.name, 
+      () => {setTimeout(()=>charactersStore.fetchCharacters(),300)
+         
+      }
+    );
+watch(() => [charactersStore.species,charactersStore.gender,charactersStore.status], 
+      () => {
+        charactersStore.fetchCharacters(); 
+      }
+    );
+
 
 const loadMoreItems = () => {
-  page.value += 1;
-  updatePage();
+  charactersStore.page += 1;
+  charactersStore.updatePage();
 };
 </script>
 
