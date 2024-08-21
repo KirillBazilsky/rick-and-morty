@@ -186,7 +186,7 @@ export const useEpisodesStore = defineStore("episodes", {
             this.episodeInfo?.characters.forEach(async character => {
               this.charactersUrl.push(character.split('/')[character.split('/').length-1])
             })
-            const characters = await EpisodesApi.getEpisodes(this.charactersUrl)
+            const characters = await CharactersApi.getCharacters(this.charactersUrl)
             if(characters[0]==undefined){
               
               this.charactersList?.push(characters)

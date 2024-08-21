@@ -91,7 +91,10 @@
                                         </v-col>
                                         <v-spacer></v-spacer>
                                         <v-col class="d-flex align-center">
-                                            <v-icon icon="mdi-chevron-right" class="inline" color="#8E8E93"></v-icon>
+                                            <router-link :to="{ path:`/episode-details/${episode.id}` }">
+                                                <v-icon icon="mdi-chevron-right" class="inline" color="#8E8E93"></v-icon>
+                                            </router-link>
+                                            
                                         </v-col>
                                     </v-row>
                                 </td>

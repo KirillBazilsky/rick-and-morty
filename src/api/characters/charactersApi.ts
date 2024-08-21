@@ -46,6 +46,16 @@ class CharactersApi {
 
     return response.data;
   }
+
+  public static async getCharacters(url?: string[]) {
+    
+    const response = await axios.get(
+      `${API_URL}character/${url}`
+    )
+
+
+    return response.data;
+  }
 }
 
 export default CharactersApi;

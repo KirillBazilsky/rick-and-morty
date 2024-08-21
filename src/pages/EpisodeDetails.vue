@@ -39,9 +39,10 @@
                 </v-col>
             </v-row>
         </v-container>
-
+        
         <v-container>
-            <v-row v-if="!episodesStore.errorMessage">
+            <p class="text-h6 text-grey">Cast</p>
+            <v-row v-if="!episodesStore.errorMessage">     
         <v-col
           v-for="character in episodesStore.charactersList"
           :key="character.id"
