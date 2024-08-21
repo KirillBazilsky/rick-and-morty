@@ -42,15 +42,6 @@ class EpisodesApi {
     return response.data;
   }
   
-  public static async getCharactersInfo(
-    url: string,
-  ) {
-    
-    const response = await axios.get(url);
-
-    return response.data;
-  }
-
   
  
 }
