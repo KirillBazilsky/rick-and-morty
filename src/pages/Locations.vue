@@ -13,7 +13,7 @@
     </v-container>
     <v-container>
         <v-row>
-            <v-col cols="12" md="3">
+            <v-col cols="12" md="4">
                 <v-text-field
                 placeholder="Filtered by name"
                 prepend-inner-icon="mdi-magnify"
@@ -22,7 +22,7 @@
                 variant="outlined"
                 ></v-text-field>
             </v-col>
-                <v-container>
+            <v-container md="block">
                     <v-col cols="12" md="3">
                         <v-select
                         placeholder="Type"
@@ -43,8 +43,9 @@
                         v-model="locationsStore.dimension"
                         ></v-select>
                     </v-col>
-                </v-container>
-            </v-row>
+            </v-container>
+        </v-row>
+      </v-container>
     <main v-if="locationsStore.isLoading">
       <LoadingImage />
     </main>
