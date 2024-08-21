@@ -30,11 +30,7 @@ class LocationsApi {
     );
 
     return response.data;
-  }
-  
- 
-  
- 
+  } 
 }
 
 export default LocationsApi;
