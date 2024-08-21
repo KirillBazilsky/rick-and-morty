@@ -21,19 +21,6 @@ class LocationsApi {
     return { results, info }
   }
 
-  public static async getLocations(
-    url?: string[],
-    
-  ) {
-    
-    const response = await axios.get(
-      `${API_URL}location/${url}`
-    )
-    
-    
-    return response.data
-  }
-
   public static async getlocationInfo(
     id?: string, 
   ) {
@@ -45,15 +32,7 @@ class LocationsApi {
     return response.data;
   }
   
-  public static async getCharactersInfo(
-    url: string,
-  ) {
-    
-    const response = await axios.get(url);
-
-    return response.data;
-  }
-
+ 
   
  
 }
