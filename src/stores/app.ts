@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import CharactersApi from "@/api/characters/charactersApi"
 import { Character } from "@/api/characters/ICharactersApi";
 import {Episode} from "@/api/episodes/IEpisodesApi"
+import EpisodesApi from "@/api/episodes/episodes";
 import { AxiosError } from "axios";
 import EpisodesApi from "@/api/episodes/episodes";
 
