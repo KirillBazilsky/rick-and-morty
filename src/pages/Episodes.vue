@@ -38,7 +38,7 @@
                   md="3"
                 >
                   <v-card :key="episode.name" elevation="5" :to="{ path:`/episode-detail/${episode.id}` }" class="d-flex flex-column justify-center align-center py-12 bg-surface-light ">
-                    <v-card-title class="pb-0 text-h6">
+                    <v-card-title class="pb-0 text-h6 text-center" style="white-space: normal;">
                       {{ episode.name }}
                     </v-card-title> 
                     <p class="text-caption text-grey text-uppercase px-4">{{ episode.air_date }}</p>
