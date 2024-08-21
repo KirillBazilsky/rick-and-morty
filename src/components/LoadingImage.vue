@@ -1,13 +1,13 @@
 <template>
-  <div id="loading-wrapper" class="container img-container">
+  <v-container class="d-flex justify-center align-center" style="height:45vh">
     <v-img
-      class="rotate d-flex justify-center align-center"
+      class="rotate"
       :src="loadingImg"
       alt="loading"
       max-width="250px"
     >
     </v-img>
-  </div>
+  </v-container>
 </template>
 
 <script setup lang="ts">

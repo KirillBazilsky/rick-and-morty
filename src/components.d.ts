@@ -10,6 +10,7 @@ declare module 'vue' {
     CharacterPage: typeof import('./components/CharacterPage.vue')['default']
     Characters: typeof import('./components/Characters.vue')['default']
     Episodes: typeof import('./components/Episodes.vue')['default']
+    LoadingImage: typeof import('./components/LoadingImage.vue')['default']
     LoadingImgage: typeof import('./components/LoadingImgage.vue')['default']
     Locations: typeof import('./components/Locations.vue')['default']
     NavbarDesktop: typeof import('./components/NavbarDesktop.vue')['default']

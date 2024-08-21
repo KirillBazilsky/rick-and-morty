@@ -1,5 +1,5 @@
 <template>
-    <v-main>
+    <v-main v-if="!charactersStore.isLoading">
         <v-container>
             <v-row>
                 <v-col class="d-flex justify-right align-center">
@@ -15,18 +15,18 @@
             </v-row>
             <v-row>
                 <v-col cols="12" class= "text-center">
-                    <h1>{{charactersStore.characterInfo?.name}}</h1>
+                    <h1 class="text-h3">{{charactersStore.characterInfo?.name}}</h1>
                 </v-col>
             </v-row>
 
         </v-container>
         <v-container>
             <v-row>
-                <v-col cols="6" class="d-flex justify-center align-top">
+                <v-col cols="12" md="6" class="d-flex justify-center align-top">
                     <v-table style="width: 100%;">
                         <thead class="text-left">
                             <tr>
-                                <th>
+                                <th class="text-h6 text-grey">
                                     Informations
                                 </th>
                             </tr>
@@ -34,48 +34,53 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <div class="text-subtitle-2 font-black">Gender</div>{{charactersStore.characterInfo?.gender}}
+                                    <div class="text-subtitle-1 text-black font-weight-bold mt-2">Gender</div>
+                                    <p class="text-subtitle-2 text-grey mb-2">{{charactersStore.characterInfo?.gender}}</p>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <div class="text-subtitle-2 font-black">Status</div>{{charactersStore.characterInfo?.status}}
+                                    <div class="text-subtitle-1 text-black font-weight-bold mt-2">Status</div>
+                                    <p class="text-subtitle-2 text-grey mb-2">{{charactersStore.characterInfo?.status}}</p>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <div class="text-subtitle-2 font-black">Specie</div>{{charactersStore.characterInfo?.species}}
+                                    <div class="text-subtitle-1 text-black font-weight-bold mt-2">Specie</div>
+                                    <p class="text-subtitle-2 text-grey mb-2">{{charactersStore.characterInfo?.species}}</p>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <div class="text-subtitle-2 font-black">Origin</div>{{charactersStore.characterInfo?.origin.name}}
+                                    <div class="text-subtitle-1 text-black font-weight-bold mt-2">Origin</div>
+                                    <p class="text-subtitle-2 text-grey mb-2">{{charactersStore.characterInfo?.origin.name}}</p>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <div class="text-subtitle-2 font-black">Type</div>
+                                    <div class="text-subtitle-1 text-black font-weight-bold mt-2">Type</div>
                                     <div v-if="charactersStore.characterInfo?.type">
-                                        {{ charactersStore.characterInfo?.type}}
+                                        <p class="text-subtitle-2 text-grey mb-2">{{ charactersStore.characterInfo?.type}}</p>
                                     </div>
-                                    <p v-else>
+                                    <p v-else class="text-subtitle-2 text-grey">
                                         Unknown
                                     </p>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <div class="text-subtitle-2 font-black">Location</div>{{charactersStore.characterInfo?.location.name}}
+                                    <div class="text-subtitle-1 text-black font-weight-bold mt-2">Location</div>
+                                    <p class="text-subtitle-2 text-grey mb-2">{{charactersStore.characterInfo?.location.name}}</p>
                                 </td>
                             </tr>
                         </tbody>
                     </v-table>
                 </v-col>
-                <v-col cols="6" class="d-flex justify-center align-top">
+                <v-col cols="12" md="6" class="d-flex justify-center align-top">
                     <v-table style="width: 100%;">
                         <thead class="text-left">
                             <tr>
-                                <th>
+                                <th class="text-h6 text-grey">
                                     Episodes
                                 </th>
                             </tr>
@@ -85,9 +90,9 @@
                                 <td >
                                     <v-row>
                                         <v-col cols="10">
-                                            <div>{{ episode.episode }}</div>
-                                            <p class="name">{{ episode.name }}</p>
-                                            <p>{{ episode.air_date }}</p>
+                                            <div class="text-subtitle-1 text-black font-weight-bold mt-2">{{ episode.episode }}</div>
+                                            <p class="text-subtitle-2 text-grey">{{ episode.name }}</p>
+                                            <p class="text-caption text-grey mb-2">{{ episode.air_date }}</p>
                                         </v-col>
                                         <v-spacer></v-spacer>
                                         <v-col class="d-flex align-center">
@@ -104,7 +109,9 @@
             
    
     </v-main>   
-
+    <v-main v-else>
+        <LoadingImage />
+    </v-main>
     
 </template>
  
@@ -113,6 +120,7 @@
 <script setup lang="ts">
 import { useRoute, useRouter} from 'vue-router';
 import { useCharactersStore } from "@/stores/app";
+import LoadingImage from "../components/LoadingImage.vue";
 
 const charactersStore = useCharactersStore();
 
@@ -130,58 +138,7 @@ const goBack = () => {
     
 </script>
   
-<style scoped>
-h1{
-    font-family:Roboto;
-    font-weight:400;
-    font-size:48px;
-}
-th{
-font-family: Roboto;
-font-size: 20px;
-font-weight: 500;
-line-height: 24px;
-text-align: left;
-color: #8E8E93;
-}
-td  div{
-font-family: Roboto;
-font-size: 16px;
-font-weight: 700;
-line-height: 24px;
-letter-spacing: 0.15000000596046448px;
-text-align: left;
-color:black
-}
-td{
-font-family: Roboto;
-font-size: 14px;
-font-weight: 400;
-line-height: 20px;
-letter-spacing: 0.25px;
-text-align: left;
-color: #6E798C;
-}
-td p{
-font-size: 10px;
-font-weight: 500;
-line-height: 16px;
-letter-spacing: 1.5px;
-text-align: left;
-color: #8E8E93;
-}
 
-.name{
-font-family: Roboto;
-font-size: 14px;
-font-weight: 400;
-line-height: 20px;
-letter-spacing: 0.25px;
-text-align: left;
-color: #6E798C;
-}
-
-</style>
 
 
 
