@@ -10,3 +10,5 @@ export const speciesList:string[] = [
   ];
 export  const genderList :string[] = ["Male", "Female", "Genderless", "unknown"];
 export const statusList:string[] = ["alive", "dead", "unknown"];
+export const typeList:string[] = ["planet", "space station", "unknown"];
+export const dimensionList:string[] = ["Dimension C-137", "unknown"];
