@@ -42,7 +42,62 @@
                       v-model="locationsStore.dimensions"
                   ></v-select>
               </v-col>
-        
+        </v-row>
+        <v-row class="d-sm-none">
+          <v-col>
+            <v-menu 
+                v-model="locationsStore.menu"
+                :close-on-content-click="false"
+                location="center">
+                <template v-slot:activator="{ props }">
+                  <v-btn size="large" block class="bg-blue-lighten-5 text-blue" v-bind="props" prepend-icon="mdi-filter-variant" >
+                    Advansed filters
+                  </v-btn>
+                </template>
+                <v-container>
+                  
+                  <v-sheet class="pa-8">
+                    <v-row>
+                    <v-col>
+                      <p class="texh-h4 font-weight-bold">Filters</p>
+                    </v-col>
+                    <v-spacer></v-spacer>
+                    <v-col class="d-flex justify-end">
+                      <v-icon icon="mdi-close" color="grey" @click = "locationsStore.menu = false">
+                      </v-icon>
+                    </v-col>
+                  </v-row>
+                  <v-select min-width="75vw"
+                    placeholder="Type"
+                    rounded="lg"
+                    label="Type"
+                    :items="typeList"
+                    variant="outlined"
+                    :clearable="true"
+                    v-model="tempType"
+                  ></v-select>
+                  <v-select min-width="75vw"
+                    label="Dimension"
+                    rounded="lg"
+                    placeholder="Dimension"
+                    :items="dimensionList"
+                    variant="outlined"
+                    :clearable="true"
+                    v-model="tempDimension"
+                  ></v-select>
+                  <v-btn
+                  class="bg-blue-lighten-5 text-blue"
+                  block
+                  @click="applyFilters"
+                  >
+                  Apply
+                  </v-btn>
+                </v-sheet>
+                </v-container>
+              </v-menu>
+          </v-col>
+              
+          
         </v-row>
       </v-container>
         
@@ -102,6 +157,17 @@
   import { useLocationsStore } from "@/stores/app";
   
   const locationsStore = useLocationsStore();
+
+  const tempType = ref('');
+  const tempDimension = ref('');
+  
+
+const applyFilters = function(){
+  locationsStore.type = tempType.value;
+  locationsStore.dimensions = tempDimension.value;
+  
+  locationsStore.menu = false;
+}
   
   
   onMounted(() => {

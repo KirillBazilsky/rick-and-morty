@@ -22,6 +22,7 @@ export const useAppStore = defineStore("app", {
 
 export const useCharactersStore = defineStore("characters", {
   state: () => ({
+    menu: false as boolean,
     name: "" as string,
     characters: [] as Character[],
     species: undefined as string | undefined,
@@ -234,6 +235,7 @@ export const useEpisodesStore = defineStore("episodes", {
 
     export const useLocationsStore = defineStore("locations", {
       state:() => ({
+            menu: false as boolean,
             name: "" as string,
             type: "" as string,
             dimensions: "" as string,

@@ -14,7 +14,7 @@
   <main>
     <v-container>
       <v-row>
-        <v-col cols="12" md="3">
+        <v-col cols="12" sm="3">
           <v-text-field
             placeholder="Filtered by name"
             prepend-inner-icon="mdi-magnify"
@@ -23,9 +23,10 @@
             variant="outlined"
           ></v-text-field>
         </v-col>
-        <v-col cols="12" md="3">
+        <v-col class="d-none d-sm-flex">
           <v-select
             placeholder="Species"
+            rounded="lg"
             label="Species"
             :items="speciesList"
             variant="outlined"
@@ -33,9 +34,10 @@
             v-model="charactersStore.species"
           ></v-select>
         </v-col>
-        <v-col cols="12" md="3">
+        <v-col class="d-none d-sm-flex">
           <v-select
             label="Gender"
+            rounded="lg"
             placeholder="Gender"
             :items="genderList"
             variant="outlined"
@@ -43,9 +45,10 @@
             v-model="charactersStore.gender"
           ></v-select>
           </v-col>
-          <v-col cols="12" md="3">
+          <v-col class="d-none d-sm-flex">
           <v-select
             label="Status"
+            rounded="lg"
             placeholder="Status"
             :items="statusList"
             variant="outlined"
@@ -53,6 +56,71 @@
             v-model="charactersStore.status"
           ></v-select>
           </v-col>
+        </v-row>
+        <v-row class="d-sm-none">
+          <v-col>
+            <v-menu 
+                v-model="charactersStore.menu"
+                :close-on-content-click="false"
+                location="center">
+                <template v-slot:activator="{ props }">
+                  <v-btn size="large" block class="bg-blue-lighten-5 text-blue" v-bind="props" prepend-icon="mdi-filter-variant" >
+                    Advansed filters
+                  </v-btn>
+                </template>
+                <v-container>
+                  
+                  <v-sheet class="pa-8">
+                    <v-row>
+                    <v-col>
+                      <p class="texh-h4 font-weight-bold">Filters</p>
+                    </v-col>
+                    <v-spacer></v-spacer>
+                    <v-col class="d-flex justify-end">
+                      <v-icon icon="mdi-close" color="grey" @click = "charactersStore.menu = false">
+                      </v-icon>
+                    </v-col>
+                  </v-row>
+                  <v-select min-width="75vw"
+                    placeholder="Species"
+                    rounded="lg"
+                    label="Species"
+                    :items="speciesList"
+                    variant="outlined"
+                    :clearable="true"
+                    v-model="tempSpecies"
+                  ></v-select>
+                  <v-select min-width="75vw"
+                    label="Gender"
+                    rounded="lg"
+                    placeholder="Gender"
+                    :items="genderList"
+                    variant="outlined"
+                    :clearable="true"
+                    v-model="tempGender"
+                  ></v-select>
+                  <v-select min-width="75vw"
+                    label="Status"
+                    rounded="lg"
+                    placeholder="Status"
+                    :items="statusList"
+                    variant="outlined"
+                    :clearable="true"
+                    v-model="tempStatus"
+                  ></v-select>
+                  <v-btn
+                  class="bg-blue-lighten-5 text-blue"
+                  block
+                  @click="applyFilters"
+                  >
+                  Apply
+                  </v-btn>
+                </v-sheet>
+                </v-container>
+              </v-menu>
+          </v-col>
+              
+          
         </v-row>
       </v-container>
       <v-container v-if="charactersStore.isLoading">
@@ -64,7 +132,7 @@
                   v-for="character in charactersStore.characters"
                   :key="character.id"
                   cols="12"
-                  md="3"
+                  sm="3"
                 >
                   <v-card :key="character.name" elevation="5" :to="{ path:`/character-details/${character.id}` }" class="p-6">
                     <v-img :src="character.image" height="167px" cover> </v-img>
@@ -101,7 +169,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, watch } from "vue";
+import { onMounted, watch, ref} from "vue";
 import pngLogoBig from '@/assets/PngLogoBig.svg'
 import { speciesList,genderList,statusList } from "@/constatnts/constants";
 import LoadingImage from "../components/LoadingImage.vue";
@@ -109,6 +177,16 @@ import { useCharactersStore } from "@/stores/app";
 
 const charactersStore = useCharactersStore();
 
+const tempSpecies = ref('');
+let tempGender = ref('');
+let tempStatus = ref('');
+
+const applyFilters = function(){
+  charactersStore.species = tempSpecies.value;
+  charactersStore.gender = tempGender.value;
+  charactersStore.status = tempStatus.value;
+  charactersStore.menu = false;
+}
 
 onMounted(() => {
   charactersStore.fetchCharacters();
