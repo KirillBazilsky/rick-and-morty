@@ -1,5 +1,5 @@
 <template>
-    <v-main v-if="!charactersStore.loading">
+    <v-main v-if="!charactersStore.isLoading">
         <v-container>
             <v-row>
                 <v-col class="d-flex justify-right align-center">
