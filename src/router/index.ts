@@ -3,6 +3,7 @@ import { RouteRecordRaw } from 'vue-router';
 import { setupLayouts } from "virtual:generated-layouts";
 import { routes } from "vue-router/auto-routes";
 import CharacterDetails from "@/pages/CharacterDetails.vue";
+import LocationDetails from "@/pages/LocationDetails.vue";
 
  const newRoutes: Array<RouteRecordRaw>
 = [
@@ -11,7 +12,12 @@ import CharacterDetails from "@/pages/CharacterDetails.vue";
     name: 'CharacterDetails',
     component: CharacterDetails,
     props: true 
-  }
+  },
+  { path: '/location-details/:id', 
+    name: 'LocationDetails',
+    component: LocationDetails,
+    props: true 
+  },
 ];
 
 
