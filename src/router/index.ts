@@ -3,13 +3,25 @@ import { RouteRecordRaw } from 'vue-router';
 import { setupLayouts } from "virtual:generated-layouts";
 import { routes } from "vue-router/auto-routes";
 import CharacterDetails from "@/pages/CharacterDetails.vue";
+import EpisodeDetails from "@/pages/EpisodeDetails.vue";
+import LocationDetails from "@/pages/LocationDetails.vue";
 
  const newRoutes: Array<RouteRecordRaw>
 = [
   { path: "/", redirect: "/characters" },
-  { path: '/character-detail/:id', 
+  { path: '/character-details/:id', 
     name: 'CharacterDetails',
     component: CharacterDetails,
+    props: true 
+  },
+  { path: '/episode-details/:id', 
+    name: 'EpisodeDetails',
+    component: EpisodeDetails,
+    props: true 
+  },
+  { path: '/location-details/:id', 
+    name: 'LocationDetails',
+    component: LocationDetails,
     props: true 
   }
 ];

@@ -34,14 +34,17 @@ export const useCharactersStore = defineStore("characters", {
     characterInfo: undefined as Character | undefined,
     episodesUrl:[] as string[],
     episodesList: [] as Episode[] | undefined,
+    locationId:undefined as string | undefined
 }),
   getters:{
     watch: (state) => state.name
   },
   actions: {
     async fetchCharacters() {
-          this.isLoading = true;
+          
       try {
+          this.page = 1;
+          this.isLoading = true;
           const data =  await CharactersApi.getItems(
           this.name,
           this.species,
@@ -50,7 +53,6 @@ export const useCharactersStore = defineStore("characters", {
       );
           this.characters = data.results
           this.errorMessage = "";
-          this.page = 1;
           if(data.info.pages == this.page){
             this.canLoadMore = false
           }else{
@@ -70,8 +72,9 @@ export const useCharactersStore = defineStore("characters", {
       }
     },
     async updatePage () {
-      this.isLoading = true;
+      
       try {
+        this.isLoading = true;
         const data =  await CharactersApi.getItems(
         this.name,
         this.species,
@@ -99,24 +102,36 @@ export const useCharactersStore = defineStore("characters", {
          this.isLoading = false
          }
         
-    },
-    async fetchCharacterInfo(id: string){
-          this.isLoading = true
-      try {
-          this.episodesUrl = [];
-          this.episodesList = [];
-          this.characterInfo = undefined;
-          this.characterInfo = await CharactersApi.getCharacterInfo(id);
-          this.characterInfo?.episode.forEach(async episode => {
-              const episodeInfo = await CharactersApi.getEpisodeInfo(episode)
-              this.episodesList?.push(episodeInfo)
-          })
-      } catch (error) {
-          console.error('Failed to fetch character info:', error);
+    }, async fetchCharacterInfo(id: string){
+    try {
+        this.isLoading = true;
+        this.characterInfo = undefined;
+        this.page = 1;
+        this.episodesList = [];
+        this.characterInfo = await CharactersApi.getCharacterInfo(id);
+        this.characterInfo?.episode.forEach(async episode => {
+          this.episodesUrl.push(episode.split('/')[episode.split('/').length-1])
+        })
+        const episodes = await EpisodesApi.getEpisodes(this.episodesUrl)
+        if(episodes[0]==undefined){
           
-      }
-  } 
+          this.episodesList?.push(episodes)
+        } else{
+         
+          this.episodesList = episodes
+        }
+        this.locationId = this.characterInfo?.location.url.split('/')[this.characterInfo?.location.url.split('/').length-1]
+        
+    } catch (error) {
+        console.error('Failed to fetch episode info:', error);
+        
+    } finally {
+      this.isLoading = false
+     }
   },
+  
+} 
+  
 
   
 });
@@ -138,12 +153,14 @@ export const useEpisodesStore = defineStore("episodes", {
 
   actions:{
     async fetchEpisodes() {
-      this.isLoading = true;
-        try {
+     
+        try { 
+            this.page = 1;
+            this.isLoading = true;
             const data =  await EpisodesApi.fetchEpisodes(this.episode,this.page);
             this.episodesList = data.results
             this.errorMessage = "";
-            this.page = 1;
+            
             if(data.info.pages == this.page){
               this.canLoadMore = false
             }else{
@@ -189,6 +206,9 @@ export const useEpisodesStore = defineStore("episodes", {
       },
       async fetchEpisodeInfo(id: string){
         try {
+            this.isLoading = true
+            this.charactersList = []
+            this.page = 1
             this.episodeInfo = await EpisodesApi.getEpisodeInfo(id);
             this.episodeInfo?.characters.forEach(async character => {
               this.charactersUrl.push(character.split('/')[character.split('/').length-1])
@@ -205,7 +225,9 @@ export const useEpisodesStore = defineStore("episodes", {
         } catch (error) {
             console.error('Failed to fetch episode info:', error);
             
-        }
+        }finally {
+          this.isLoading = false
+          }
     } 
     }
     });
@@ -229,7 +251,7 @@ export const useEpisodesStore = defineStore("episodes", {
       actions:{
         async fetchLocations() {
           this.isLoading = true;
-            try {
+            try {this.page = 1;
                 const data =  await LocationsApi.fetchLocations(this.name,this.type,this.dimensions,this.page);
                 this.locationsList = data.results
                 this.errorMessage = "";
@@ -278,6 +300,9 @@ export const useEpisodesStore = defineStore("episodes", {
           },
           async fetchLocationInfo(id: string){
             try {
+                this.isLoading = true
+                this.charactersList = [];
+                this.page = 1;
                 this.locationInfo = await LocationsApi.getlocationInfo(id);
                 this.locationInfo?.residents.forEach(async character => {
                   this.charactersUrl.push(character.split('/')[character.split('/').length-1])
@@ -294,7 +319,9 @@ export const useEpisodesStore = defineStore("episodes", {
             } catch (error) {
                 console.error('Failed to fetch location info:', error);
                 
-            }
+            }finally {
+              this.isLoading = false
+              }
         } 
         }
         });

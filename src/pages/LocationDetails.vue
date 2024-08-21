@@ -1,5 +1,5 @@
 <template>
-    <v-main v-if="!locationsStore.isLoading">
+    <v-main v-if="!locationsStore.isLoading || !locationsStore.errorMessage">
         <v-container>
             <v-row>
                 <v-col class="d-flex justify-right align-center">
@@ -41,7 +41,7 @@
         </v-container>
         
         <v-container>
-            <p class="text-h6 text-grey">Cast</p>
+            <p class="text-h6 text-grey">Residents</p>
             <v-row v-if="!locationsStore.errorMessage">     
         <v-col
           v-for="character in locationsStore.charactersList"
@@ -49,7 +49,7 @@
           cols="12"
           md="3"
         >
-          <v-card :key="character.name" elevation="5" :to="{ path:`/character-detail/${character.id}` }">
+          <v-card :key="character.name" elevation="5" :to="{ path:`/character-details/${character.id}` }">
             <v-img :src="character.image" height="167px" cover> </v-img>
             <v-card-title>
               {{ character.name }}
@@ -61,11 +61,14 @@
         </v-col>
       </v-row>
         </v-container>
-            
-   
     </v-main>   
-    <v-main v-else>
+    <v-main v-else-if = "locationsStore.isLoading">
         <LoadingImage />
+    </v-main>
+    <v-main v-else-if="locationsStore.errorMessage">
+        <v-container class="d-flex justify-center align-center" style="height:75vw">
+            <p>{{ locationsStore.errorMessage }}</p>
+        </v-container>
     </v-main>
     
 </template>
@@ -74,16 +77,16 @@
 
 <script setup lang="ts">
 import { useRoute, useRouter} from 'vue-router';
-import { useEpisodesStore } from "@/stores/app";
+import { useLocationsStore } from "@/stores/app";
 import LoadingImage from "../components/LoadingImage.vue";
 
-const locationsStore = useEpisodesStore();
+const locationsStore = useLocationsStore();
 
 const route :any = useRoute();
 const router = useRouter();
 
 onMounted(() => {
-    locationsStore.fetchEpisodeInfo(route.params.id)
+    locationsStore.fetchLocationInfo(route.params.id)
 
 })  
 

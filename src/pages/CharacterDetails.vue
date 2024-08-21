@@ -1,5 +1,5 @@
 <template>
-    <v-main v-if="!charactersStore.isLoading">
+    <v-main v-if="!charactersStore.isLoading||!charactersStore.errorMessage">
         <v-container>
             <v-row>
                 <v-col class="d-flex justify-right align-center">
@@ -69,8 +69,18 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <div class="text-subtitle-1 text-black font-weight-bold mt-2">Location</div>
-                                    <p class="text-subtitle-2 text-grey mb-2">{{charactersStore.characterInfo?.location.name}}</p>
+                                    <v-row class="d-flex align-center">
+                                        <v-col cols="9">
+                                            <div class="text-subtitle-1 text-black font-weight-bold mt-2">Location</div>
+                                            <p class="text-subtitle-2 text-grey mb-2">{{charactersStore.characterInfo?.location.name}}</p>
+                                        </v-col>
+                                        <v-spacer></v-spacer>
+                                        <v-col cols="3" class="d-flex align-center justify-end">
+                                            <router-link :to="{ path:`/location-details/${charactersStore.locationId}` }">
+                                                <v-icon icon="mdi-chevron-right" class="inline" color="#8E8E93"></v-icon>
+                                            </router-link>
+                                        </v-col>
+                                    </v-row>
                                 </td>
                             </tr>
                         </tbody>
@@ -112,9 +122,15 @@
             
    
     </v-main>   
-    <v-main v-else>
+    <v-main v-else-if="charactersStore.isLoading">
         <LoadingImage />
     </v-main>
+    <v-main v-else-if="charactersStore.errorMessage">
+        <v-container class="d-flex justify-center align-center" style="height:75vw">
+            <p>{{ charactersStore.errorMessage }}</p>
+        </v-container>
+    </v-main>
+
     
 </template>
  

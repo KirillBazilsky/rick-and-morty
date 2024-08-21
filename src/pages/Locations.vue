@@ -1,5 +1,5 @@
 <template>
-    <v-container class="d-flex justify-center align-center">
+    
       <v-row>
         <v-col class="d-flex justify-center align-center" cols="12">
           <v-img
@@ -10,46 +10,48 @@
           ></v-img>
         </v-col>
       </v-row>
-    </v-container>
-    <v-container>
-        <v-row>
-            <v-col cols="12" md="4">
-                <v-text-field
-                placeholder="Filtered by name"
-                prepend-inner-icon="mdi-magnify"
-                v-model="LocationsStore.name"
-                rounded="lg"
-                variant="outlined"
-                ></v-text-field>
-            </v-col>
-            <v-container md="block">
-                    <v-col cols="12" md="3">
-                        <v-select
-                        placeholder="Type"
-                        label="Type"
-                        :items="typeList"
-                        variant="outlined"
-                        :clearable="true"
-                        v-model="locationsStore.type"
-                        ></v-select>
-                    </v-col>
-                    <v-col cols="12" md="3">
-                        <v-select
-                        label="Dimension"
-                        placeholder="Dimension"
-                        :items="dimensionList"
-                        variant="outlined"
-                        :clearable="true"
-                        v-model="locationsStore.dimension"
-                        ></v-select>
-                    </v-col>
-            </v-container>
+   
+      <v-container>
+        <v-row class="d-flex justify-center ">
+          <v-col cols="12" md="4">
+              <v-text-field
+                  placeholder="Filtered by name"
+                  prepend-inner-icon="mdi-magnify"
+                  v-model="locationsStore.name"
+                  rounded="lg"
+                  variant="outlined"
+              ></v-text-field>
+          </v-col>
+              <v-col cols="3" class="d-none d-md-flex">
+                  <v-select
+                      placeholder="Type"
+                      label="Type"
+                      :items="typeList"
+                      variant="outlined"
+                      :clearable="true"
+                      v-model="locationsStore.type"
+                  ></v-select>
+              </v-col>
+              <v-col cols="3" class="d-none d-md-flex">
+                  <v-select
+                      label="Dimension"
+                      placeholder="Dimension"
+                      :items="dimensionList"
+                      variant="outlined"
+                      :clearable="true"
+                      v-model="locationsStore.dimensions"
+                  ></v-select>
+              </v-col>
+        
         </v-row>
       </v-container>
+        
+        
     <main v-if="locationsStore.isLoading">
       <LoadingImage />
     </main>
     <main v-else>
+      <v-container>
         <v-row v-if="!locationsStore.errorMessage">
           <v-col
             v-for="location in locationsStore.locationsList"
@@ -57,17 +59,20 @@
             cols="12"
             md="3"
           >
-          <v-card :key="location.name" elevation="5" :to="{ path:`/location-details/${location.id}` }" class="d-flex flex-column justify-center align-center py-12 bg-surface-light ">
-                    <v-card-title class="pb-0 text-h6" >
-                      {{ location.name }}
-                    </v-card-title> 
-                    <p class="text-caption text-grey text-uppercase px-4">{{ location.type }}</p>
-                  </v-card>
+            <v-card :key="location.name" elevation="5" :to="{ path:`/location-details/${location.id}` }" 
+              class="d-flex flex-column justify-center align-center py-12 bg-surface-light" style="white-space: normal">
+                      <v-card-title class="pb-0 text-h6 text-center" style="white-space: normal">
+                        {{ location.name }}
+                      </v-card-title> 
+                      <p class="text-caption text-grey text-uppercase px-4">{{ location.type }}</p>
+            </v-card>
           </v-col>
         </v-row>
         <div v-else class="container">
           <p>{{ locationsStore.errorMessage }}</p>
         </div>
+      </v-container>
+        
       <v-container>
         <v-row class="d-flex align-center justify-center">
           <v-col class="text-center" cols="12">
@@ -94,30 +99,30 @@
   import rickAndMortySpin from '@/assets/rickAndMortySpin.svg'
   import { typeList, dimensionList} from "@/constatnts/constants";
   import LoadingImage from "../components/LoadingImage.vue";
-  import { useCharactersStore } from "@/stores/app";
+  import { useLocationsStore } from "@/stores/app";
   
-  const charactersStore = useCharactersStore();
+  const locationsStore = useLocationsStore();
   
   
   onMounted(() => {
-    charactersStore.fetchCharacters();
+    locationsStore.fetchLocations();
   });
   
-  watch(() => charactersStore.name, 
-        () => {setTimeout(()=>charactersStore.fetchCharacters(),300)
+  watch(() => locationsStore.name, 
+        () => {setTimeout(()=>locationsStore.fetchLocations(),300)
            
         }
       );
-  watch(() => [charactersStore.species,charactersStore.gender,charactersStore.status], 
+  watch(() => [locationsStore.type,locationsStore.dimensions], 
         () => {
-          charactersStore.fetchCharacters(); 
+          locationsStore.fetchLocations(); 
         }
       );
   
   
   const loadMoreItems = () => {
-    charactersStore.page += 1;
-    charactersStore.updatePage();
+    locationsStore.page += 1;
+    locationsStore.updatePage();
   };
   </script>
   

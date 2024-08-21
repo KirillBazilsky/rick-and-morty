@@ -1,5 +1,5 @@
 <template>
-    <v-main v-if="!episodesStore.isLoading">
+    <v-main v-if="!episodesStore.isLoading || !episodesStore.errorMessage">
         <v-container>
             <v-row>
                 <v-col class="d-flex justify-right align-center">
@@ -49,7 +49,7 @@
           cols="12"
           md="3"
         >
-          <v-card :key="character.name" elevation="5" :to="{ path:`/character-detail/${character.id}` }">
+          <v-card :key="character.name" elevation="5" :to="{ path:`/character-details/${character.id}` }">
             <v-img :src="character.image" height="167px" cover> </v-img>
             <v-card-title>
               {{ character.name }}
@@ -64,8 +64,13 @@
             
    
     </v-main>   
-    <v-main v-else>
+    <v-main v-else-if="episodesStore.isLoading">
         <LoadingImage />
+    </v-main>
+    <v-main v-else-if="episodesStore.errorMessage">
+        <v-container class="d-flex justify-center align-center" style="height:75vw">
+            <p>{{ episodesStore.errorMessage }}</p>
+        </v-container>
     </v-main>
     
 </template>
