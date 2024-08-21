@@ -3,7 +3,6 @@ import { RouteRecordRaw } from 'vue-router';
 import { setupLayouts } from "virtual:generated-layouts";
 import { routes } from "vue-router/auto-routes";
 import CharacterDetails from "@/pages/CharacterDetails.vue";
-import EpisodeDetails from "@/pages/EpisodeDetails.vue";
 
  const newRoutes: Array<RouteRecordRaw>
 = [
@@ -11,11 +10,6 @@ import EpisodeDetails from "@/pages/EpisodeDetails.vue";
   { path: '/character-detail/:id', 
     name: 'CharacterDetails',
     component: CharacterDetails,
-    props: true 
-  },
-  { path: '/episode-details/:id', 
-    name: 'EpisodeDetails',
-    component: EpisodeDetails,
     props: true 
   }
 ];
