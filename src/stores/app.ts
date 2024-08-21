@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import CharactersApi from "@/api/characters/charactersApi"
 import { Character } from "@/api/characters/ICharactersApi";
 import {Episode} from "@/api/episodes/IEpisodesApi"
+import EpisodesApi from "@/api/episodes/episodes";
 import { AxiosError } from "axios";
 
 
@@ -109,4 +110,83 @@ export const useCharactersStore = defineStore("characters", {
       }
   } 
   },
+
+  
 });
+
+export const useEpisodesStore = defineStore("episodes", {
+  state:() => ({
+        name: "" as string,
+        episode: "" as string,
+        errorMessage: "" as string | null,
+        isLoading: false as boolean,
+        canLoadMore: true as boolean,
+        page: 1 as number,
+        episodesList: [] as Episode[] | undefined,
+        characterList:[] as Character[] |undefined,
+        episodeInfo: {} as Episode | undefined
+      }
+    ),
+
+  actions:{
+    async fetchEpisodes() {
+      this.isLoading = true;
+        try {
+            const data =  await EpisodesApi.fetchEpisodes(this.episode,this.page);
+            this.episodesList = data.results
+            this.errorMessage = "";
+            this.page = 1;
+            if(data.info.pages == this.page){
+              this.canLoadMore = false
+            }else{
+              this.canLoadMore = true
+            }
+        } catch (error:unknown) {
+          if (error instanceof AxiosError) { 
+              if (error.response && error.response.status === 404) {
+                  this.errorMessage = "No episodes found for the selected filters.";
+                  this.canLoadMore = false
+                } else {
+                  this.errorMessage = "An error occurred. Please try again later.";
+                }
+        } 
+        } finally {
+         this.isLoading = false
+        }
+      },
+      async updatePage () {
+      
+        try {
+          const data =  await EpisodesApi.fetchEpisodes(this.episode,this.page);
+          const newEpisodes = data.results
+          
+          this.episodesList?.push(...newEpisodes);
+      
+          if(data.info.pages == this.page){
+            this.canLoadMore = false
+          }
+          
+        } catch (error: unknown) {
+          if(error instanceof AxiosError){
+            if (error.response && error.response.status === 404) {
+            this.canLoadMore = false;
+          } else {
+            this.errorMessage = "An error occurred. Please try again later.";
+          }
+           } 
+          }finally {
+           this.isLoading = false
+           }
+          
+      },
+      async fetchEpisodeInfo(id: string){
+        try {
+            this.episodeInfo = await EpisodesApi.getEpisodeInfo(id);
+            
+        } catch (error) {
+            console.error('Failed to fetch episode info:', error);
+            
+        }
+    } 
+    }
+    });
