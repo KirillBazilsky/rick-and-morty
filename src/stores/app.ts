@@ -2,7 +2,10 @@ import { defineStore } from "pinia";
 import CharactersApi from "@/api/characters/charactersApi"
 import { Character } from "@/api/characters/ICharactersApi";
 import {Episode} from "@/api/episodes/IEpisodesApi"
+import EpisodesApi from "@/api/episodes/episodes";
 import { AxiosError } from "axios";
+import LocationsApi from "@/api/locations/locationsApi";
+import Location from "@/api/locations/ILocationsApi";
 
 
 export const useAppStore = defineStore("app", {
@@ -109,4 +112,184 @@ export const useCharactersStore = defineStore("characters", {
       }
   } 
   },
+
+  
 });
+
+export const useEpisodesStore = defineStore("episodes", {
+  state:() => ({
+        name: "" as string,
+        episode: "" as string,
+        errorMessage: "" as string | null,
+        isLoading: false as boolean,
+        canLoadMore: true as boolean,
+        page: 1 as number,
+        episodesList: [] as Episode[] | undefined,
+        charactersList:[] as Character[] |undefined,
+        charactersUrl:[] as string[],
+        episodeInfo: {} as Episode | undefined
+      }
+    ),
+
+  actions:{
+    async fetchEpisodes() {
+      this.isLoading = true;
+        try {
+            const data =  await EpisodesApi.fetchEpisodes(this.episode,this.page);
+            this.episodesList = data.results
+            this.errorMessage = "";
+            this.page = 1;
+            if(data.info.pages == this.page){
+              this.canLoadMore = false
+            }else{
+              this.canLoadMore = true
+            }
+        } catch (error:unknown) {
+          if (error instanceof AxiosError) { 
+              if (error.response && error.response.status === 404) {
+                  this.errorMessage = "No episodes found for the selected filters.";
+                  this.canLoadMore = false
+                } else {
+                  this.errorMessage = "An error occurred. Please try again later.";
+                }
+        } 
+        } finally {
+         this.isLoading = false
+        }
+      },
+      async updatePage () {
+      
+        try {
+          const data =  await EpisodesApi.fetchEpisodes(this.episode,this.page);
+          const newEpisodes = data.results
+          
+          this.episodesList?.push(...newEpisodes);
+      
+          if(data.info.pages == this.page){
+            this.canLoadMore = false
+          }
+          
+        } catch (error: unknown) {
+          if(error instanceof AxiosError){
+            if (error.response && error.response.status === 404) {
+            this.canLoadMore = false;
+          } else {
+            this.errorMessage = "An error occurred. Please try again later.";
+          }
+           } 
+          }finally {
+           this.isLoading = false
+           }
+          
+      },
+      async fetchEpisodeInfo(id: string){
+        try {
+            this.episodeInfo = await EpisodesApi.getEpisodeInfo(id);
+            this.episodeInfo?.characters.forEach(async character => {
+              this.charactersUrl.push(character.split('/')[character.split('/').length-1])
+            })
+            const characters = await CharactersApi.getCharacters(this.charactersUrl)
+            if(characters[0]==undefined){
+              
+              this.charactersList?.push(characters)
+            } else{
+             
+              this.charactersList = characters
+            }
+            
+        } catch (error) {
+            console.error('Failed to fetch episode info:', error);
+            
+        }
+    } 
+    }
+    });
+
+    export const useLocationsStore = defineStore("locations", {
+      state:() => ({
+            name: "" as string,
+            type: "" as string,
+            dimensions: "" as string,
+            errorMessage: "" as string | null,
+            isLoading: false as boolean,
+            canLoadMore: true as boolean,
+            page: 1 as number,
+            locationsList: [] as Location[] | undefined,
+            charactersList:[] as Character[] |undefined,
+            charactersUrl:[] as string[],
+            locationInfo: {} as Location | undefined
+          }
+        ),
+    
+      actions:{
+        async fetchLocations() {
+          this.isLoading = true;
+            try {
+                const data =  await LocationsApi.fetchLocations(this.name,this.type,this.dimensions,this.page);
+                this.locationsList = data.results
+                this.errorMessage = "";
+                if(data.info.pages == this.page){
+                  this.canLoadMore = false
+                }else{
+                  this.canLoadMore = true
+                }
+            } catch (error:unknown) {
+              if (error instanceof AxiosError) { 
+                  if (error.response && error.response.status === 404) {
+                      this.errorMessage = "No locations found for the selected filters.";
+                      this.canLoadMore = false
+                    } else {
+                      this.errorMessage = "An error occurred. Please try again later.";
+                    }
+            } 
+            } finally {
+             this.isLoading = false
+            }
+          },
+          async updatePage () {
+          
+            try {
+              const data =  await LocationsApi.fetchLocations(this.name,this.type,this.dimensions,this.page);
+              const newLocations = data.results
+              
+              this.locationsList?.push(...newLocations);
+          
+              if(data.info.pages == this.page){
+                this.canLoadMore = false
+              }
+              
+            } catch (error: unknown) {
+              if(error instanceof AxiosError){
+                if (error.response && error.response.status === 404) {
+                this.canLoadMore = false;
+              } else {
+                this.errorMessage = "An error occurred. Please try again later.";
+              }
+               } 
+              }finally {
+               this.isLoading = false
+               }
+              
+          },
+          async fetchLocationInfo(id: string){
+            try {
+                this.locationInfo = await LocationsApi.getlocationInfo(id);
+                this.locationInfo?.residents.forEach(async character => {
+                  this.charactersUrl.push(character.split('/')[character.split('/').length-1])
+                })
+                const characters = await CharactersApi.getCharacters(this.charactersUrl)
+                if(characters[0]==undefined){
+                  
+                  this.charactersList?.push(characters)
+                } else{
+                 
+                  this.charactersList = characters
+                }
+                
+            } catch (error) {
+                console.error('Failed to fetch location info:', error);
+                
+            }
+        } 
+        }
+        });
