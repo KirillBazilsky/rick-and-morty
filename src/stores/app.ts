@@ -123,7 +123,8 @@ export const useEpisodesStore = defineStore("episodes", {
         canLoadMore: true as boolean,
         page: 1 as number,
         episodesList: [] as Episode[] | undefined,
-        characterList:[] as Character[] |undefined,
+        charactersList:[] as Character[] |undefined,
+        charactersUrl:[] as string[],
         episodeInfo: {} as Episode | undefined
       }
     ),
@@ -182,6 +183,17 @@ export const useEpisodesStore = defineStore("episodes", {
       async fetchEpisodeInfo(id: string){
         try {
             this.episodeInfo = await EpisodesApi.getEpisodeInfo(id);
+            this.episodeInfo?.characters.forEach(async character => {
+              this.charactersUrl.push(character.split('/')[character.split('/').length-1])
+            })
+            const characters = await EpisodesApi.getEpisodes(this.charactersUrl)
+            if(characters[0]==undefined){
+              
+              this.charactersList?.push(characters)
+            } else{
+             
+              this.charactersList = characters
+            }
             
         } catch (error) {
             console.error('Failed to fetch episode info:', error);
