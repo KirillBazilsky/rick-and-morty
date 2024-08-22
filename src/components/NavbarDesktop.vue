@@ -19,17 +19,8 @@
 </template>
 
 <script setup lang="ts">
-interface Link {
-  to: string;
-  title: string;
-}
-const linkArr: Link[] = [
-  { to: "/characters", title: "Characters" },
-  { to: "/locations", title: "Locations" },
-  { to: "/episodes", title: "Episodes" },
-];
-
 import { useAppStore } from "../stores/app";
+import { linkArr } from "@/constatnts/constants";
 
 const store = useAppStore();
 

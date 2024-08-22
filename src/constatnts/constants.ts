@@ -1,3 +1,7 @@
+interface Link {
+  to: string;
+  title: string;
+}
 export const API_URL = import.meta.env.VITE_RICK_AND_MORTY_API_URL;
 export const speciesList:string[] = [
     "human",
@@ -12,5 +16,46 @@ export const speciesList:string[] = [
   ];
 export  const genderList :string[] = ["Male", "Female", "Genderless", "unknown"];
 export const statusList:string[] = ["alive", "dead", "unknown"];
-export const typeList:string[] = ["planet", "space station", "cluster","microverse","TV", "fantasy town", "dream", "dimention", "menagerie","arcade", "cuasar", "customs", "resort", "game", "dwarf planet", "teenyverse", "SPA", "box", "diegesis", "non-diegetic alternative reality", "nightmare", "asteroid", "acid planet", "death star", "liquid", "reality", "human", "spacecraft", "base", "elemental rings", "hell", "space", "Consciousness", "country", "police department", "memory",  "unknown"];
+export const typeList:string[] = ["planet", 
+  "space station", 
+  "cluster",
+  "microverse",
+  "TV", 
+  "fantasy town",
+  "dream", 
+  "dimention", 
+  "menagerie",
+  "arcade",
+  "cuasar", 
+  "customs", 
+  "resort", 
+  "game", 
+  "dwarf planet", 
+  "teenyverse", 
+  "SPA", 
+  "box", 
+  "diegesis", 
+  "non-diegetic alternative reality", 
+  "nightmare", 
+  "asteroid", 
+  "acid planet", 
+  "death star", 
+  "liquid", 
+  "reality", 
+  "human", 
+  "spacecraft", 
+  "base", 
+  "elemental rings", 
+  "hell", "space", 
+  "Consciousness", 
+  "country", 
+  "police department", 
+  "memory",  
+  "unknown"];
 export const dimensionList:string[] = ["Dimension C-137", "unknown"];
+
+export const linkArr: Link[] = [
+  { to: "/characters", title: "Characters" },
+  { to: "/locations", title: "Locations" },
+  { to: "/episodes", title: "Episodes" },
+];
