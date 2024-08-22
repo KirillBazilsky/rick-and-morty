@@ -52,7 +52,7 @@ export const typeList:string[] = ["planet",
   "police department", 
   "memory",  
   "unknown"];
-export const dimensionList:string[] = ["Dimension C-137", "unknown"];
+export const dimensionList:string[] = ["Dimension C-137", "post-apocalyptic dimension", "replacement dimension", "cronenberg dimension", "fantasy dimension", "Dimension 5-126", "Testicle Monster Dimension", "Cromulon Dimension", "Dimension C-500A", "Dimension K-83", "Dimension J19ζ7", "Giant Telepathic Spiders Dimension", "fascist teddy bear dimension", "evil rick`s target dimension", "Dimension K-22", "Dimension D-99", "Dimension D716", "Dimension D716-B", "Dimension D716-C", "Dimension J-22", "Dimension C-35", "pizza dimension", "phone dimension", "chair dimension", "fascist dimension", "fascist shimp dimesion", "unknown"];
 
 export const linkArr: Link[] = [
   { to: "/characters", title: "Characters" },

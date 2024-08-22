@@ -5,7 +5,7 @@
           <v-img
             :src="rickAndMortySpin"
             alt="Rick and Morty logo"
-            class="d-flex justify-center align-center mt-14"
+            class="d-flex justify-center align-center mt-16 pt-8"
             max-width="326px"
           ></v-img>
         </v-col>
@@ -192,16 +192,4 @@ const applyFilters = function(){
   };
   </script>
   
-  <style scoped>
-  .img-wrapper {
-    width: 100vw;
-    display: flex;
-    justify-content: center;
-  }
-  img {
-    width: 600px;
-    height: 200px;
-    margin-top: 1000px;
-  }
-  </style>
   
