@@ -68,4 +68,5 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ['vuetify'],
   },
+  base: '/rick-and-morty/'
 });
