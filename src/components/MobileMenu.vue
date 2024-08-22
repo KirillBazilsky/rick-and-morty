@@ -1,5 +1,5 @@
 <template>
-    <container class="d-flex flex-column align-center mt-16" style="height:75vh">
+    <v-container class="d-flex flex-column align-center mt-16" style="height:75vh">
         <router-link
     v-for="link in linkArr"
     :key="link.title"
@@ -8,7 +8,7 @@
     @click="appStore.toggleMenu"
     >{{ link.title }}</router-link
   >
-    </container>
+    </v-container>
 </template>
 
 <script setup lang="ts">

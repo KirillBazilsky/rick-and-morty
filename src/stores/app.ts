@@ -312,18 +312,26 @@ export const useEpisodesStore = defineStore("episodes", {
                 this.locationInfo?.residents.forEach(async character => {
                   this.charactersUrl.push(character.split('/')[character.split('/').length-1])
                 })
-                const characters = await CharactersApi.getCharacters(this.charactersUrl)
-                if(characters[0]==undefined){
+                if (this.charactersUrl.length > 0){
+                  const characters = await CharactersApi.getCharacters(this.charactersUrl)
+                  if(characters[0]==undefined){
                   
                   this.charactersList?.push(characters)
                 } else{
                  
                   this.charactersList = characters
                 }
+                } else this.errorMessage = "nobody"
                 
-            } catch (error) {
+                
+                
+              
+                
+                
+            } catch (error:unknown) {
+              if(error instanceof AxiosError){
                 console.error('Failed to fetch location info:', error);
-                
+              }
             }finally {
               this.isLoading = false
               }

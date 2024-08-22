@@ -41,7 +41,7 @@
         </v-container>       
         <v-container>
             <p class="text-h6 text-grey">Residents</p>
-            <v-row v-if="!locationsStore.errorMessage">     
+            <v-row v-if="!locationsStore.errorMessage || locationsStore.charactersUrl.length > 0 ">     
                 <v-col
                 v-for="character in locationsStore.charactersList"
                 :key="character.id"
@@ -51,6 +51,11 @@
                     <CharacterCard  :name="character.name" :image="character.image" :species="character.species" :id="character.id"/>
           
                 </v-col>
+            </v-row>
+            <v-row v-else>
+                <v-container class="d-flex justify-center align-center">
+                    <p class="Text-h4">Not found</p>
+                </v-container>
             </v-row>
         </v-container>
     </v-main>   
