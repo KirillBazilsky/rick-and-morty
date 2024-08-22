@@ -55,7 +55,7 @@
                   </v-btn>
                 </template>
                 <v-container>    
-                  <v-sheet class="pa-8">
+                  <v-sheet class="px-2 py-8">
                     <v-row>
                     <v-col>
                       <p class="texh-h4 font-weight-bold">Filters</p>
