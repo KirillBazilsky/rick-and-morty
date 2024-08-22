@@ -127,22 +127,14 @@
       </v-container>
       <v-container v-else-if="!charactersStore.errorMessage">
         <v-row >
-                <v-col
-                  v-for="character in charactersStore.characters"
-                  :key="character.id"
-                  cols="12"
-                  sm="3"
-                >
-                  <v-card :key="character.name" elevation="5" :to="{ path:`/character-details/${character.id}` }" class="p-6">
-                    <v-img :src="character.image" height="167px" cover> </v-img>
-                    <v-card-title class="pb-0">
-                      {{ character.name }}
-                    </v-card-title>
-                    <v-card-subtitle class="pt-0 pb-4">
-                      {{ character.species }}
-                    </v-card-subtitle>
-                  </v-card>
-                </v-col>
+          <v-col
+            v-for="character in charactersStore.characters"
+            :key="character.id"
+            cols="12"
+            sm="3"
+            >
+              <CharacterCard :name="character.name" :image="character.image" :species="character.species" :id="character.id"/>
+          </v-col>
         </v-row>
       </v-container>
       <v-container v-else class="d-flex justify-center align-center" style="height:45vh">
@@ -173,6 +165,7 @@ import pngLogoBig from '@/assets/PngLogoBig.svg'
 import { speciesList,genderList,statusList } from "@/constatnts/constants";
 import LoadingImage from "../components/LoadingImage.vue";
 import { useCharactersStore } from "@/stores/app";
+import CharacterCard from "@/components/CharacterCard.vue";
 
 const charactersStore = useCharactersStore();
 

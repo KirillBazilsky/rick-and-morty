@@ -42,22 +42,14 @@
         <v-container>
             <p class="text-h6 text-grey">Cast</p>
             <v-row v-if="!episodesStore.errorMessage">     
-        <v-col
-          v-for="character in episodesStore.charactersList"
-          :key="character.id"
-          cols="12"
-          md="3"
-        >
-          <v-card :key="character.name" elevation="5" :to="{ path:`/character-details/${character.id}` }">
-            <v-img :src="character.image" height="167px" cover> </v-img>
-            <v-card-title>
-              {{ character.name }}
-            </v-card-title>
-            <v-card-subtitle>
-              {{ character.species }}
-            </v-card-subtitle>
-          </v-card>
-        </v-col>
+            <v-col
+                v-for="character in episodesStore.charactersList"
+                :key="character.id"
+                cols="12"
+                md="3"
+            >
+                <CharacterCard  :name="character.name" :image="character.image" :species="character.species" :id="character.id"/>
+            </v-col>
       </v-row>
         </v-container>
     </v-main>   
@@ -75,6 +67,7 @@
 import { useRoute, useRouter} from 'vue-router';
 import { useEpisodesStore } from "@/stores/app";
 import LoadingImage from "../components/LoadingImage.vue";
+import CharacterCard from '@/components/CharacterCard.vue';
 
 const episodesStore = useEpisodesStore();
 
