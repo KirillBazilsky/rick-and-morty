@@ -38,8 +38,7 @@
                     </v-table>
                 </v-col>
             </v-row>
-        </v-container>
-        
+        </v-container>       
         <v-container>
             <p class="text-h6 text-grey">Residents</p>
             <v-row v-if="!locationsStore.errorMessage">     
@@ -73,7 +72,6 @@
     
 </template>
  
-
 
 <script setup lang="ts">
 import { useRoute, useRouter} from 'vue-router';

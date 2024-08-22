@@ -119,8 +119,6 @@
                 </v-col>
             </v-row>
         </v-container>
-            
-   
     </v-main>   
     <v-main v-else-if="charactersStore.isLoading">
         <LoadingImage />
@@ -130,8 +128,6 @@
             <p>{{ charactersStore.errorMessage }}</p>
         </v-container>
     </v-main>
-
-    
 </template>
  
 

@@ -118,9 +118,7 @@
                 </v-sheet>
                 </v-container>
               </v-menu>
-          </v-col>
-              
-          
+          </v-col>    
         </v-row>
       </v-container>
       <v-container v-if="charactersStore.isLoading">

@@ -39,7 +39,6 @@
                 </v-col>
             </v-row>
         </v-container>
-        
         <v-container>
             <p class="text-h6 text-grey">Cast</p>
             <v-row v-if="!episodesStore.errorMessage">     
@@ -61,8 +60,6 @@
         </v-col>
       </v-row>
         </v-container>
-            
-   
     </v-main>   
     <v-main v-else-if="episodesStore.isLoading">
         <LoadingImage />
@@ -71,12 +68,9 @@
         <v-container class="d-flex justify-center align-center" style="height:75vw">
             <p>{{ episodesStore.errorMessage }}</p>
         </v-container>
-    </v-main>
-    
+    </v-main>    
 </template>
  
-
-
 <script setup lang="ts">
 import { useRoute, useRouter} from 'vue-router';
 import { useEpisodesStore } from "@/stores/app";

@@ -9,8 +9,7 @@
             max-width="326px"
           ></v-img>
         </v-col>
-      </v-row>
-   
+      </v-row> 
       <v-container>
         <v-row class="d-flex justify-center ">
           <v-col cols="12" md="4">
@@ -54,8 +53,7 @@
                     Advansed filters
                   </v-btn>
                 </template>
-                <v-container>
-                  
+                <v-container>    
                   <v-sheet class="pa-8">
                     <v-row>
                     <v-col>
@@ -95,13 +93,9 @@
                 </v-sheet>
                 </v-container>
               </v-menu>
-          </v-col>
-              
-          
+          </v-col>        
         </v-row>
       </v-container>
-        
-        
     <main v-if="locationsStore.isLoading">
       <LoadingImage />
     </main>
@@ -126,8 +120,7 @@
         <div v-else class="container">
           <p>{{ locationsStore.errorMessage }}</p>
         </div>
-      </v-container>
-        
+      </v-container>  
       <v-container>
         <v-row class="d-flex align-center justify-center">
           <v-col class="text-center" cols="12">
@@ -145,8 +138,6 @@
         </v-row>
       </v-container>
     </main>
-        
-    
   </template>
   
   <script setup lang="ts">
@@ -169,14 +160,12 @@ const applyFilters = function(){
   locationsStore.menu = false;
 }
   
-  
   onMounted(() => {
     locationsStore.fetchLocations();
   });
   
   watch(() => locationsStore.name, 
-        () => {setTimeout(()=>locationsStore.fetchLocations(),300)
-           
+        () => {setTimeout(()=>locationsStore.fetchLocations(),300)   
         }
       );
   watch(() => [locationsStore.type,locationsStore.dimensions], 
