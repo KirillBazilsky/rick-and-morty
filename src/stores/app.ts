@@ -109,6 +109,7 @@ export const useCharactersStore = defineStore("characters", {
         this.characterInfo = undefined;
         this.page = 1;
         this.episodesList = [];
+        this.episodesUrl = [];
         this.characterInfo = await CharactersApi.getCharacterInfo(id);
         this.characterInfo?.episode.forEach(async episode => {
           this.episodesUrl.push(episode.split('/')[episode.split('/').length-1])
@@ -208,7 +209,8 @@ export const useEpisodesStore = defineStore("episodes", {
       async fetchEpisodeInfo(id: string){
         try {
             this.isLoading = true
-            this.charactersList = []
+            this.charactersList = [];
+            this.charactersUrl = [];
             this.page = 1
             this.episodeInfo = await EpisodesApi.getEpisodeInfo(id);
             this.episodeInfo?.characters.forEach(async character => {
@@ -304,6 +306,7 @@ export const useEpisodesStore = defineStore("episodes", {
             try {
                 this.isLoading = true
                 this.charactersList = [];
+                this.charactersUrl = [];
                 this.page = 1;
                 this.locationInfo = await LocationsApi.getlocationInfo(id);
                 this.locationInfo?.residents.forEach(async character => {

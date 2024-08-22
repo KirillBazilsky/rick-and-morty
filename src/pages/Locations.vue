@@ -44,6 +44,7 @@
         </v-row>
         <v-row class="d-sm-none">
           <v-col>
+            <v-overlay v-model="locationsStore.menu"></v-overlay>
             <v-menu 
                 v-model="locationsStore.menu"
                 :close-on-content-click="false"

@@ -59,6 +59,7 @@
         </v-row>
         <v-row class="d-sm-none">
           <v-col>
+            <v-overlay v-model="charactersStore.menu"></v-overlay>
             <v-menu 
                 v-model="charactersStore.menu"
                 :close-on-content-click="false"

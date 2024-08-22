@@ -4,10 +4,13 @@
       <v-container>
         <v-row class="d-flex justify-center align-center">
           <v-col>
-            <img
+            <router-link to="/">
+              <v-img
               :src="logoBlack"
               alt="rick and morty black logo"
-            />
+              width="46px"/>
+            </router-link>
+            
           </v-col>
           <v-spacer></v-spacer>
           <v-col class="d-flex justify-end align-center">
