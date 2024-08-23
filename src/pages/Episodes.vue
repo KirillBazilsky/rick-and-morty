@@ -19,7 +19,7 @@
           <v-text-field
             placeholder="Filter by name or episode (ex. S01 or S01E02)"
             prepend-inner-icon="mdi-magnify"
-            v-model="episodesStore.episode"
+            v-model="episodesStore.filters.episode"
             rounded="lg"
             variant="outlined"
           ></v-text-field>
@@ -98,14 +98,14 @@ onMounted(() => {
 });
 
 watch(
-  () => episodesStore.episode,
+  () => episodesStore.filters.episode,
   () => {
     setTimeout(() => episodesStore.getAllEpisodes(), 700);
   },
 );
 
 const loadMoreItems = () => {
-  episodesStore.page += 1;
+  episodesStore.pagination.page += 1;
   episodesStore.loadMoreEpisodes();
 };
 </script>

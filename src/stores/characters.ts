@@ -3,44 +3,47 @@ import CharactersApi from "@/api/characters/CharactersApi";
 import { ICharacter } from "@/api/characters/ICharactersApi";
 import { IEpisode } from "@/api/episodes/IEpisodesApi";
 import { AxiosError } from "axios";
-import { getId, splitString } from "@/api/IdGetterApi";
 import EpisodesApi from "@/api/episodes/EpisodesApi";
+import { getLastSegment, getUrl } from "@/utils/url/url";
 
 export const useCharactersStore = defineStore("characters", {
   state: () => ({
-    menu: false as boolean,
-    name: "" as string,
+    filters: {
+      name: "" as string,
+      species: null as string | null,
+      status: null as string | null,
+      gender: null as string | null,
+    },
+    pagination: {
+      page: 1 as number,
+    },
     characters: [] as ICharacter[],
-    species: undefined as string | undefined,
-    status: undefined as string | undefined,
-    gender: undefined as string | undefined,
     errorMessage: "" as string | null,
     isLoading: false as boolean,
     canLoadMore: true as boolean,
-    page: 1 as number,
-    characterInfo: undefined as ICharacter | undefined,
-    episodesList: [] as IEpisode[] | undefined,
-    locationId: undefined as string | undefined,
+    characterInfo: null as ICharacter | null,
+    episodesList: [] as IEpisode[] | null,
+    locationId: null as string | null,
     charactersApi: new CharactersApi(),
     episodesApi: new EpisodesApi(),
   }),
   getters: {
-    watch: (state) => state.name,
+    watch: (state) => state.filters.name,
   },
   actions: {
     async getAllCharacters() {
       try {
-        this.page = 1;
+        this.pagination.page = 1;
         this.isLoading = true;
         const data = await this.charactersApi.getAllCharacters(
-          this.name,
-          this.species,
-          this.gender,
-          this.status,
+          this.filters.name,
+          this.filters.species,
+          this.filters.gender,
+          this.filters.status,
         );
         this.characters = data.results;
         this.errorMessage = "";
-        if (data.info.pages == this.page) {
+        if (data.info.pages == this.pagination.page) {
           this.canLoadMore = false;
         } else {
           this.canLoadMore = true;
@@ -62,17 +65,17 @@ export const useCharactersStore = defineStore("characters", {
       try {
         this.isLoading = true;
         const data = await this.charactersApi.getAllCharacters(
-          this.name,
-          this.species,
-          this.gender,
-          this.status,
-          this.page,
+          this.filters.name,
+          this.filters.species,
+          this.filters.gender,
+          this.filters.status,
+          this.pagination.page,
         );
         const newCharacters = data.results;
 
         this.characters.push(...newCharacters);
 
-        if (data.info.pages == this.page) {
+        if (data.info.pages == this.pagination.page) {
           this.canLoadMore = false;
         }
       } catch (error: unknown) {
@@ -90,13 +93,13 @@ export const useCharactersStore = defineStore("characters", {
     async getSingleCharacter(id: string) {
       try {
         this.isLoading = true;
-        this.characterInfo = undefined;
-        this.page = 1;
+        this.characterInfo = null;
+        this.pagination.page = 1;
         this.episodesList = [];
 
         this.characterInfo = await this.charactersApi.getSingleCharacter(id);
         if (this.characterInfo) {
-          const episodesUrl: string[] = getId(this.characterInfo.episode);
+          const episodesUrl: string[] = getUrl(this.characterInfo.episode);
           const episodes: IEpisode[] | IEpisode =
             await this.episodesApi.getMultiplyEpisodes(episodesUrl);
           if (Array.isArray(episodes) && episodes.length) {
@@ -104,7 +107,7 @@ export const useCharactersStore = defineStore("characters", {
           } else if (!Array.isArray(episodes)) {
             this.episodesList.push(episodes);
           }
-          this.locationId = splitString(this.characterInfo?.location.url);
+          this.locationId = getLastSegment(this.characterInfo?.location.url);
         }
       } catch (error: unknown) {
         if (error instanceof AxiosError) {

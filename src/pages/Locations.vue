@@ -15,7 +15,7 @@
         <v-text-field
           placeholder="Filtered by name"
           prepend-inner-icon="mdi-magnify"
-          v-model="locationsStore.name"
+          v-model="locationsStore.filters.name"
           rounded="lg"
           variant="outlined"
         ></v-text-field>
@@ -27,7 +27,7 @@
           :items="typeList"
           variant="outlined"
           :clearable="true"
-          v-model="locationsStore.type"
+          v-model="locationsStore.filters.type"
         ></v-select>
       </v-col>
       <v-col cols="3" class="d-none d-md-flex">
@@ -37,15 +37,15 @@
           :items="dimensionList"
           variant="outlined"
           :clearable="true"
-          v-model="locationsStore.dimensions"
+          v-model="locationsStore.filters.dimensions"
         ></v-select>
       </v-col>
     </v-row>
     <v-row class="d-sm-none">
       <v-col>
-        <v-overlay v-model="locationsStore.menu"></v-overlay>
+        <v-overlay v-model="isToggleMenu"></v-overlay>
         <v-menu
-          v-model="locationsStore.menu"
+          v-model="isToggleMenu"
           :close-on-content-click="false"
           location="center"
         >
@@ -71,7 +71,7 @@
                   <v-icon
                     icon="mdi-close"
                     color="grey"
-                    @click="locationsStore.menu = false"
+                    @click="isToggleMenu = false"
                   >
                   </v-icon>
                 </v-col>
@@ -84,7 +84,7 @@
                 :items="typeList"
                 variant="outlined"
                 :clearable="true"
-                v-model="tempType"
+                v-model="selectedType"
               ></v-select>
               <v-select
                 min-width="75vw"
@@ -94,7 +94,7 @@
                 :items="dimensionList"
                 variant="outlined"
                 :clearable="true"
-                v-model="tempDimension"
+                v-model="selectedDimension"
               ></v-select>
               <v-btn
                 class="bg-blue-lighten-5 text-blue"
@@ -166,20 +166,19 @@
 <script setup lang="ts">
 import { onMounted, watch } from "vue";
 import rickAndMortySpin from "@/assets/rickAndMortySpin.svg";
-import { typeList, dimensionList } from "@/constatnts/constants";
-import LoadingImage from "../components/LoadingImage.vue";
-import { useLocationsStore } from "@/stores/location";
+import { typeList, dimensionList } from "@/constatnts/locations";
+import LoadingImage from "@/components/LoadingImage.vue";
+import { useLocationsStore } from "@/stores/location"; 
 
 const locationsStore = useLocationsStore();
-
-const tempType = ref("");
-const tempDimension = ref("");
+const isToggleMenu = ref(false);
+const selectedType = ref("");
+const selectedDimension = ref("");
 
 const applyFilters = function () {
-  locationsStore.type = tempType.value;
-  locationsStore.dimensions = tempDimension.value;
-
-  locationsStore.menu = false;
+  locationsStore.filters.type = selectedType.value;
+  locationsStore.filters.dimensions = selectedDimension.value;
+  isToggleMenu.value = !isToggleMenu.value;
 };
 
 onMounted(() => {
@@ -187,20 +186,20 @@ onMounted(() => {
 });
 
 watch(
-  () => locationsStore.name,
+  () => locationsStore.filters.name,
   () => {
     setTimeout(() => locationsStore.getAllLocations(), 300);
   },
 );
 watch(
-  () => [locationsStore.type, locationsStore.dimensions],
+  () => [locationsStore.filters.type, locationsStore.filters.dimensions],
   () => {
     locationsStore.getAllLocations();
   },
 );
 
 const loadMoreItems = () => {
-  locationsStore.page += 1;
+  locationsStore.pagination.page += 1;
   locationsStore.loadMoreLocations();
 };
 </script>

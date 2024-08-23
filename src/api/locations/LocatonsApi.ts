@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { API_URL } from "@/constatnts/constants";
+import { API_URL } from "@/constatnts/api";
 import ILocation, {
   ILocationsApi,
   IResponseAllLocations,

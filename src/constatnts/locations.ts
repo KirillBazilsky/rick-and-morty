@@ -1,21 +1,3 @@
-interface Link {
-  to: string;
-  title: string;
-}
-export const API_URL = import.meta.env.VITE_RICK_AND_MORTY_API_URL;
-export const speciesList: string[] = [
-  "human",
-  "humanoid",
-  "alien",
-  "robot",
-  "animal",
-  "disease",
-  "poopybutthole",
-  "mythological creature",
-  "unknown",
-];
-export const genderList: string[] = ["Male", "Female", "Genderless", "unknown"];
-export const statusList: string[] = ["alive", "dead", "unknown"];
 export const typeList: string[] = [
   "planet",
   "space station",
@@ -83,10 +65,4 @@ export const dimensionList: string[] = [
   "fascist dimension",
   "fascist shimp dimesion",
   "unknown",
-];
-
-export const linkArr: Link[] = [
-  { to: "/characters", title: "Characters" },
-  { to: "/locations", title: "Locations" },
-  { to: "/episodes", title: "Episodes" },
 ];

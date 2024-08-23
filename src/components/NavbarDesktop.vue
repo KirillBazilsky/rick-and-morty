@@ -9,18 +9,15 @@
     >
   </v-container>
 
-  <v-btn icon="mdi-menu" class="d-block d-sm-none" @click="toggleMenu"> </v-btn>
+  <v-btn icon="mdi-menu" class="d-block d-sm-none" @click="props.toggleMenu">
+  </v-btn>
 </template>
 
 <script setup lang="ts">
-import { useAppStore } from "../stores/app";
-import { linkArr } from "@/constatnts/constants";
-
-const appStore = useAppStore();
-
-const toggleMenu = () => {
-  appStore.toggleMenu();
-};
+import { linkArr } from "@/constatnts/navigation";
+const props = defineProps<{
+  toggleMenu: Function;
+}>();
 </script>
 
 <style scoped></style>

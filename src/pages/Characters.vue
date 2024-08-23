@@ -18,7 +18,7 @@
           <v-text-field
             placeholder="Filtered by name"
             prepend-inner-icon="mdi-magnify"
-            v-model="charactersStore.name"
+            v-model="charactersStore.filters.name"
             rounded="lg"
             variant="outlined"
           ></v-text-field>
@@ -31,7 +31,7 @@
             :items="speciesList"
             variant="outlined"
             :clearable="true"
-            v-model="charactersStore.species"
+            v-model="charactersStore.filters.species"
           ></v-select>
         </v-col>
         <v-col class="d-none d-sm-flex">
@@ -42,7 +42,7 @@
             :items="genderList"
             variant="outlined"
             :clearable="true"
-            v-model="charactersStore.gender"
+            v-model="charactersStore.filters.gender"
           ></v-select>
         </v-col>
         <v-col class="d-none d-sm-flex">
@@ -53,15 +53,15 @@
             :items="statusList"
             variant="outlined"
             :clearable="true"
-            v-model="charactersStore.status"
+            v-model="charactersStore.filters.status"
           ></v-select>
         </v-col>
       </v-row>
       <v-row class="d-sm-none">
         <v-col>
-          <v-overlay v-model="charactersStore.menu"></v-overlay>
+          <v-overlay v-model="isToggleMenu"></v-overlay>
           <v-menu
-            v-model="charactersStore.menu"
+            v-model="isToggleMenu"
             :close-on-content-click="false"
             location="center"
           >
@@ -87,7 +87,7 @@
                     <v-icon
                       icon="mdi-close"
                       color="grey"
-                      @click="charactersStore.menu = false"
+                      @click="isToggleMenu = false"
                     >
                     </v-icon>
                   </v-col>
@@ -100,7 +100,7 @@
                   :items="speciesList"
                   variant="outlined"
                   :clearable="true"
-                  v-model="tempSpecies"
+                  v-model="selectedSpecies"
                 ></v-select>
                 <v-select
                   min-width="75vw"
@@ -110,7 +110,7 @@
                   :items="genderList"
                   variant="outlined"
                   :clearable="true"
-                  v-model="tempGender"
+                  v-model="selectedGender"
                 ></v-select>
                 <v-select
                   min-width="75vw"
@@ -120,7 +120,7 @@
                   :items="statusList"
                   variant="outlined"
                   :clearable="true"
-                  v-model="tempStatus"
+                  v-model="selectedStatus"
                 ></v-select>
                 <v-btn
                   class="bg-blue-lighten-5 text-blue"
@@ -184,22 +184,24 @@
 <script setup lang="ts">
 import { onMounted, watch, ref } from "vue";
 import pngLogoBig from "@/assets/PngLogoBig.svg";
-import { speciesList, genderList, statusList } from "@/constatnts/constants";
+import { speciesList, genderList, statusList } from "@/constatnts/characters";
 import LoadingImage from "../components/LoadingImage.vue";
 import { useCharactersStore } from "@/stores/characters";
 import CharacterCard from "@/components/CharacterCard.vue";
 
 const charactersStore = useCharactersStore();
+const isToggleMenu = ref(false) 
 
-const tempSpecies = ref("");
-let tempGender = ref("");
-let tempStatus = ref("");
+
+const selectedSpecies = ref("");
+const selectedGender = ref("");
+const selectedStatus = ref("");
 
 const applyFilters = function () {
-  charactersStore.species = tempSpecies.value;
-  charactersStore.gender = tempGender.value;
-  charactersStore.status = tempStatus.value;
-  charactersStore.menu = false;
+  charactersStore.filters.species = selectedSpecies.value;
+  charactersStore.filters.gender = selectedGender.value;
+  charactersStore.filters.status = selectedStatus.value;
+  isToggleMenu.value = false;
 };
 
 onMounted(() => {
@@ -207,16 +209,16 @@ onMounted(() => {
 });
 
 watch(
-  () => charactersStore.name,
+  () => charactersStore.filters.name,
   () => {
     setTimeout(() => charactersStore.getAllCharacters(), 700);
   },
 );
 watch(
   () => [
-    charactersStore.species,
-    charactersStore.gender,
-    charactersStore.status,
+    charactersStore.filters.species,
+    charactersStore.filters.gender,
+    charactersStore.filters.status,
   ],
   () => {
     charactersStore.getAllCharacters();
@@ -224,7 +226,7 @@ watch(
 );
 
 const loadMoreItems = () => {
-  charactersStore.page += 1;
+  charactersStore.pagination.page += 1;
   charactersStore.loadMoreCharacters();
 };
 </script>

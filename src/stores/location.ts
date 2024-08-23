@@ -4,21 +4,25 @@ import { ICharacter } from "@/api/characters/ICharactersApi";
 import { AxiosError } from "axios";
 import LocationsApi from "@/api/locations/LocatonsApi";
 import ILocation from "@/api/locations/ILocationsApi";
-import { getId } from "@/api/IdGetterApi";
+import { getUrl } from "@/utils/url/url";
 
 export const useLocationsStore = defineStore("locations", {
   state: () => ({
-    menu: false as boolean,
-    name: "" as string,
-    type: "" as string,
-    dimensions: "" as string,
+    filters: {
+      name: "" as string,
+      type: "" as string,
+      dimensions: "" as string,
+    },
+    pagination:{
+      page: 1 as number,
+    },
     errorMessage: "" as string | null,
     isLoading: false as boolean,
     canLoadMore: true as boolean,
-    page: 1 as number,
-    locationsList: [] as ILocation[] | undefined,
-    charactersList: [] as ICharacter[] | undefined,
-    locationInfo: {} as ILocation | undefined,
+    
+    locationsList: [] as ILocation[] | null,
+    charactersList: [] as ICharacter[] | null,
+    locationInfo: {} as ILocation | null,
     charactersApi: new CharactersApi(),
     locationsApi: new LocationsApi(),
   }),
@@ -27,16 +31,16 @@ export const useLocationsStore = defineStore("locations", {
     async getAllLocations() {
       this.isLoading = true;
       try {
-        this.page = 1;
+        this.pagination.page = 1;
         const data = await this.locationsApi.getAllLocations(
-          this.name,
-          this.type,
-          this.dimensions,
-          this.page,
+          this.filters.name,
+          this.filters.type,
+          this.filters.dimensions,
+          this.pagination.page,
         );
         this.locationsList = data.results;
         this.errorMessage = "";
-        if (data.info.pages == this.page) {
+        if (data.info.pages == this.pagination.page) {
           this.canLoadMore = false;
         } else {
           this.canLoadMore = true;
@@ -57,16 +61,16 @@ export const useLocationsStore = defineStore("locations", {
     async loadMoreLocations() {
       try {
         const data = await this.locationsApi.getAllLocations(
-          this.name,
-          this.type,
-          this.dimensions,
-          this.page,
+          this.filters.name,
+          this.filters.type,
+          this.filters.dimensions,
+          this.pagination.page,
         );
         const newLocations = data.results;
 
         this.locationsList?.push(...newLocations);
 
-        if (data.info.pages == this.page) {
+        if (data.info.pages == this.pagination.page) {
           this.canLoadMore = false;
         }
       } catch (error: unknown) {
@@ -85,9 +89,9 @@ export const useLocationsStore = defineStore("locations", {
       try {
         this.isLoading = true;
         this.charactersList = [];
-        this.page = 1;
+        this.pagination.page = 1;
         this.locationInfo = await this.locationsApi.getSingleLocation(id);
-        const charactersUrl: string[] = getId(this.locationInfo?.residents);
+        const charactersUrl: string[] = getUrl(this.locationInfo?.residents);
         if (charactersUrl.length) {
           const characters =
             await this.charactersApi.getMultiplyCharacters(charactersUrl);
@@ -96,8 +100,7 @@ export const useLocationsStore = defineStore("locations", {
           } else if (!Array.isArray(characters)) {
             this.charactersList?.push(characters);
           }
-        } 
-        else this.charactersList = undefined
+        } else this.charactersList = null;
       } catch (error: unknown) {
         if (error instanceof AxiosError) {
           console.error("Failed to fetch location info:", error);

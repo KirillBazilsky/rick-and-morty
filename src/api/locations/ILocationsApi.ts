@@ -1,3 +1,5 @@
+import { IINfo } from "../characters/ICharactersApi";
+
 export default interface ILocation {
   id: number;
   name: string;
@@ -8,7 +10,7 @@ export default interface ILocation {
   created: Date;
 }
 export interface IResponseAllLocations {
-  info: { count: number; pages: number; next: string; prev: string };
+  info: IINfo;
   results: ILocation[];
 }
 export interface ILocationsApi {

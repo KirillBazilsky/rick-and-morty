@@ -1,3 +1,5 @@
+import { IINfo } from "../characters/ICharactersApi";
+
 export interface IEpisode {
   id: string;
   name: string;
@@ -8,7 +10,7 @@ export interface IEpisode {
   created: Date;
 }
 export interface IResponseAllEpisodes {
-  info: { count: number; pages: number; next: string; prev: string };
+  info: IINfo;
   results: IEpisode[];
 }
 

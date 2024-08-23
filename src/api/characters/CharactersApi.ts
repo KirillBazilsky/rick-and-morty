@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { API_URL } from "@/constatnts/constants";
+import { API_URL } from "@/constatnts/api";
 import {
   ICharacter,
   ICharactersApi,
@@ -8,11 +8,11 @@ import {
 
 class CharactersApi implements ICharactersApi {
   public async getAllCharacters(
-    name?: string,
-    species?: string,
-    gender?: string,
-    status?: string,
-    page?: number,
+    name?: string | null,
+    species?: string | null,
+    gender?: string | null,
+    status?: string | null,
+    page?: number | null,
   ): Promise<IResponseAllCharacters> {
     const response: AxiosResponse<IResponseAllCharacters> = await axios.get(
       `${API_URL}character`,

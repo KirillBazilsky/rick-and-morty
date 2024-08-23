@@ -8,15 +8,15 @@
       :key="link.title"
       :to="link.to"
       class="link text-h6 ml-8 my-8 mx-12 text-center"
-      @click="appStore.toggleMenu"
+      @click="props.toggleMenu"
       >{{ link.title }}</router-link
     >
   </v-container>
 </template>
 
 <script setup lang="ts">
-import { linkArr } from "@/constatnts/constants";
-import { useAppStore } from "@/stores/app";
-
-const appStore = useAppStore();
+import { linkArr } from "@/constatnts/navigation";
+const props = defineProps<{
+  toggleMenu: Function;
+}>();
 </script>
