@@ -1,9 +1,8 @@
 import axios, { AxiosResponse } from "axios";
 import { API_URL } from "@/constatnts/constants";
-import {
+import ILocation, {
   ILocationsApi,
   IResponseAllLocations,
-  IResposeSingleLocation,
 } from "./ILocationsApi";
 
 class LocationsApi implements ILocationsApi {
@@ -30,8 +29,8 @@ class LocationsApi implements ILocationsApi {
     return { info, results };
   }
 
-  public async getSingleLocation(id?: string): Promise<IResposeSingleLocation> {
-    const response: AxiosResponse<IResposeSingleLocation> = await axios.get(
+  public async getSingleLocation(id?: string): Promise<ILocation> {
+    const response: AxiosResponse<ILocation> = await axios.get(
       `${API_URL}location/${id}`,
     );
 

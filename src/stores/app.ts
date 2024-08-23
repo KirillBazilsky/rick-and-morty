@@ -1,11 +1,11 @@
 import { defineStore } from "pinia";
 import CharactersApi from "@/api/characters/CharactersApi";
 import { ICharacter } from "@/api/characters/ICharactersApi";
-import { Episode } from "@/api/episodes/IEpisodesApi";
-import EpisodesApi from "@/api/episodes/episodes";
+import { IEpisode } from "@/api/episodes/IEpisodesApi";
+import EpisodesApi from "@/api/episodes/EpisodesApi";
 import { AxiosError } from "axios";
 import LocationsApi from "@/api/locations/locationsApi";
-import Location from "@/api/locations/ILocationsApi";
+import {ILocation} from "@/api/locations/ILocationsApi";
 
 export const useAppStore = defineStore("app", {
   state: () => ({
@@ -33,7 +33,7 @@ export const useCharactersStore = defineStore("characters", {
     page: 1 as number,
     characterInfo: undefined as ICharacter | undefined,
     episodesUrl: [] as string[],
-    episodesList: [] as Episode[] | undefined,
+    episodesList: [] as IEpisode[] | undefined,
     locationId: undefined as string | undefined,
   }),
   getters: {

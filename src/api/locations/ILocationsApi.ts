@@ -11,9 +11,6 @@ export interface IResponseAllLocations {
   info: { count: number; pages: number; next: string; prev: string };
   results: ILocation[];
 }
-export interface IResposeSingleLocation {
-  data: ILocation;
-}
 export interface ILocationsApi {
   getAllLocations(
     name?: string,
@@ -21,5 +18,5 @@ export interface ILocationsApi {
     dimension?: string,
     page?: number,
   ): Promise<IResponseAllLocations>;
-  getSingleLocation(id?: string): Promise<IResposeSingleLocation>;
+  getSingleLocation(id?: string): Promise<ILocation>;
 }

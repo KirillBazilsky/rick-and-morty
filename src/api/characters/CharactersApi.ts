@@ -1,10 +1,9 @@
 import axios, { AxiosResponse } from "axios";
 import { API_URL } from "@/constatnts/constants";
 import {
+  ICharacter,
   ICharactersApi,
-  IResponseSingleCharacter,
   IResponseAllCharacters,
-  IResponseMultiplyCharacters,
 } from "./ICharactersApi";
 
 class CharactersApi implements ICharactersApi {
@@ -35,8 +34,8 @@ class CharactersApi implements ICharactersApi {
 
   public async getSingleCharacter(
     id: string,
-  ): Promise<IResponseSingleCharacter> {
-    const response: AxiosResponse<IResponseSingleCharacter> = await axios.get(
+  ): Promise<ICharacter> {
+    const response: AxiosResponse<ICharacter> = await axios.get(
       `${API_URL}character/${id}`,
     );
 
@@ -45,8 +44,8 @@ class CharactersApi implements ICharactersApi {
 
   public async getMultiplyCharacters(
     url: string[],
-  ): Promise<IResponseMultiplyCharacters> {
-    const response: AxiosResponse<IResponseMultiplyCharacters> =
+  ): Promise<ICharacter[]> {
+    const response: AxiosResponse<ICharacter[]> =
       await axios.get(`${API_URL}character/${url}`);
 
     return response.data;

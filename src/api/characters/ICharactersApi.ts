@@ -16,12 +16,7 @@ export interface IResponseAllCharacters {
   info: { count: number; pages: number; next: string; prev: string };
   results: ICharacter[];
 }
-export interface IResponseSingleCharacter {
-  data: ICharacter;
-}
-export interface IResponseMultiplyCharacters {
-  data: ICharacter[];
-}
+
 export interface ICharactersApi {
   getAllCharacters(
     name?: string,
@@ -30,6 +25,6 @@ export interface ICharactersApi {
     status?: string,
     page?: number,
   ): Promise<IResponseAllCharacters>;
-  getSingleCharacter(id: string): Promise<IResponseSingleCharacter>;
-  getMultiplyCharacters(urls: string[]): Promise<IResponseMultiplyCharacters>;
+  getSingleCharacter(id: string): Promise<ICharacter>;
+  getMultiplyCharacters(urls: string[]): Promise<ICharacter[]>;
 }
