@@ -168,7 +168,7 @@ import { onMounted, watch } from "vue";
 import rickAndMortySpin from "@/assets/rickAndMortySpin.svg";
 import { typeList, dimensionList } from "@/constatnts/constants";
 import LoadingImage from "../components/LoadingImage.vue";
-import { useLocationsStore } from "@/stores/app";
+import { useLocationsStore } from "@/stores/location";
 
 const locationsStore = useLocationsStore();
 
@@ -183,24 +183,24 @@ const applyFilters = function () {
 };
 
 onMounted(() => {
-  locationsStore.fetchLocations();
+  locationsStore.getAllLocations();
 });
 
 watch(
   () => locationsStore.name,
   () => {
-    setTimeout(() => locationsStore.fetchLocations(), 300);
+    setTimeout(() => locationsStore.getAllLocations(), 300);
   },
 );
 watch(
   () => [locationsStore.type, locationsStore.dimensions],
   () => {
-    locationsStore.fetchLocations();
+    locationsStore.getAllLocations();
   },
 );
 
 const loadMoreItems = () => {
   locationsStore.page += 1;
-  locationsStore.updatePage();
+  locationsStore.loadMoreLocations();
 };
 </script>

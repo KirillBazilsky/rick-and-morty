@@ -25,7 +25,7 @@ export const useLocationsStore = defineStore("locations", {
   }),
 
   actions: {
-    async fetchLocations() {
+    async getAllLocations() {
       this.isLoading = true;
       try {
         this.page = 1;

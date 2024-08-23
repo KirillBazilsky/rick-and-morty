@@ -95,7 +95,7 @@
 
 <script setup lang="ts">
 import { useRoute, useRouter } from "vue-router";
-import { useLocationsStore } from "@/stores/app";
+import { useLocationsStore } from "@/stores/location";
 import LoadingImage from "../components/LoadingImage.vue";
 
 const locationsStore = useLocationsStore();
@@ -104,7 +104,7 @@ const route: any = useRoute();
 const router = useRouter();
 
 onMounted(() => {
-  locationsStore.fetchLocationInfo(route.params.id);
+  locationsStore.getSingleLocation(route.params.id);
 });
 
 const goBack = () => {

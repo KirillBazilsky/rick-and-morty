@@ -85,7 +85,7 @@
 
 <script setup lang="ts">
 import { useRoute, useRouter } from "vue-router";
-import { useEpisodesStore } from "@/stores/app";
+import { useEpisodesStore } from "@/stores/episodes";
 import LoadingImage from "../components/LoadingImage.vue";
 import CharacterCard from "@/components/CharacterCard.vue";
 
@@ -95,7 +95,7 @@ const route: any = useRoute();
 const router = useRouter();
 
 onMounted(() => {
-  episodesStore.fetchEpisodeInfo(route.params.id);
+  episodesStore.getSingleEpisode(route.params.id);
 });
 
 const goBack = () => {
