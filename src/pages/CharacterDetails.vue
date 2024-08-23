@@ -187,7 +187,7 @@
 
 <script setup lang="ts">
 import { useRoute, useRouter } from "vue-router";
-import { useCharactersStore } from "@/stores/app";
+import { useCharactersStore } from "@/stores/characters";
 import LoadingImage from "../components/LoadingImage.vue";
 
 const charactersStore = useCharactersStore();
@@ -196,7 +196,7 @@ const route: any = useRoute();
 const router = useRouter();
 
 onMounted(() => {
-  charactersStore.fetchCharacterInfo(route.params.id);
+  charactersStore.getSingleCharacter(route.params.id);
 });
 
 const goBack = () => {

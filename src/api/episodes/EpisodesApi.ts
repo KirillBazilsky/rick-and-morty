@@ -22,7 +22,7 @@ class EpisodesApi implements IEpisodesApi {
     return { info, results };
   }
 
-  public async getSingleEpisode(url: string[]): Promise<IEpisode> {
+  public async getSingleEpisode(url: string): Promise<IEpisode> {
     const response: AxiosResponse<IEpisode> = await axios.get(
       `${API_URL}episode/${url}`,
     );
@@ -30,8 +30,10 @@ class EpisodesApi implements IEpisodesApi {
     return response.data;
   }
 
-  public async getMultiplyEpisodes(id: string[]): Promise<IEpisode[]> {
-    const response: AxiosResponse<IEpisode[]> = await axios.get(
+  public async getMultiplyEpisodes(
+    id: string[],
+  ): Promise<IEpisode[] | IEpisode> {
+    const response: AxiosResponse<IEpisode[] | IEpisode> = await axios.get(
       `${API_URL}episode/${id}`,
     );
 

@@ -20,6 +20,6 @@ export interface IEpisodesApi {
     episode?: string,
     page?: number,
   ): Promise<IResponseAllEpisodes>;
-  getSingleEpisode(url: string[]):Promise<IEpisode>
-  getMultiplyEpisodes(id: string[]):Promise<IEpisode[]>
+  getSingleEpisode(url: string):Promise<IEpisode>
+  getMultiplyEpisodes(id: string[]):Promise<IEpisode[]|IEpisode>
 }

@@ -186,7 +186,7 @@ import { onMounted, watch, ref } from "vue";
 import pngLogoBig from "@/assets/PngLogoBig.svg";
 import { speciesList, genderList, statusList } from "@/constatnts/constants";
 import LoadingImage from "../components/LoadingImage.vue";
-import { useCharactersStore } from "@/stores/app";
+import { useCharactersStore } from "@/stores/characters";
 import CharacterCard from "@/components/CharacterCard.vue";
 
 const charactersStore = useCharactersStore();
@@ -203,13 +203,13 @@ const applyFilters = function () {
 };
 
 onMounted(() => {
-  charactersStore.fetchCharacters();
+  charactersStore.getAllCharacters();
 });
 
 watch(
   () => charactersStore.name,
   () => {
-    setTimeout(() => charactersStore.fetchCharacters(), 300);
+    setTimeout(() => charactersStore.getAllCharacters(), 700);
   },
 );
 watch(
@@ -219,12 +219,12 @@ watch(
     charactersStore.status,
   ],
   () => {
-    charactersStore.fetchCharacters();
+    charactersStore.getAllCharacters();
   },
 );
 
 const loadMoreItems = () => {
   charactersStore.page += 1;
-  charactersStore.updatePage();
+  charactersStore.loadMoreCharacters();
 };
 </script>

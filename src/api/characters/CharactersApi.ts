@@ -32,9 +32,7 @@ class CharactersApi implements ICharactersApi {
     return { info, results };
   }
 
-  public async getSingleCharacter(
-    id: string,
-  ): Promise<ICharacter> {
+  public async getSingleCharacter(id: string): Promise<ICharacter> {
     const response: AxiosResponse<ICharacter> = await axios.get(
       `${API_URL}character/${id}`,
     );
@@ -44,9 +42,10 @@ class CharactersApi implements ICharactersApi {
 
   public async getMultiplyCharacters(
     url: string[],
-  ): Promise<ICharacter[]> {
-    const response: AxiosResponse<ICharacter[]> =
-      await axios.get(`${API_URL}character/${url}`);
+  ): Promise<ICharacter[] | ICharacter> {
+    const response: AxiosResponse<ICharacter[] | ICharacter> = await axios.get(
+      `${API_URL}character/${url}`,
+    );
 
     return response.data;
   }

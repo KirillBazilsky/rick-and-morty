@@ -26,5 +26,5 @@ export interface ICharactersApi {
     page?: number,
   ): Promise<IResponseAllCharacters>;
   getSingleCharacter(id: string): Promise<ICharacter>;
-  getMultiplyCharacters(urls: string[]): Promise<ICharacter[]>;
+  getMultiplyCharacters(urls: string[]): Promise<ICharacter[] | ICharacter>;
 }

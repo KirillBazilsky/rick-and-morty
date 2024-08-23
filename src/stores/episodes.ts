@@ -2,43 +2,34 @@ import { defineStore } from "pinia";
 import CharactersApi from "@/api/characters/CharactersApi";
 import { ICharacter } from "@/api/characters/ICharactersApi";
 import { IEpisode } from "@/api/episodes/IEpisodesApi";
-import { AxiosError } from "axios";
-import { getId, splitString } from "@/api/IdGetterApi";
 import EpisodesApi from "@/api/episodes/EpisodesApi";
-
-export const useCharactersStore = defineStore("characters", {
+import { getId } from "@/api/IdGetterApi";
+import { AxiosError } from "axios";
+export const useEpisodesStore = defineStore("episodes", {
   state: () => ({
-    menu: false as boolean,
     name: "" as string,
-    characters: [] as ICharacter[],
-    species: undefined as string | undefined,
-    status: undefined as string | undefined,
-    gender: undefined as string | undefined,
+    episode: "" as string,
     errorMessage: "" as string | null,
     isLoading: false as boolean,
     canLoadMore: true as boolean,
     page: 1 as number,
-    characterInfo: undefined as ICharacter | undefined,
     episodesList: [] as IEpisode[] | undefined,
-    locationId: undefined as string | undefined,
+    charactersList: [] as ICharacter[] | undefined,
+    episodeInfo: {} as IEpisode | undefined,
     charactersApi: new CharactersApi(),
     episodesApi: new EpisodesApi(),
   }),
-  getters: {
-    watch: (state) => state.name,
-  },
+
   actions: {
-    async getAllCharacters() {
+    async getAllEpisodes() {
       try {
         this.page = 1;
         this.isLoading = true;
-        const data = await this.charactersApi.getAllCharacters(
-          this.name,
-          this.species,
-          this.gender,
-          this.status,
+        const data = await this.episodesApi.getAllEpisodes(
+          this.episode,
+          this.page,
         );
-        this.characters = data.results;
+        this.episodesList = data.results;
         this.errorMessage = "";
         if (data.info.pages == this.page) {
           this.canLoadMore = false;
@@ -48,8 +39,8 @@ export const useCharactersStore = defineStore("characters", {
       } catch (error: unknown) {
         if (error instanceof AxiosError) {
           if (error.response && error.response.status === 404) {
+            this.errorMessage = "No episodes found for the selected filters.";
             this.canLoadMore = false;
-            this.errorMessage = "No characters found for the selected filters.";
           } else {
             this.errorMessage = "An error occurred. Please try again later.";
           }
@@ -58,20 +49,14 @@ export const useCharactersStore = defineStore("characters", {
         this.isLoading = false;
       }
     },
-    async loadMoreCharacters() {
+    async loadMoreEpisodes() {
       try {
-        this.isLoading = true;
-        const data = await this.charactersApi.getAllCharacters(
-          this.name,
-          this.species,
-          this.gender,
-          this.status,
+        const data = await this.episodesApi.getAllEpisodes(
+          this.episode,
           this.page,
         );
-        const newCharacters = data.results;
-
-        this.characters.push(...newCharacters);
-
+        const newEpisodes = data.results;
+        this.episodesList?.push(...newEpisodes);
         if (data.info.pages == this.page) {
           this.canLoadMore = false;
         }
@@ -87,24 +72,21 @@ export const useCharactersStore = defineStore("characters", {
         this.isLoading = false;
       }
     },
-    async getSingleCharacter(id: string) {
+    async getSingleEpisode(id: string) {
       try {
         this.isLoading = true;
-        this.characterInfo = undefined;
+        this.charactersList = [];
         this.page = 1;
-        this.episodesList = [];
-
-        this.characterInfo = await this.charactersApi.getSingleCharacter(id);
-        if (this.characterInfo) {
-          const episodesUrl: string[] = getId(this.characterInfo.episode);
-          const episodes: IEpisode[] | IEpisode =
-            await this.episodesApi.getMultiplyEpisodes(episodesUrl);
-          if (Array.isArray(episodes) && episodes.length) {
-            this.episodesList = episodes;
-          } else if (!Array.isArray(episodes)) {
-            this.episodesList.push(episodes);
+        this.episodeInfo = await this.episodesApi.getSingleEpisode(id);
+        if (this.episodeInfo) {
+          const charactersUrl: string[] = getId(this.episodeInfo?.characters);
+          const characters: ICharacter[] | ICharacter =
+            await this.charactersApi.getMultiplyCharacters(charactersUrl);
+          if (Array.isArray(characters)) {
+            this.charactersList = characters;
+          } else if (Array.isArray(characters)) {
+            this.charactersList.push(characters);
           }
-          this.locationId = splitString(this.characterInfo?.location.url);
         }
       } catch (error: unknown) {
         if (error instanceof AxiosError) {

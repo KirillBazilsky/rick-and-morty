@@ -89,23 +89,23 @@
 import { onMounted, watch } from "vue";
 import rickAndMorty from "@/assets/rick-and-morty-watch.svg";
 import LoadingImage from "../components/LoadingImage.vue";
-import { useEpisodesStore } from "@/stores/app";
+import { useEpisodesStore } from "@/stores/episodes";
 
 const episodesStore = useEpisodesStore();
 
 onMounted(() => {
-  episodesStore.fetchEpisodes();
+  episodesStore.getAllEpisodes();
 });
 
 watch(
   () => episodesStore.episode,
   () => {
-    setTimeout(() => episodesStore.fetchEpisodes(), 300);
+    setTimeout(() => episodesStore.getAllEpisodes(), 700);
   },
 );
 
 const loadMoreItems = () => {
   episodesStore.page += 1;
-  episodesStore.updatePage();
+  episodesStore.loadMoreEpisodes();
 };
 </script>
