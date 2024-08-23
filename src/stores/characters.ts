@@ -102,7 +102,7 @@ export const useCharactersStore = defineStore("characters", {
           const episodesUrl: string[] = getUrl(this.characterInfo.episode);
           const episodes: IEpisode[] | IEpisode =
             await this.episodesApi.getMultiplyEpisodes(episodesUrl);
-          if (Array.isArray(episodes) && episodes.length) {
+          if (Array.isArray(episodes)) {
             this.episodesList = episodes;
           } else if (!Array.isArray(episodes)) {
             this.episodesList.push(episodes);
