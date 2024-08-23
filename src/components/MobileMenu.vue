@@ -4,7 +4,7 @@
     style="height: 75vh"
   >
     <router-link
-      v-for="link in linkArr"
+      v-for="link in pathList"
       :key="link.title"
       :to="link.to"
       class="link text-h6 ml-8 my-8 mx-12 text-center"
@@ -15,8 +15,9 @@
 </template>
 
 <script setup lang="ts">
-import { linkArr } from "@/constatnts/navigation";
-const props = defineProps<{
+import { pathList } from "@/constatnts/navigation";
+export interface IProps {
   toggleMenu: Function;
-}>();
+}
+const props = defineProps<IProps>();
 </script>

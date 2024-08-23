@@ -12,11 +12,11 @@ export interface ICharacter {
   created: Date;
   origin: { name: string; url: string };
 }
-export interface IINfo{
+export interface IresponseINfo{
   count: number; pages: number; next: string; prev: string 
 }
 export interface IResponseAllCharacters {
-  info: IINfo;
+  info: IresponseINfo;
   results: ICharacter[];
 }
 

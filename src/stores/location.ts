@@ -13,13 +13,13 @@ export const useLocationsStore = defineStore("locations", {
       type: "" as string,
       dimensions: "" as string,
     },
-    pagination:{
+    pagination: {
       page: 1 as number,
     },
     errorMessage: "" as string | null,
     isLoading: false as boolean,
     canLoadMore: true as boolean,
-    
+
     locationsList: [] as ILocation[] | null,
     charactersList: [] as ICharacter[] | null,
     locationInfo: {} as ILocation | null,
@@ -91,16 +91,18 @@ export const useLocationsStore = defineStore("locations", {
         this.charactersList = [];
         this.pagination.page = 1;
         this.locationInfo = await this.locationsApi.getSingleLocation(id);
+
         const charactersUrl: string[] = getUrl(this.locationInfo?.residents);
+
         if (charactersUrl.length) {
           const characters =
             await this.charactersApi.getMultiplyCharacters(charactersUrl);
-          if (Array.isArray(characters)) {
-            this.charactersList = characters;
-          } else if (!Array.isArray(characters)) {
-            this.charactersList?.push(characters);
-          }
-        } else this.charactersList = null;
+          this.charactersList = Array.isArray(characters)
+            ? characters
+            : [characters];
+        } else {
+          this.charactersList = null;
+        }
       } catch (error: unknown) {
         if (error instanceof AxiosError) {
           console.error("Failed to fetch location info:", error);

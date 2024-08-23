@@ -96,17 +96,13 @@ export const useCharactersStore = defineStore("characters", {
         this.characterInfo = null;
         this.pagination.page = 1;
         this.episodesList = [];
-
         this.characterInfo = await this.charactersApi.getSingleCharacter(id);
         if (this.characterInfo) {
           const episodesUrl: string[] = getUrl(this.characterInfo.episode);
           const episodes: IEpisode[] | IEpisode =
             await this.episodesApi.getMultiplyEpisodes(episodesUrl);
-          if (Array.isArray(episodes)) {
-            this.episodesList = episodes;
-          } else if (!Array.isArray(episodes)) {
-            this.episodesList.push(episodes);
-          }
+
+          this.episodesList = Array.isArray(episodes) ? episodes : [episodes];
           this.locationId = getLastSegment(this.characterInfo?.location.url);
         }
       } catch (error: unknown) {

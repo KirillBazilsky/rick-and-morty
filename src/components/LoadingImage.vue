@@ -1,5 +1,5 @@
 <template>
-  <v-container class="d-flex justify-center align-center" style="height: 45vh">
+  <v-container class="d-flex justify-center align-center" style="height: 55vh">
     <v-img class="rotate" :src="loadingImg" alt="loading" max-width="250px">
     </v-img>
   </v-container>
@@ -20,8 +20,5 @@ import loadingImg from "../assets/Loading component.svg";
   to {
     transform: rotate(360deg);
   }
-}
-.img-container {
-  height: 70vh;
 }
 </style>

@@ -17,10 +17,12 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
-  name: String,
-  id: Number,
-  image: String,
-  species: String,
-});
+interface IProps {
+  name: string;
+  id: number;
+  image: string;
+  species: string;
+}
+
+const props = defineProps<IProps>();
 </script>

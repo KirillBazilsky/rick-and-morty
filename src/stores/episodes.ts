@@ -86,11 +86,9 @@ export const useEpisodesStore = defineStore("episodes", {
           const charactersUrl: string[] = getUrl(this.episodeInfo?.characters);
           const characters: ICharacter[] | ICharacter =
             await this.charactersApi.getMultiplyCharacters(charactersUrl);
-          if (Array.isArray(characters)) {
-            this.charactersList = characters;
-          } else if (Array.isArray(characters)) {
-            this.charactersList.push(characters);
-          }
+          this.charactersList = Array.isArray(characters)
+            ? characters
+            : [characters];
         }
       } catch (error: unknown) {
         if (error instanceof AxiosError) {

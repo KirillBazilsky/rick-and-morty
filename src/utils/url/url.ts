@@ -4,9 +4,6 @@ export function getLastSegment(path: string) {
   return segment[segment.length - 1];
 }
 export function getUrl(paths: string[]): string[] {
-  const url: string[] = [];
-
-  paths.map((episode) => url.push(getLastSegment(episode)));
-
-  return url;
+  
+  return paths.map(getLastSegment)
 }
