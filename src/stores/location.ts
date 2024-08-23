@@ -18,7 +18,6 @@ export const useLocationsStore = defineStore("locations", {
     page: 1 as number,
     locationsList: [] as ILocation[] | undefined,
     charactersList: [] as ICharacter[] | undefined,
-    charactersUrl: [] as string[],
     locationInfo: {} as ILocation | undefined,
     charactersApi: new CharactersApi(),
     locationsApi: new LocationsApi(),
@@ -89,7 +88,7 @@ export const useLocationsStore = defineStore("locations", {
         this.page = 1;
         this.locationInfo = await this.locationsApi.getSingleLocation(id);
         const charactersUrl: string[] = getId(this.locationInfo?.residents);
-        if (charactersUrl.length > 0) {
+        if (charactersUrl.length) {
           const characters =
             await this.charactersApi.getMultiplyCharacters(charactersUrl);
           if (Array.isArray(characters)) {
@@ -97,7 +96,8 @@ export const useLocationsStore = defineStore("locations", {
           } else if (!Array.isArray(characters)) {
             this.charactersList?.push(characters);
           }
-        }
+        } 
+        else this.charactersList = undefined
       } catch (error: unknown) {
         if (error instanceof AxiosError) {
           console.error("Failed to fetch location info:", error);

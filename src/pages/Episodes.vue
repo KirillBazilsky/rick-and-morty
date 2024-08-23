@@ -64,7 +64,7 @@
       class="d-flex justify-center align-center"
       style="height: 45vh"
     >
-      <p>{{ episodesStore.errorMessage }}</p>
+      <p class="text-h6 text bold">{{ episodesStore.errorMessage }}</p>
     </v-container>
     <v-container>
       <v-row class="d-flex align-center justify-center">
@@ -78,7 +78,7 @@
             color="blue"
             >LOAD MORE
           </v-btn>
-          <p v-else>Nothing to load</p>
+          <p v-else class="text-h6 text bold">Nothing to load</p>
         </v-col>
       </v-row>
     </v-container>

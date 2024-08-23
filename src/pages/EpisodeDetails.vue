@@ -78,7 +78,7 @@
       class="d-flex justify-center align-center"
       style="height: 75vw"
     >
-      <p>{{ episodesStore.errorMessage }}</p>
+      <p class="text-h6 text bold">{{ episodesStore.errorMessage }}</p>
     </v-container>
   </v-main>
 </template>

@@ -180,7 +180,7 @@
       class="d-flex justify-center align-center"
       style="height: 75vw"
     >
-      <p>{{ charactersStore.errorMessage }}</p>
+      <p class="text-h6 text bold">{{ charactersStore.errorMessage }}</p>
     </v-container>
   </v-main>
 </template>

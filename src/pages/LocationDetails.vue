@@ -56,7 +56,7 @@
       <v-row
         v-if="
           !locationsStore.errorMessage ||
-          locationsStore.charactersUrl.length > 0
+          locationsStore.charactersList
         "
       >
         <v-col
@@ -73,9 +73,9 @@
           />
         </v-col>
       </v-row>
-      <v-row v-else>
+      <v-row v-if="!locationsStore.charactersList">
         <v-container class="d-flex justify-center align-center">
-          <p class="Text-h4">Not found</p>
+          <p class="text-h6 text-bold">Not found</p>
         </v-container>
       </v-row>
     </v-container>

@@ -140,9 +140,9 @@
           </v-card>
         </v-col>
       </v-row>
-      <div v-else class="container">
-        <p>{{ locationsStore.errorMessage }}</p>
-      </div>
+      <v-container class="d-flex justify-center align-center">
+        <p class="text-h6 text bold">{{ locationsStore.errorMessage }}</p>
+      </v-container>
     </v-container>
     <v-container>
       <v-row class="d-flex align-center justify-center">
@@ -156,7 +156,7 @@
             color="blue"
             >LOAD MORE
           </v-btn>
-          <p v-else>Nothing to load</p>
+          <p v-else class="text-h6 text bold">Nothing to load</p>
         </v-col>
       </v-row>
     </v-container>
