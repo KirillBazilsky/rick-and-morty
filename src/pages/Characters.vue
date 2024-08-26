@@ -160,7 +160,7 @@
       class="d-flex justify-center align-center"
       style="height: 45vh"
     >
-      <p class="text-h6 text bold" >{{ charactersStore.errorMessage }}</p>
+      <p class="text-h6 text bold">{{ charactersStore.errorMessage }}</p>
     </v-container>
     <v-container>
       <v-row class="d-flex align-center justify-center">
@@ -188,10 +188,10 @@ import { speciesList, genderList, statusList } from "@/constatnts/characters";
 import LoadingImage from "../components/LoadingImage.vue";
 import { useCharactersStore } from "@/stores/characters";
 import CharacterCard from "@/components/CharacterCard.vue";
+import { debounce } from "vue-debounce";
 
 const charactersStore = useCharactersStore();
-const isToggleMenu = ref(false) 
-
+const isToggleMenu = ref(false);
 
 const selectedSpecies = ref("");
 const selectedGender = ref("");
@@ -203,6 +203,9 @@ const applyFilters = function () {
   charactersStore.filters.status = selectedStatus.value;
   isToggleMenu.value = false;
 };
+const nameInputDebounce = debounce(() => {
+  charactersStore.getAllCharacters();
+}, 700);
 
 onMounted(() => {
   charactersStore.getAllCharacters();
@@ -211,7 +214,7 @@ onMounted(() => {
 watch(
   () => charactersStore.filters.name,
   () => {
-    setTimeout(() => charactersStore.getAllCharacters(), 700);
+    nameInputDebounce();
   },
 );
 watch(

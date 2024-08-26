@@ -17,12 +17,7 @@
 </template>
 
 <script setup lang="ts">
-interface IProps {
-  name: string;
-  id: number;
-  image: string;
-  species: string;
-}
+import { IProps } from './MobileMenu.vue';
 
 const props = defineProps<IProps>();
 </script>

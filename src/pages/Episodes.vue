@@ -90,8 +90,12 @@ import { onMounted, watch } from "vue";
 import rickAndMorty from "@/assets/rick-and-morty-watch.svg";
 import LoadingImage from "../components/LoadingImage.vue";
 import { useEpisodesStore } from "@/stores/episodes";
+import { debounce } from "vue-debounce";
 
 const episodesStore = useEpisodesStore();
+const episodeInputDebounce = debounce(() => {
+  episodesStore.getAllEpisodes();
+}, 700);
 
 onMounted(() => {
   episodesStore.getAllEpisodes();
@@ -100,7 +104,7 @@ onMounted(() => {
 watch(
   () => episodesStore.filters.episode,
   () => {
-    setTimeout(() => episodesStore.getAllEpisodes(), 700);
+    episodeInputDebounce();
   },
 );
 

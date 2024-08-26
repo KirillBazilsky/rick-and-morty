@@ -1,4 +1,4 @@
-import { IresponseINfo } from "../characters/ICharactersApi";
+import { IresponseInfo } from "../characters/ICharactersApi";
 
 export default interface ILocation {
   id: number;
@@ -10,7 +10,7 @@ export default interface ILocation {
   created: Date;
 }
 export interface IResponseAllLocations {
-  info: IresponseINfo;
+  info: IresponseInfo;
   results: ILocation[];
 }
 export interface ILocationsApi {

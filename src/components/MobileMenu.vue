@@ -17,7 +17,11 @@
 <script setup lang="ts">
 import { pathList } from "@/constatnts/navigation";
 export interface IProps {
-  toggleMenu: Function;
+  toggleMenu?: Function;
+  name?: string;
+  id?: number;
+  image?: string;
+  species?: string;
 }
 const props = defineProps<IProps>();
 </script>

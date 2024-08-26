@@ -1,4 +1,4 @@
-import { IresponseINfo } from "../characters/ICharactersApi";
+import { IresponseInfo } from "../characters/ICharactersApi";
 
 export interface IEpisode {
   id: string;
@@ -10,7 +10,7 @@ export interface IEpisode {
   created: Date;
 }
 export interface IResponseAllEpisodes {
-  info: IresponseINfo;
+  info: IresponseInfo;
   results: IEpisode[];
 }
 

@@ -168,7 +168,8 @@ import { onMounted, watch } from "vue";
 import rickAndMortySpin from "@/assets/rickAndMortySpin.svg";
 import { typeList, dimensionList } from "@/constatnts/locations";
 import LoadingImage from "@/components/LoadingImage.vue";
-import { useLocationsStore } from "@/stores/location"; 
+import { useLocationsStore } from "@/stores/location";
+import { debounce } from "vue-debounce";
 
 const locationsStore = useLocationsStore();
 const isToggleMenu = ref(false);
@@ -180,6 +181,9 @@ const applyFilters = function () {
   locationsStore.filters.dimensions = selectedDimension.value;
   isToggleMenu.value = !isToggleMenu.value;
 };
+const locationInputDebounce = debounce(() => {
+  locationsStore.getAllLocations();
+}, 700);
 
 onMounted(() => {
   locationsStore.getAllLocations();
@@ -188,7 +192,7 @@ onMounted(() => {
 watch(
   () => locationsStore.filters.name,
   () => {
-    setTimeout(() => locationsStore.getAllLocations(), 300);
+    locationInputDebounce();
   },
 );
 watch(
