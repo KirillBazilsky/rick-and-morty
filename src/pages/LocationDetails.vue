@@ -102,7 +102,7 @@ import { IRouteParams } from "./CharacterDetails.vue";
 
 const locationsStore = useLocationsStore();
 
-const route: any = useRoute();
+const route = useRoute();
 const router = useRouter();
 
 onMounted(() => {

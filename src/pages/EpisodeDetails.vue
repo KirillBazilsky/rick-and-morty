@@ -93,7 +93,7 @@ import CharacterCard from "@/components/CharacterCard.vue";
 import { IRouteParams } from "./CharacterDetails.vue";
 const episodesStore = useEpisodesStore();
 
-const route: any = useRoute();
+const route = useRoute();
 const router = useRouter();
 
 onMounted(() => {
