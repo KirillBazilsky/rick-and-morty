@@ -23,9 +23,9 @@
     <v-container v-else fluid>
       <MobileMenu :toggleMenu="toggleMenu"/>
     </v-container>
-    <v-footer fixed bordered elevation="16" height="60px">
+    <v-footer fixed bordered elevation="16" height="60px" cvlass="px-8 py-14">
       <v-row>
-        <v-col class="text-center text-h6" cols="12"
+        <v-col class="text-center font-weight-bold pa-0 ma-0" cols="12" style="font-family: 'Karla'; font-size: 18px;"
           >Make with ❤️ for the MobProgramming team</v-col
         >
       </v-row>
