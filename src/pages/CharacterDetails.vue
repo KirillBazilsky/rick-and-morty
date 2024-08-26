@@ -201,14 +201,20 @@
 import { useRoute, useRouter } from "vue-router";
 import { useCharactersStore } from "@/stores/characters";
 import LoadingImage from "../components/LoadingImage.vue";
+export interface IRouteParams {
+  id: string;
+}
 
 const charactersStore = useCharactersStore();
 
-const route: any = useRoute();
+const route = useRoute();
 const router = useRouter();
 
 onMounted(() => {
-  charactersStore.getSingleCharacter(route.params.id);
+  const params = route.params as IRouteParams;
+  const characterId = params.id;
+
+  charactersStore.getSingleCharacter(characterId);
 });
 
 const goBack = () => {

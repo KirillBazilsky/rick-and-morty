@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { API_URL } from "@/constatnts/api";
 import { IEpisode, IEpisodesApi, IResponseAllEpisodes } from "./IEpisodesApi";
 
@@ -7,7 +7,7 @@ class EpisodesApi implements IEpisodesApi {
     episode?: string,
     page?: number,
   ): Promise<IResponseAllEpisodes> {
-    const response: AxiosResponse<IResponseAllEpisodes> = await axios.get(
+    const response = await axios.get<IResponseAllEpisodes>(
       `${API_URL}episode`,
       {
         params: {
@@ -23,7 +23,7 @@ class EpisodesApi implements IEpisodesApi {
   }
 
   public async getSingleEpisode(url: string): Promise<IEpisode> {
-    const response: AxiosResponse<IEpisode> = await axios.get(
+    const response = await axios.get<IEpisode>(
       `${API_URL}episode/${url}`,
     );
 
@@ -33,7 +33,7 @@ class EpisodesApi implements IEpisodesApi {
   public async getMultiplyEpisodes(
     id: string[],
   ): Promise<IEpisode[] | IEpisode> {
-    const response: AxiosResponse<IEpisode[] | IEpisode> = await axios.get(
+    const response = await axios.get<IEpisode[] | IEpisode>(
       `${API_URL}episode/${id}`,
     );
 

@@ -3,7 +3,6 @@ export function getLastSegment(path: string) {
 
   return segment[segment.length - 1];
 }
-export function getUrl(paths: string[]): string[] {
-  
+export function getUrls(paths: string[]): string[] {
   return paths.map(getLastSegment)
 }

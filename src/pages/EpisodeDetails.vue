@@ -90,14 +90,17 @@ import { useRoute, useRouter } from "vue-router";
 import { useEpisodesStore } from "@/stores/episodes";
 import LoadingImage from "../components/LoadingImage.vue";
 import CharacterCard from "@/components/CharacterCard.vue";
-
+import { IRouteParams } from "./CharacterDetails.vue";
 const episodesStore = useEpisodesStore();
 
 const route: any = useRoute();
 const router = useRouter();
 
 onMounted(() => {
-  episodesStore.getSingleEpisode(route.params.id);
+  const params = route.params as IRouteParams;
+  const episodeId = params.id;
+
+  episodesStore.getSingleEpisode(episodeId);
 });
 
 const goBack = () => {

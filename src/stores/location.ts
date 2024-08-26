@@ -4,7 +4,7 @@ import { ICharacter } from "@/api/characters/ICharactersApi";
 import { AxiosError } from "axios";
 import LocationsApi from "@/api/locations/LocatonsApi";
 import ILocation from "@/api/locations/ILocationsApi";
-import { getUrl } from "@/utils/url/url";
+import { getUrls } from "@/utils/url/url";
 
 export const useLocationsStore = defineStore("locations", {
   state: () => ({
@@ -47,7 +47,8 @@ export const useLocationsStore = defineStore("locations", {
         }
       } catch (error: unknown) {
         if (error instanceof AxiosError) {
-          if (error.response && error.response.status === 404) {
+          const { response } = error;
+          if (response?.status === 404) {
             this.errorMessage = "No locations found for the selected filters.";
             this.canLoadMore = false;
           } else {
@@ -75,7 +76,8 @@ export const useLocationsStore = defineStore("locations", {
         }
       } catch (error: unknown) {
         if (error instanceof AxiosError) {
-          if (error.response && error.response.status === 404) {
+          const { response } = error;
+          if (response?.status === 404) {
             this.canLoadMore = false;
           } else {
             this.errorMessage = "An error occurred. Please try again later.";
@@ -92,7 +94,7 @@ export const useLocationsStore = defineStore("locations", {
         this.pagination.page = 1;
         this.locationInfo = await this.locationsApi.getSingleLocation(id);
 
-        const charactersUrl: string[] = getUrl(this.locationInfo?.residents);
+        const charactersUrl: string[] = getUrls(this.locationInfo?.residents);
 
         if (charactersUrl.length) {
           const characters =
@@ -106,6 +108,7 @@ export const useLocationsStore = defineStore("locations", {
       } catch (error: unknown) {
         if (error instanceof AxiosError) {
           console.error("Failed to fetch location info:", error);
+          this.errorMessage = "An error occurred. Please try again later.";
         }
       } finally {
         this.isLoading = false;

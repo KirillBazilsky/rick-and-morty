@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { API_URL } from "@/constatnts/api";
 import ILocation, {
   ILocationsApi,
@@ -12,7 +12,7 @@ class LocationsApi implements ILocationsApi {
     dimension?: string,
     page?: number,
   ): Promise<IResponseAllLocations> {
-    const response: AxiosResponse<IResponseAllLocations> = await axios.get(
+    const response  = await axios.get<IResponseAllLocations>(
       `${API_URL}location`,
       {
         params: {
@@ -30,7 +30,7 @@ class LocationsApi implements ILocationsApi {
   }
 
   public async getSingleLocation(id?: string): Promise<ILocation> {
-    const response: AxiosResponse<ILocation> = await axios.get(
+    const response = await axios.get<ILocation>(
       `${API_URL}location/${id}`,
     );
 

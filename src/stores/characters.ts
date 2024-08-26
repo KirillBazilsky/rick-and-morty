@@ -4,15 +4,15 @@ import { ICharacter } from "@/api/characters/ICharactersApi";
 import { IEpisode } from "@/api/episodes/IEpisodesApi";
 import { AxiosError } from "axios";
 import EpisodesApi from "@/api/episodes/EpisodesApi";
-import { getLastSegment, getUrl } from "@/utils/url/url";
+import { getLastSegment, getUrls } from "@/utils/url/url";
 
 export const useCharactersStore = defineStore("characters", {
   state: () => ({
     filters: {
       name: "" as string,
-      species: null as string | null,
-      status: null as string | null,
-      gender: null as string | null,
+      species: undefined as string | undefined,
+      status: undefined as string | undefined,
+      gender: undefined as string | undefined,
     },
     pagination: {
       page: 1 as number,
@@ -50,7 +50,9 @@ export const useCharactersStore = defineStore("characters", {
         }
       } catch (error: unknown) {
         if (error instanceof AxiosError) {
-          if (error.response && error.response.status === 404) {
+          const { response } = error;
+
+          if (response?.status === 404) {
             this.canLoadMore = false;
             this.errorMessage = "No characters found for the selected filters.";
           } else {
@@ -80,7 +82,9 @@ export const useCharactersStore = defineStore("characters", {
         }
       } catch (error: unknown) {
         if (error instanceof AxiosError) {
-          if (error.response && error.response.status === 404) {
+          const { response } = error;
+
+          if (response?.status === 404) {
             this.canLoadMore = false;
           } else {
             this.errorMessage = "An error occurred. Please try again later.";
@@ -98,7 +102,7 @@ export const useCharactersStore = defineStore("characters", {
         this.episodesList = [];
         this.characterInfo = await this.charactersApi.getSingleCharacter(id);
         if (this.characterInfo) {
-          const episodesUrl: string[] = getUrl(this.characterInfo.episode);
+          const episodesUrl: string[] = getUrls(this.characterInfo.episode);
           const episodes: IEpisode[] | IEpisode =
             await this.episodesApi.getMultiplyEpisodes(episodesUrl);
 
@@ -108,6 +112,7 @@ export const useCharactersStore = defineStore("characters", {
       } catch (error: unknown) {
         if (error instanceof AxiosError) {
           console.error("Failed to fetch episode info:", error);
+          this.errorMessage = "An error occurred. Please try again later.";
         }
       } finally {
         this.isLoading = false;

@@ -4,7 +4,7 @@ import { ICharacter } from "@/api/characters/ICharactersApi";
 import { IEpisode } from "@/api/episodes/IEpisodesApi";
 import EpisodesApi from "@/api/episodes/EpisodesApi";
 import { AxiosError } from "axios";
-import { getUrl } from "@/utils/url/url";
+import { getUrls } from "@/utils/url/url";
 export const useEpisodesStore = defineStore("episodes", {
   state: () => ({
     filters: {
@@ -42,7 +42,9 @@ export const useEpisodesStore = defineStore("episodes", {
         }
       } catch (error: unknown) {
         if (error instanceof AxiosError) {
-          if (error.response && error.response.status === 404) {
+          const { response } = error;
+
+          if (response?.status === 404) {
             this.errorMessage = "No episodes found for the selected filters.";
             this.canLoadMore = false;
           } else {
@@ -66,7 +68,8 @@ export const useEpisodesStore = defineStore("episodes", {
         }
       } catch (error: unknown) {
         if (error instanceof AxiosError) {
-          if (error.response && error.response.status === 404) {
+          const { response } = error;
+          if (response?.status === 404) {
             this.canLoadMore = false;
           } else {
             this.errorMessage = "An error occurred. Please try again later.";
@@ -83,7 +86,7 @@ export const useEpisodesStore = defineStore("episodes", {
         this.pagination.page = 1;
         this.episodeInfo = await this.episodesApi.getSingleEpisode(id);
         if (this.episodeInfo) {
-          const charactersUrl: string[] = getUrl(this.episodeInfo?.characters);
+          const charactersUrl: string[] = getUrls(this.episodeInfo?.characters);
           const characters: ICharacter[] | ICharacter =
             await this.charactersApi.getMultiplyCharacters(charactersUrl);
           this.charactersList = Array.isArray(characters)
@@ -93,6 +96,7 @@ export const useEpisodesStore = defineStore("episodes", {
       } catch (error: unknown) {
         if (error instanceof AxiosError) {
           console.error("Failed to fetch episode info:", error);
+          this.errorMessage = "An error occurred. Please try again later.";
         }
       } finally {
         this.isLoading = false;

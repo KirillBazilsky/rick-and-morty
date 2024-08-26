@@ -98,6 +98,7 @@
 import { useRoute, useRouter } from "vue-router";
 import { useLocationsStore } from "@/stores/location";
 import LoadingImage from "../components/LoadingImage.vue";
+import { IRouteParams } from "./CharacterDetails.vue";
 
 const locationsStore = useLocationsStore();
 
@@ -105,7 +106,10 @@ const route: any = useRoute();
 const router = useRouter();
 
 onMounted(() => {
-  locationsStore.getSingleLocation(route.params.id);
+  const params = route.params as IRouteParams;
+  const locationId = params.id;
+
+  locationsStore.getSingleLocation(locationId);
 });
 
 const goBack = () => {

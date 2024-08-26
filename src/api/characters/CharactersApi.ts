@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { API_URL } from "@/constatnts/api";
 import {
   ICharacter,
@@ -8,13 +8,13 @@ import {
 
 class CharactersApi implements ICharactersApi {
   public async getAllCharacters(
-    name?: string | null,
-    species?: string | null,
-    gender?: string | null,
-    status?: string | null,
-    page?: number | null,
+    name?: string,
+    species?: string,
+    gender?: string,
+    status?: string,
+    page?: number,
   ): Promise<IResponseAllCharacters> {
-    const response: AxiosResponse<IResponseAllCharacters> = await axios.get(
+    const response  = await axios.get<IResponseAllCharacters>(
       `${API_URL}character`,
       {
         params: {
@@ -33,7 +33,7 @@ class CharactersApi implements ICharactersApi {
   }
 
   public async getSingleCharacter(id: string): Promise<ICharacter> {
-    const response: AxiosResponse<ICharacter> = await axios.get(
+    const response = await axios.get<ICharacter>(
       `${API_URL}character/${id}`,
     );
 
@@ -43,7 +43,7 @@ class CharactersApi implements ICharactersApi {
   public async getMultiplyCharacters(
     url: string[],
   ): Promise<ICharacter[] | ICharacter> {
-    const response: AxiosResponse<ICharacter[] | ICharacter> = await axios.get(
+    const response = await axios.get<ICharacter[] | ICharacter>(
       `${API_URL}character/${url}`,
     );
 
