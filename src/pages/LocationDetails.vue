@@ -1,5 +1,5 @@
 <template>
-  <v-main v-if="!locationsStore.isLoading || !locationsStore.errorMessage">
+  <v-main v-if="!locationsStore.isLoading && !locationsStore.errorMessage">
     <v-container>
       <v-row>
         <v-col class="d-flex justify-right align-center">
@@ -54,10 +54,7 @@
     <v-container>
       <p class="text-h6 text-grey">Residents</p>
       <v-row
-        v-if="
-          !locationsStore.errorMessage ||
-          locationsStore.charactersList
-        "
+        v-if="!locationsStore.errorMessage && locationsStore.charactersList"
       >
         <v-col
           v-for="character in locationsStore.charactersList"
@@ -80,10 +77,10 @@
       </v-row>
     </v-container>
   </v-main>
-  <v-main v-else-if="locationsStore.isLoading">
+  <v-main v-if="locationsStore.isLoading && !locationsStore.errorMessage">
     <LoadingImage />
   </v-main>
-  <v-main v-else-if="locationsStore.errorMessage">
+  <v-main v-else-if="!locationsStore.isLoading && locationsStore.errorMessage">
     <v-container
       class="d-flex justify-center align-center"
       style="height: 75vw"

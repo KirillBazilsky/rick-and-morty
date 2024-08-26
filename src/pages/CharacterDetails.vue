@@ -1,5 +1,5 @@
 <template>
-  <v-main v-if="!charactersStore.isLoading || !charactersStore.errorMessage">
+  <v-main v-if="!charactersStore.isLoading && !charactersStore.errorMessage">
     <v-container>
       <v-row>
         <v-col class="d-flex justify-right align-center">
@@ -172,10 +172,12 @@
       </v-row>
     </v-container>
   </v-main>
-  <v-main v-else-if="charactersStore.isLoading">
+  <v-main v-if="charactersStore.isLoading && !charactersStore.errorMessage">
     <LoadingImage />
   </v-main>
-  <v-main v-else-if="charactersStore.errorMessage">
+  <v-main
+    v-if="!charactersStore.isLoading && charactersStore.errorMessage"
+  >
     <v-container
       class="d-flex justify-center align-center"
       style="height: 75vw"

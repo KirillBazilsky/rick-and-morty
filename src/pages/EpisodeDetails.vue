@@ -1,5 +1,5 @@
 <template>
-  <v-main v-if="!episodesStore.isLoading || !episodesStore.errorMessage">
+  <v-main v-if="!episodesStore.isLoading && !episodesStore.errorMessage">
     <v-container>
       <v-row>
         <v-col class="d-flex justify-right align-center">
@@ -70,10 +70,10 @@
       </v-row>
     </v-container>
   </v-main>
-  <v-main v-else-if="episodesStore.isLoading">
+  <v-main v-if="episodesStore.isLoading && !episodesStore.errorMessage">
     <LoadingImage />
   </v-main>
-  <v-main v-else-if="episodesStore.errorMessage">
+  <v-main v-if="!episodesStore.isLoading && episodesStore.errorMessage">
     <v-container
       class="d-flex justify-center align-center"
       style="height: 75vw"
